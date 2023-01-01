@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { TypeOf, z } from 'zod'
 
 enum Accountvalidataion {
 	NOT_VALID,
@@ -25,6 +25,8 @@ const createUserSchema = z.object({
 	account_state: z.optional(z.nativeEnum(Accountvalidataion)),
 })
 
-const 
+const signInUserSchema = z.object({})
 
-export { createUserSchema }
+export type CreateUserInput = TypeOf<typeof createUserSchema>
+
+export { createUserSchema, signInUserSchema }
