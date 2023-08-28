@@ -1,0 +1,11 @@
+{
+	"tabWidth": 4,
+	"useTabs": true,
+	"semi": false,
+	"bracketSpacing": true,
+	"singleQuote": true,
+	"bracketSameLine": true,
+	"editorconfig": false,
+	"singleAttributePerLine": true,
+	"trailingComma": "es5"
+}
