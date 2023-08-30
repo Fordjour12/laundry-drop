@@ -6,10 +6,13 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import swaggerUI from 'swagger-ui-express'
 
+import { notFound } from './helpers/root.middleware.helpers.js'
 import ApiRoutes from './helpers/routes.helpers.js'
 import swaggerSpecification from './helpers/swagger.helpers.js'
 
 dotenv.config({ path: './src/.env' })
+
+dotenv.config({ path: './.env' })
 
 const app = express()
 
@@ -30,6 +33,8 @@ app.use('/api/v1', ApiRoutes)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpecification))
 
 const port = Number(process.env.API_PORT) || 5000
+
+app.use(notFound)
 
 app.listen(port, () => {
 	// eslint-disable-next-line no-console

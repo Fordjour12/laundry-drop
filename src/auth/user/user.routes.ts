@@ -7,7 +7,7 @@ const userRouter = Router()
  * /users:
  *   get:
  *     summary: Retrieve a list of JSONPlaceholder users
- *     description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
+ *     description: Retrieve the / route of users from laundry drop. Can be used to populate a list of fake users when prototyping or testing an API.
  */
 
 userRouter.get('/', (req: Request, res: Response) => {
