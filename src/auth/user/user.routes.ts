@@ -4,14 +4,16 @@ const userRouter = Router()
 
 /**
  * @swagger
- * /users:
+ * tags:
+ *   name: Books
+ *   description: The books managing API
+ * /api/v1/:
  *   get:
  *     summary: Retrieve a list of JSONPlaceholder users
- *     description: Retrieve the / route of users from laundry drop. Can be used to populate a list of fake users when prototyping or testing an API.
+ *     description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
  */
-
-userRouter.get('/', (req: Request, res: Response) => {
-	res.json({
+userRouter.get('/', (request: Request, response: Response) => {
+	response.json({
 		message: 'welcome to the user routes',
 	})
 })
