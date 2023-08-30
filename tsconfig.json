@@ -1,23 +1,23 @@
 {
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"display": "Node 20",
-	"_version": "20.1.0",
+	"display": "Node 18",
+	"_version": "18.2.0",
 
 	"compilerOptions": {
 		"lib": ["es2023"],
 		"module": "Node16",
 		"target": "es2022",
+
 		"outDir": "./dist",
 
-		"strict": true,
+		"moduleResolution": "node16",
 		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"noUncheckedIndexedAccess": true,
 		"forceConsistentCasingInFileNames": true,
-		// "allowImportingTsExtensions": true,
-		// "noEmit": false,
-		// "emitDeclarationOnly": false,
-		"moduleResolution": "node16"
+		"strict": true,
+		"skipLibCheck": true
 	},
-	"include": ["src", "./jest.config.ts"]
+	"include": ["src", "dist", "./jest.config.ts"],
+	"ts-node": {
+		// Tell ts-node CLI to install the --loader automatically, explained below
+		"esm": true
+	}
 }
