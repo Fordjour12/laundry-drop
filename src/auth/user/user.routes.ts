@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express'
+import { registerUserController } from './user.controller'
 
 const userRouter = Router()
 
@@ -17,5 +18,17 @@ userRouter.get('/', (request: Request, response: Response) => {
 		message: 'welcome to the user routes',
 	})
 })
+
+/**
+ * @swagger
+ * tags:
+ *   name: Create users
+ *   description: The creation of new user into the server
+ * /api/v1/users:
+ *   post:
+ *     summary: Sends a list of Information about the user into the DB
+ *     description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
+ */
+userRouter.post('/create', registerUserController)
 
 export default userRouter

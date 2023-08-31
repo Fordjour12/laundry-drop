@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
-import laundryProviderRouter from '../auth/laundry-provider/user.routes.js'
-import userRouter from '../auth/user/user.routes.js'
+import laundryProviderRouter from '../auth/laundry-provider/user.routes'
+import userRouter from '../auth/user/user.routes'
 
 const ApiRoutes = Router()
 ApiRoutes.get('/', (_request: Request, response: Response) => {

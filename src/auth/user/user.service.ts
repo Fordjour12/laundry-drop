@@ -1,5 +1,5 @@
 import { Prisma, User } from '@prisma/client'
-import prismaClient from '../../helpers/prisma.helpers.js'
+import prismaClient from '../../helpers/prisma.helpers'
 
 const createUserService = async (input: Prisma.UserCreateInput) =>
 	(await prismaClient.user.create({ data: input })) as User

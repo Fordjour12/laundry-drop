@@ -16,8 +16,8 @@
 		"skipLibCheck": true
 	},
 	"include": ["src", "dist", "./jest.config.ts"],
-	"ts-node": {
-		// Tell ts-node CLI to install the --loader automatically, explained below
-		"esm": true
-	}
+	// "ts-node": {
+	// 	// Tell ts-node CLI to install the --loader automatically, explained below
+	// 	"esm": true
+	// }
 }

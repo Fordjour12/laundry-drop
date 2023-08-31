@@ -13,13 +13,13 @@ datasource db {
 
 model User {
   id       String @id @unique @default(uuid())
-  usename  String
+  username  String
   email    String @unique
   password String
   account_state Validaiton @default(NOT_VALID)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  phoneNumber   Int
+  phoneNumber   String
 }
 
 enum Validaiton {

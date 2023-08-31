@@ -6,9 +6,9 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import swaggerUI from 'swagger-ui-express'
 
-import { notFound } from './helpers/root.middleware.helpers.js'
-import ApiRoutes from './helpers/routes.helpers.js'
-import swaggerSpecification from './helpers/swagger.helpers.js'
+import { notFound } from './helpers/root.middleware.helpers'
+import ApiRoutes from './helpers/routes.helpers'
+import swaggerSpecification from './helpers/swagger.helpers'
 
 dotenv.config({ path: './src/.env' })
 
