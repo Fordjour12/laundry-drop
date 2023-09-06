@@ -2,6 +2,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import bcrypt from 'bcrypt'
 import { NextFunction, Request, Response } from 'express'
 import transport from '../../helpers/mail'
+import prismaClient from '../../helpers/prisma.helpers'
 import { CreateUserInputType } from './user.schema'
 import { createUserService } from './user.service'
 
@@ -36,8 +37,10 @@ const registerUserController = async (
 				subject: 'thanks for signing up',
 				text: 'thanks for signin up!!!',
 			},
+
 			(err) => {
 				if (err) throw new Error(`unable to sendmail ${err}`)
+				prismaClient.$disconnect()
 				// eslint-disable-next-line no-console
 				console.log('successfully sent mail')
 			}

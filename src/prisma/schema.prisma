@@ -10,12 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id       String @id @unique @default(uuid())
-  username  String
-  email    String @unique
-  password String
+  id            String     @id @unique @default(uuid())
+  username      String
+  email         String     @unique
+  password      String
   account_state Validaiton @default(NOT_VALID)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -25,4 +24,37 @@ model User {
 enum Validaiton {
   NOT_VALID
   VALID
+}
+
+// Laundry Provider schema 
+
+model LaundryProvider {
+  id                       String                     @id @unique @default(uuid())
+  name                     String
+  email                    String                     @unique
+  password                 String
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  accountState             Validaiton                 @default(NOT_VALID)
+  priceRange               Float
+  LaundryProviderLoacation LaundryProviderLoacation[]
+  LaundryItem              LaundryItem[]
+}
+
+model LaundryProviderLoacation {
+  id                Int             @id @default(autoincrement())
+  laundryProviderId String
+  laundryProvider   LaundryProvider @relation(fields: [laundryProviderId], references: [id])
+  longitude         Float
+  latitude          Float
+  postAddress       String
+}
+
+model LaundryItem {
+  id                Int             @id @default(autoincrement())
+  name              String
+  description       String?
+  laundryProviderId String
+  laundryProvider   LaundryProvider @relation(fields: [laundryProviderId], references: [id])
+  price             Float
 }
