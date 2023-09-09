@@ -1,23 +1,9 @@
-// import { MailtrapClient } from 'mailtrap'
+// import * as nodemailer from 'nodemailer'
 
-// /**
-//  * For this example to work, you need to set up a sending domain,
-//  * and obtain a token that is authorized to send from the domain.
-//  */
+// import { MailtrapTransport } from 'mailtrap'
+import { createTransport } from 'nodemailer'
 
-// const TOKEN = 'f18d0e7e79c3c6febd4f6ea048e6cda1'
-// const SENDER_EMAIL = 'fordjourbobiem@gmail.com'
-// const RECIPIENT_EMAIL = '<RECIPIENT@EMAIL.COM>'
-
-// const client = new MailtrapClient({ token: TOKEN })
-
-// const sender = { name: 'Mailtrap Test', email: SENDER_EMAIL }
-
-// export { client, sender }
-
-import * as nodemailer from 'nodemailer'
-
-const transport = nodemailer.createTransport({
+const transport = createTransport({
 	host: process.env.NODE_MAILER_HOST,
 	port: Number(process.env.NODE_MAILER_PORT),
 	auth: {
@@ -26,4 +12,49 @@ const transport = nodemailer.createTransport({
 	},
 })
 
+// const mail = new MailTransporter(
+// 	String(process.env.MAILTRAP_TOKEN),
+// 	'welcome there'
+// )
+
+// mail.sendMail('email setup', 'test@email.com', 'email-tester')
+// class MailTransporter {
+// 	token: string
+
+// 	htmlMessage?: string
+
+// 	constructor(token: string, htmlMessage: string) {
+// 		this.token = token
+// 		this.htmlMessage = htmlMessage
+// 	}
+
+// 	async sendMail(subject: string, recipientEmail: string, username: string) {
+// 		const transport = createTransport(
+// 			MailtrapTransport({
+// 				token: this.token,
+// 			})
+// 		)
+// 		try {
+// 			transport.sendMail({
+// 				to: {
+// 					address: `${recipientEmail}`,
+// 					name: `${username}`,
+// 				},
+// 				from: {
+// 					address: String(process.env.MAILTRAP_SENDER_MAIL),
+// 					name: 'Bobie Fordjour McCamble ',
+// 				},
+// 				subject,
+// 				text: this.htmlMessage,
+// 				// html: this.htmlMessage,
+// 			})
+// 		} catch (error) {
+// 			if (error) throw new Error(`unable to send email ${error}`)
+// 			// eslint-disable-next-line no-console
+// 			console.error('emailError', error)
+// 		}
+// 	}
+// }
+
 export default transport
+// export default MailTransporter

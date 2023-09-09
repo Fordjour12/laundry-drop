@@ -27,6 +27,7 @@ enum Validaiton {
 }
 
 // Laundry Provider schema 
+// minimum amount == maximum amount ==> (2-30)
 
 model LaundryProvider {
   id                       String                     @id @unique @default(uuid())
