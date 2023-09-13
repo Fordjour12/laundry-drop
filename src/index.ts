@@ -10,8 +10,6 @@ import { notFound } from './helpers/root.middleware.helpers'
 import ApiRoutes from './helpers/routes.helpers'
 import swaggerSpecification from './helpers/swagger.helpers'
 
-dotenv.config({ path: './src/.env' })
-
 dotenv.config({ path: './.env' })
 
 const app = express()

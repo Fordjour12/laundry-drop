@@ -23,7 +23,7 @@ const registerLaundryProviderSchema = z.object({
 			.min(8, 'Password must be at least 8 characters ')
 			.max(40, 'Password must be at most 40 characters'),
 		account_state: z.optional(z.nativeEnum(AccountValidation)),
-		// priceRange: z.coerce.string().regex(/^[0-9]+(\.[0-9]{2})?$/),
+		priceRange: z.coerce.string().regex(/^[0-9]+(\.[0-9]{2})?$/),
 		// min price
 		// max price
 	}),

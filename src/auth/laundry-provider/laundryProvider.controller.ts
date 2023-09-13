@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import bcrypt from 'bcrypt'
 import { NextFunction, Request, Response } from 'express'
-import transport from '../../helpers/mail'
+import sendEmailToUser from '../../mail/mail.service'
 import { RegisterLaundryProviderSchemaType } from './laundryProvider.schema'
 import { createLaundryProvider } from './laundryProvider.service'
 
@@ -16,7 +16,7 @@ const registerLaundryProviderController = async (
 	// eslint-disable-next-line consistent-return
 ) => {
 	try {
-		const { email, name, password } = request.body
+		const { email, name, password, priceRange } = request.body
 
 		const saltRounds = Number(process.env.BCRYPT_SALT_ROUND)
 		const salt = await bcrypt.genSalt(saltRounds)
@@ -27,23 +27,46 @@ const registerLaundryProviderController = async (
 			email,
 			name,
 			password: hashedPassword,
-			priceRange: 0,
+			priceRange: Number(priceRange),
 		})
 
-		transport.sendMail(
-			{
-				from: process.env.SENDER_MAIL,
-				to: email,
-				subject: 'thanks for signing up',
-				text: 'thanks for signin up!!!',
-			},
+		sendEmailToUser({
+			ToEmail: email,
+			FromEmail: String(process.env.SENDER_MAIL),
+			MailSubject: 'WELCOME TO THE MAIL',
+			HTML: `
+			<html lang="en">
+				<head>
+					<meta charset="UTF-8" />
+					<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+					<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+					<title>Email Verification</title>
+				</head>
+				<body>
+					<div>
+						<h1>Hello ${email}</h1>
+						<p> You registered an account on Laundry Drop, before being able to use your account you need to verify that this is your email address by clicking here:
+							<span class="block"> 
+								<a href="">verify email address</a> 
+							</span>
+						</p>
 
-			(err) => {
-				if (err) throw new Error(`unable to sendmail ${err}`)
-				// eslint-disable-next-line no-console
-				console.log('successfully sent mail')
-			}
-		)
+						<div>
+							<p>Kind Regards,</p>
+							<span>Laundry Drop</span>
+							<small>support@laundrydrop.com</small>
+						</div>
+					</div>
+
+					<center>
+					<small style="display: block"> location data </small>
+					<small style="display: block"> location data </small>
+					<small style="display: block"> country </small>
+					</center>
+				</body>
+ 		 	</html>
+			`,
+		})
 
 		response.status(201).json({
 			status: 'success',
