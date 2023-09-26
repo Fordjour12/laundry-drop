@@ -4,3 +4,6 @@ dist
 yarn.lock
 package-lock.*
 pnpm-lock.*
+
+keypair.*
+publickey.*

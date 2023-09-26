@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import bcrypt from 'bcrypt'
+import { error } from 'console'
 import { NextFunction, Request, Response } from 'express'
+import { signJWT } from '../../helpers/jwt'
 import sendEmailToUser from '../../mail/mail.service'
 import { RegisterLaundryProviderSchemaType } from './laundryProvider.schema'
-import { createLaundryProvider } from './laundryProvider.service'
+import {
+	createLaundryProvider,
+	findLaundryProviderByEmail,
+} from './laundryProvider.service'
 
 const registerLaundryProviderController = async (
 	request: Request<
@@ -46,8 +52,8 @@ const registerLaundryProviderController = async (
 					<div>
 						<h1>Hello ${email}</h1>
 						<p> You registered an account on Laundry Drop, before being able to use your account you need to verify that this is your email address by clicking here:
-							<span class="block"> 
-								<a href="">verify email address</a> 
+							<span class="block">
+								<a href="">verify email address</a>
 							</span>
 						</p>
 
@@ -64,13 +70,15 @@ const registerLaundryProviderController = async (
 					<small style="display: block"> country </small>
 					</center>
 				</body>
- 		 	</html>
+		 	</html>
 			`,
 		})
 
 		response.status(201).json({
 			status: 'success',
-			data: laundryProviderInfo,
+			data: {
+				laundryProviderInfo,
+			},
 		})
 	} catch (error) {
 		if (error instanceof PrismaClientKnownRequestError) {
@@ -89,10 +97,88 @@ const registerLaundryProviderController = async (
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const signInLaundryProviderController = async (_params: never) => {}
 
+const signInLaundryProviderController = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+	// eslint-disable-next-line consistent-return
+) => {
+	/**
+	 * 		TODO:
+	 * 	check db if user exist
+	 *  if user exits login him in
+	 *  jsonwebtoken (access token and Refresh token)
+	 * sign user into an access token and refersh token
+	 * */
+	try {
+		const { email, password } = request.body
+
+		const laundryProviderInfo = await findLaundryProviderByEmail(
+			{
+				email,
+			},
+			{
+				name: true,
+				priceRange: true,
+				id: true,
+				password: true,
+				email: true,
+				accountState: true,
+			}
+		)
+
+		const passwordValidity = await bcrypt.compare(
+			password,
+			laundryProviderInfo.password
+		)
+
+		if (!laundryProviderInfo || !passwordValidity) {
+			return response
+				.status(401)
+				.send('Invalid user information try again instead')
+		}
+		const accessToken = signJWT(
+			{
+				name: laundryProviderInfo.name,
+				id: laundryProviderInfo.id,
+			},
+			'1h'
+		)
+
+		console.info(accessToken)
+
+		// response.cookie('atk', accessToken)
+
+		response.status(200).json({
+			status: 'success',
+			data: { ...laundryProviderInfo },
+			accessToken,
+		})
+	} catch (error) {
+		console.error('Error', error)
+		next(error)
+	}
+}
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const signOutLaundryProviderController = async (_params: never) => {}
+const signOutLaundryProviderController = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	/**
+	 *  TODO:
+	 * 	check user
+	 * Delete user jsonwebtoken
+	 * After token been deleted user is logged out
+	 * */
+	response.status(200).send({
+		done: 'done',
+	})
+	if (error) {
+		next(error)
+	}
+}
 
 export {
 	registerLaundryProviderController,
