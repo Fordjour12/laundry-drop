@@ -1,0 +1,29 @@
+# Features
+
+- Dashboard - quick overview of service details.
+- Easy laundry service booking.
+- Website Integration.
+- Customer management.
+- Loyalty/ discount management.
+- Shelf location management.
+- Tracking orders.
+- Pick & drop management.
+- Service payments.
+- Whatsapp Integration.
+- Financial management.
+- Service management.
+- Sales details & analysis reports.
+- Multiple store management
+- Multiple currency management.
+- Multi company management.
+- Localisation
+- Multi language support
+- Integrated POS
+- Service management
+- Integrated timesheet and analysis
+- Sales report
+- Pricelist option.
+- Tracking of individual clothes.
+- Support barcode generation for each cloth.
+- Delivery boy / driver management.
+- POS cash register.
