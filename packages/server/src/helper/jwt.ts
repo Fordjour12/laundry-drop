@@ -41,6 +41,11 @@ const createRefreshToken = (
   return refreshSignToken(payload, "7d", usrId);
 };
 
+const verifyAccessToken = (token: string) => {
+  return jwt.verify(token, accessTokenSecret);
+};
+const verifyRefreshToken = (token: string) => {};
+
 export { createAccessToken, createRefreshToken };
 
 // const verify = (token: string) => {
