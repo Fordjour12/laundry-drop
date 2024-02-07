@@ -4,11 +4,11 @@ import { createAccessToken, createRefreshToken } from "../../helper/jwt";
 import prisma from "../../helper/prisma";
 
 const signUpCompanyController = async (
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction
 ) => {
-  const { name, email, password } = req.body;
+  const { name, email, password } = request.body;
 
   try {
     const findEmail = await prisma.company.findUnique({
@@ -21,7 +21,7 @@ const signUpCompanyController = async (
     const hashedPassword = await bcrypt.hash(password, bcryptSalt);
 
     if (!findEmail) {
-      const user = await prisma.company.create({
+      const company = await prisma.company.create({
         data: {
           name,
           email,
@@ -31,30 +31,38 @@ const signUpCompanyController = async (
 
       const accessToken = createAccessToken(
         {
-          id: user.id,
-          email: user.email,
-          company_name: user.name,
+          id: company.id,
+          email: company.email,
+          company_name: company.name,
         },
-        user.id
+        company.id
       );
 
       const refreshToken = createRefreshToken(
         {
-          id: user.id,
-          email: user.email,
-          company_name: user.name,
+          id: company.id,
+          email: company.email,
+          company_name: company.name,
         },
-        user.id
+        company.id
       );
 
-      res.status(201).json({
-        status: "success",
-        ...user,
-        accessToken,
-        refreshToken,
+      await prisma.cmpRefreshToken.create({
+        data: {
+          token: refreshToken,
+          companyId: company.id,
+        },
       });
+
+      response
+        .status(201)
+        .header("Authorization", "Bearer" + accessToken)
+        .json({
+          status: "success",
+          ...company,
+        });
     } else {
-      res.status(400).json({
+      response.status(400).json({
         status: "error",
         message: "Company already exist Login instead",
       });
