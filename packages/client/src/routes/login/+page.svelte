@@ -17,11 +17,17 @@
 		<form class="px-6" method="post">
 			<div class="pb-3">
 				<Label for="Company" class="text-white">Email</Label>
-				<Input name="name" id="name" type="text" placeholder="AcmeLnd@laundry.com" class="mt-2" />
+				<Input
+					name="email"
+					id="email"
+					type="email"
+					placeholder="AcmeLnd@laundry.com"
+					class="mt-2"
+				/>
 			</div>
 			<div class="pb-4">
 				<Label for="Company" class="text-white">Password</Label>
-				<Input name="name" id="name" type="text" placeholder="********" class="mt-2" />
+				<Input name="password" id="pasword" type="password" placeholder="********" class="mt-2" />
 			</div>
 
 			<small class="flex justify-end pb-2">
