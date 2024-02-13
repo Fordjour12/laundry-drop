@@ -1,18 +1,19 @@
 import { Router } from "express";
 import {
-  signInCompanyController,
-  signUpCompanyController,
+    signInCompanyController,
+    signUpCompanyController,
 } from "./laundry/auth.controller";
 import {
-  signInUserController,
-  signUpUserController,
+    signInUserController,
+    signUpUserController,
 } from "./user/auth.controller";
 
 const AuthRouter = Router();
 
 AuthRouter.get("/", (request, response) => {
-  response.send(`<h1>Hello world from Express! This is the AuthRouter  </h1>`);
+    response.send(`<h1>Hello world from Express! This is the AuthRouter  </h1>`);
 });
+
 
 // AuthRouter for companies
 AuthRouter.post("/company/signup", signUpCompanyController);
