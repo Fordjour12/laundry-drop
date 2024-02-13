@@ -1,18 +1,19 @@
 <script lang="ts">
 </script>
 
-<nav class="flex w-64 flex-col px-4 pb-6 pt-10">
-	<aside>
-		<a href="/dashboard">Laundry Services</a>
-		<ul>
+<nav>
+	<aside class="flex w-64 flex-col px-4 pb-6 pt-10">
+		<a
+			class="flex items-center gap-x-4 px-8 text-2xl font-medium focus:outline-none"
+			href="/dashboard">Lnd Services</a
+		>
+		<ul class="flex flex-1 flex-col gap-y-10 px-8 pt-14">
+			<!-- Delivery -->
 			<li>
-				<a href="" class="flex items-center">
+				<a href="/dashboard/delivery" class="flex items-center gap-3">
 					<svg viewBox="0 0 24 24" fill="none" class="w-8">
-						<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-							id="SVGRepo_tracerCarrier"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						></g>
+						<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+						<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
 						<g id="SVGRepo_iconCarrier">
 							<path
 								d="M2.27749 5.24694C2.38823 4.84781 2.80157 4.61402 3.2007 4.72476L4.9044 5.19744C5.82129 5.45183 6.5469 6.15866 6.80003 7.07489L8.95106 14.8609L9.10935 15.4075C9.74249 15.6438 10.2863 16.0866 10.6314 16.6747L10.9414 16.579L19.8115 14.2739C20.2124 14.1697 20.6219 14.4102 20.7261 14.8111C20.8303 15.212 20.5897 15.6214 20.1888 15.7256L11.3515 18.0223L11.0228 18.1238C11.0161 19.3947 10.1392 20.5555 8.81236 20.9003C7.22189 21.3136 5.58709 20.3982 5.16092 18.8556C4.73476 17.313 5.67861 15.7274 7.26908 15.3141C7.3479 15.2936 7.42682 15.2764 7.5057 15.2623L5.35419 7.47433C5.24592 7.08242 4.92897 6.76092 4.50338 6.64284L2.79968 6.17016C2.40054 6.05942 2.16675 5.64608 2.27749 5.24694Z"
@@ -31,7 +32,7 @@
 
 			<!-- orders -->
 			<li>
-				<a href="" class="flex items-center">
+				<a href="/dashboard/orders" class="flex items-center gap-3">
 					<svg viewBox="0 0 24 24" fill="none" class="w-8">
 						<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
 							id="SVGRepo_tracerCarrier"
@@ -68,10 +69,10 @@
 				</a>
 			</li>
 			<!-- <li>Pick up</li> -->
-			<!-- <li>Delivery</li> -->
+
 			<!-- <li>Subscriptions</li> -->
 			<li>
-				<a href="" class="flex items-center">
+				<a href="" class="flex items-center gap-3">
 					<svg viewBox="0 0 24 24" fill="none" class="w-8">
 						<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
 							id="SVGRepo_tracerCarrier"
@@ -94,6 +95,42 @@
 				</a>
 			</li>
 			<!-- <li>Settings</li> -->
+			<li>
+				<a href="/dashboard/profile" class="flex items-center gap-3">
+					<svg viewBox="0 0 24 24" fill="none" class="w-8">
+						<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+							id="SVGRepo_tracerCarrier"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						></g><g id="SVGRepo_iconCarrier">
+							<path
+								fill-rule="evenodd"
+								clip-rule="evenodd"
+								d="M1.81828 5.27239C2.22012 5.17193 2.62732 5.41625 2.72778 5.81809L3.10975 7.34596C3.71957 9.78523 5.64125 11.6764 8.0847 12.25H16.0002C18.0912 12.25 19.8512 13.8151 20.0956 15.8918L20.745 21.4124C20.7934 21.8237 20.4992 22.1965 20.0878 22.2449C19.6764 22.2933 19.3037 21.999 19.2553 21.5876L18.6058 16.0671C18.4504 14.7458 17.3306 13.75 16.0002 13.75H7.91785L7.83748 13.7321C4.80227 13.0576 2.40864 10.7262 1.65454 7.70976L1.27257 6.1819C1.17211 5.78005 1.41643 5.37285 1.81828 5.27239Z"
+								fill="#1C274C"
+							></path>
+							<path
+								opacity="0.5"
+								d="M8 13.75V18C8 19.8856 8 20.8284 8.58579 21.4142C9.17157 22 10.1144 22 12 22C13.8856 22 14.8284 22 15.4142 21.4142C16 20.8284 16 19.8856 16 18V13.75H8Z"
+								fill="#1C274C"
+							></path> <circle cx="12" cy="6" r="4" fill="#1C274C"></circle>
+						</g></svg
+					>
+					<p>Settings</p>
+				</a>
+			</li>
 		</ul>
+
+		<!-- <div class="sticky bottom-4 rounded-lg bg-gray-900 bg-top p-6">
+			<div class="text-white">
+				Refer a friend and get <span class="font-bold">$5</span>
+			</div>
+			<div class="mt-3 text-sm text-gray-400">The reward of transfer.</div>
+			<button
+				class="mt-4 w-full rounded-lg bg-gray-700 py-2 text-sm font-normal text-gray-400 hover:text-white"
+			>
+				Invite
+			</button>
+		</div> -->
 	</aside>
 </nav>
