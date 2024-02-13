@@ -1,6 +1,7 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export const load = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies }) => {
 	const sessionId = cookies.get('session_id');
 
 	if (sessionId) {
@@ -49,11 +50,5 @@ export const actions = {
 			const data = await response.json();
 			return fail(response.status, data);
 		}
-
-		// const resData = await response.json();
-
-		// if (response.ok) {
-		// 	return { success: true, data: resData };
-		// }
 	}
 } satisfies Actions;

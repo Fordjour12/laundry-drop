@@ -27,6 +27,13 @@ const refreshSignToken = (
   });
 };
 
+/**
+ * Creating an access token
+ * @param payload - data to be stored in the token
+ * @param usrId - user id
+ * @returns access token (type: string)
+ *
+ * */
 const createAccessToken = (
   payload: string | object | Buffer,
   usrId: number
@@ -34,6 +41,13 @@ const createAccessToken = (
   return accessSignToken(payload, "15m", usrId);
 };
 
+/**
+ * Creating a refresh token
+ * @param payload - data to be stored in the token
+ * @param usrId - user id
+ * @returns refresh token (type: string)
+ *
+ * */
 const createRefreshToken = (
   payload: string | object | Buffer,
   usrId: number
@@ -41,17 +55,40 @@ const createRefreshToken = (
   return refreshSignToken(payload, "7d", usrId);
 };
 
-const verifyAccessToken = (token: string) => {
-  return jwt.verify(token, accessTokenSecret);
+/**
+ * Check if refresh token has expired
+ * @param token - refresh token
+ * @returns boolean
+ *
+ * */
+function isRefreshTokenExpired(token: string): boolean {
+  try {
+    jwt.verify(token, refreshTokenSecret);
+    return false; // Token is valid, not expired
+  } catch (err) {
+    if (err instanceof jwt.TokenExpiredError) {
+      return true; // Token has expired
+    } else {
+      return false; // Token is invalid, but not because it's expired
+    }
+  }
+}
+
+function isAccessTokenExpired(token: string): boolean {
+  try {
+    jwt.verify(token, accessTokenSecret);
+    return false; // Token is valid, not expired
+  } catch (err) {
+    if (err instanceof jwt.TokenExpiredError) {
+      return true; // Token has expired
+    } else {
+      return false; // Token is invalid, but not because it's expired
+    }
+  }
+}
+
+export {
+  createAccessToken,
+  createRefreshToken,
+  isRefreshTokenExpired,
 };
-const verifyRefreshToken = (token: string) => {};
-
-export { createAccessToken, createRefreshToken };
-
-// const verify = (token: string) => {
-//   return jwt.verify(token, secret);
-// };
-
-// const decode = (token: string) => {
-//   return jwt.decode(token);
-// };

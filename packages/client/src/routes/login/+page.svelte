@@ -2,6 +2,10 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import type { PageData } from '../$types';
+
+	export let form: PageData;
+	$: console.log(form);
 </script>
 
 <div class="h-screen w-screen bg-[url('/bgImage.jpg')] bg-cover p-4">
@@ -14,7 +18,7 @@
 				Enter your details to sign in to your Laundry Service
 			</p>
 		</div>
-		<form class="px-6" method="post">
+		<form class="px-6" method="post" action="?/login">
 			<div class="pb-3">
 				<Label for="Company" class="text-white">Email</Label>
 				<Input
@@ -34,7 +38,7 @@
 				<a href="/reset" class="flex font-bold text-white">Forgot Password?</a>
 			</small>
 
-			<Button class="w-full font-bold">Login</Button>
+			<Button class="w-full font-bold" type="submit">Login</Button>
 		</form>
 	</div>
 </div>

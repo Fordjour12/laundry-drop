@@ -1,6 +1,10 @@
 import bcrypt from "bcryptjs";
 import { NextFunction, Request, Response } from "express";
-import { createAccessToken, createRefreshToken } from "../../helper/jwt";
+import {
+  createAccessToken,
+  createRefreshToken,
+  isRefreshTokenExpired,
+} from "../../helper/jwt";
 import prisma from "../../helper/prisma";
 
 const signUpCompanyController = async (
@@ -56,7 +60,7 @@ const signUpCompanyController = async (
 
       response
         .status(201)
-        .header("Authorization", "Bearer" + accessToken)
+        .header("Authorization", "Bearer " + accessToken)
         .json({
           status: "success",
           ...company,
@@ -73,23 +77,26 @@ const signUpCompanyController = async (
 };
 
 const signInCompanyController = async (
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction
 ) => {
-  const { email, password } = req.body;
+  const { email, password } = request.body;
 
   try {
     const companyData = await prisma.company.findUnique({
       where: {
         email,
       },
+      include: {
+        cmpRefreshToken: true,
+      },
     });
 
     if (!companyData) {
-      return res.status(400).json({
+      return response.status(401).json({
         status: "error",
-        message: "Email not found",
+        message: "Invalid email or password",
       });
     }
 
@@ -99,21 +106,70 @@ const signInCompanyController = async (
     );
 
     if (!isPasswordMatch) {
-      return res.status(400).json({
+      return response.status(401).json({
         status: "error",
-        message: "Wrong password",
+        message: "Invalid email or password",
       });
+    }
+
+    // TODO: change to isRefreshTokenNotExpired (true) instead of current
+    const val = isRefreshTokenExpired(companyData?.cmpRefreshToken[0].token);
+
+    if (val === false) {
+      const accessToken = createAccessToken(
+        {
+          id: companyData.id,
+          email: companyData.email,
+          company_name: companyData.name,
+        },
+        companyData.id
+      );
+      response
+        .status(200)
+        .header("Authorization", "Bearer " + accessToken)
+        .json({
+          status: "success",
+        });
     } else {
-      res.status(200).json({
-        status: "success",
-        ...companyData,
+      const accessToken = createAccessToken(
+        {
+          id: companyData.id,
+          email: companyData.email,
+          company_name: companyData.name,
+        },
+        companyData.id
+      );
+
+      const refreshToken = createRefreshToken(
+        {
+          id: companyData.id,
+          email: companyData.email,
+          company_name: companyData.name,
+        },
+        companyData.id
+      );
+
+      const updatedCmpToken = await prisma.cmpRefreshToken.updateMany({
+        where: {
+          companyId: companyData.id,
+        },
+        data: {
+          token: refreshToken,
+        },
       });
+
+      response
+        .status(200)
+        .header("Authorization", "Bearer " + accessToken)
+        .json({
+          status: "success",
+          ...companyData.cmpRefreshToken[0],
+        });
     }
-  } catch (error) {
-    if (error) {
-      console.error(error);
-      next(error);
-    }
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
+
 export { signInCompanyController, signUpCompanyController };
