@@ -4,5 +4,7 @@
 
 <main>
 	<h1>Welcome to the dashboard</h1>
-	<Button type="submit" class="w-full">Log Out</Button>
+	<form action="?/logout" method="post">
+		<Button type="submit" class="w-full">Log Out</Button>
+	</form>
 </main>
