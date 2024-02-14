@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
 <main>
-	<h1>Welcome to the dashboard</h1>
-	<form action="?/logout" method="post">
+	{#if data}
+		<h1>Welcome, {data.company?.name}</h1>
+	{/if}
+	<form action="/logout" method="post">
 		<Button type="submit" class="w-full">Log Out</Button>
 	</form>
 </main>
