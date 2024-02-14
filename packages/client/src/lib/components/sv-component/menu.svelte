@@ -1,12 +1,14 @@
 <script lang="ts">
+	export let cmpName: string;
 </script>
 
 <nav>
 	<aside class="flex w-64 flex-col px-4 pb-6 pt-10">
 		<a
 			class="flex items-center gap-x-4 px-8 text-2xl font-medium focus:outline-none"
-			href="/dashboard">Lnd Services</a
+			href="/dashboard">{cmpName}</a
 		>
+
 		<ul class="flex flex-1 flex-col gap-y-10 px-8 pt-14">
 			<!-- Delivery -->
 			<li>
