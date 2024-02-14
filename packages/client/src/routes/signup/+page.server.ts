@@ -2,7 +2,7 @@ import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-	const sessionId = cookies.get('session_id');
+	const sessionId = cookies.get('sessionId');
 
 	if (sessionId) {
 		return redirect(301, '/dashboard');
@@ -41,8 +41,10 @@ export const actions = {
 		if (response.ok) {
 			const sessionId = response.headers.get('Authorization');
 			console.log(sessionId);
-			cookies.set('session_id', sessionId?.split('Bearer ')[1] ?? '', {
-				path: '/'
+			cookies.set('sessionId', sessionId?.split('Bearer ')[1] ?? '', {
+				path: '/',
+				httpOnly: true,
+				sameSite: 'lax'
 			});
 
 			throw redirect(301, '/dashboard');
