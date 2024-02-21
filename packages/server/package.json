@@ -14,7 +14,8 @@
     "prebuild": "rimraf ./dist && tsc",
     "prestart": "pnpm prebuild",
     "start": "pnpm prestart && node ./dist/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "migrate": "pnpx prisma migrate dev"
   },
   "keywords": [],
   "license": "MIT",
