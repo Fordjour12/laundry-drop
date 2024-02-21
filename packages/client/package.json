@@ -43,8 +43,11 @@
 	"dependencies": {
 		"bits-ui": "^0.15.1",
 		"clsx": "^2.1.0",
+		"formsnap": "^0.5.0",
 		"radix-icons-svelte": "^1.2.1",
+		"sveltekit-superforms": "^2.4.0",
 		"tailwind-merge": "^2.2.1",
-		"tailwind-variants": "^0.1.20"
+		"tailwind-variants": "^0.1.20",
+		"zod": "^3.22.4"
 	}
 }

@@ -1,0 +1,14 @@
+Date 2024-02-19 14.23pm
+
+Todo:
+    signup & login page:
+        ☐ either disable the signup button or show a loading spinner when the user clicks the signup button
+    
+    location:
+        ☐ navigate to the location page when the user signs up. we will use the location page to get the user's location.
+        ☐ show the user's location on the location map when the user has given permission to access their location.
+        ☐ when user denies access to their location, show a message to the user that they need to give permission to access their location. Along with the reason why we need their location.
+    
+    settings:
+        profile:
+            ☐ allow the company to add a logo to their profile and also update their profile details.
