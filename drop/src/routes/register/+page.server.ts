@@ -1,7 +1,7 @@
 import prisma from '$lib/db';
 import { hashPassword } from '$lib/helpers/bcrypt.helper';
-import { generateRefreshToken } from '$lib/helpers/tokens.helper';
-import { fail } from '@sveltejs/kit';
+import { generateAccessToken, generateRefreshToken } from '$lib/helpers/tokens.helper';
+import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
@@ -43,9 +43,7 @@ export const actions: Actions = {
 			name: name
 		});
 
-		console.log('rf tk >>:', companyRefreshToken);
-
-		await prisma.company.create({
+		const registeredCompany = await prisma.company.create({
 			data: {
 				email: email,
 				password: passHash,
@@ -54,6 +52,7 @@ export const actions: Actions = {
 					create: {
 						token: companyRefreshToken
 					}
+					// TODO: will have to look more into this
 					// createMany: {
 					// 	// token: companyRefreshToken
 					// 	data: {
@@ -64,9 +63,27 @@ export const actions: Actions = {
 			}
 		});
 
-		return {
-			form
-			// registerCompany
-		};
+		const accessToken = await generateAccessToken({
+			email: registeredCompany.email,
+			name: registeredCompany.name,
+			id: registeredCompany.id
+		});
+
+		event.cookies.set('AxxTk', accessToken, {
+			path: '/',
+			maxAge: 60 * 15,
+			sameSite: 'lax',
+			httpOnly: true
+			// secure: true // for production
+		});
+
+		redirect(303, '/login');
+
+		/**
+		 *  unreachable code
+		 * */
+		// return {
+		// 	form:
+		// };
 	}
 };
