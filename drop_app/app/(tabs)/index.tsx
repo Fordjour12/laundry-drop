@@ -1,23 +1,10 @@
-import { useEffect, useState } from "react";
-import { ScrollView, Text, TextInput } from "react-native";
+import { Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function TabOneScreen() {
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    fetch("http://192.168.89.242:5173/api/user")
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.error(error));
-  }, []);
-
+export default function Index() {
   return (
-    <ScrollView>
-      {/* <Text className="text-red-700">Hello From Tailwindcss</Textb> */}
-      <Text className="text-red-500">{JSON.stringify(data)}</Text>
-      <Text>{data}</Text>
-
-      <TextInput keyboardType="default" />
-    </ScrollView>
+    <SafeAreaView>
+      <Text>Hello form Index</Text>
+    </SafeAreaView>
   );
 }
