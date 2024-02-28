@@ -1,7 +1,9 @@
+import { AuthContextProvider } from "@/context/auth/AuthContext";
 import "@/global.css";
+import { useAuth } from "@/hooks/auth.hooks";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
@@ -31,9 +33,14 @@ export default function RootLayout() {
     if (error) throw error;
   }, [error]);
 
+  const { authState } = useAuth();
+
   useEffect(() => {
-    if (loaded) {
+    if (loaded && authState?.isAuthenticated === true) {
       SplashScreen.hideAsync();
+      router.replace("/(tabs)/");
+    } else {
+      router.push("/login");
     }
   }, [loaded]);
 
@@ -41,18 +48,22 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthContextProvider>
+      <RootLayoutNav />
+    </AuthContextProvider>
+  );
 }
 
 function RootLayoutNav() {
-  // const colorScheme = useColorScheme();
+  //   const colorScheme = useColorScheme();
 
   return (
+    // <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <Stack.Screen name="login" options={{ presentation: "modal" }} />
     </Stack>
-    // <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
     // </ThemeProvider>
   );
 }
