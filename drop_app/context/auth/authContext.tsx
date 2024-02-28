@@ -1,15 +1,19 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-type AuthContextProps = {
+type AuthContextType = {
   authState?: { token: string | null; isAuthenticated: boolean | null };
   onRegister?: (email: string, password: string) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
 };
 
-const AuthContext = createContext<AuthContextProps>({});
+const AuthContext = createContext<AuthContextType>({});
+
+const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 const AuthContextProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState<{
@@ -20,36 +24,36 @@ const AuthContextProvider = ({ children }: any) => {
     isAuthenticated: null,
   });
 
-  useEffect(() => {
-    const loadToken = async () => {
-      const isToken = await SecureStore.getItemAsync(tokenKey);
-      console.info("stored Tk:", isToken);
+  const JWT_KEY = "token";
+  const API_KEY = String(process.env.EXPO_PUBLIC_API_ENDPOINT);
 
-      if (isToken) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${isToken}`;
+  useEffect(() => {
+    const tokenLoaded = async () => {
+      const isTokenAvailable = await SecureStore.getItemAsync(JWT_KEY);
+
+      if (isTokenAvailable) {
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${isTokenAvailable}`;
 
         setAuthState({
           isAuthenticated: true,
-          token: isToken,
+          token: isTokenAvailable,
+        });
+      } else {
+        setAuthState({
+          isAuthenticated: false,
+          token: null,
         });
       }
     };
 
-    loadToken();
+    tokenLoaded();
   }, []);
 
-  const api_uri = String(process.env.EXPO_PUBLIC_API_ENDPOINT);
-  const tokenKey = String(process.env.EXPO_PUBLIC_TOKEN_KEY);
-
-  /**
-   * Register user flow for sign up a new user
-   * @params email: string
-   * @params password: string
-   *
-   * */
   const register = async (email: string, password: string) => {
     try {
-      return await axios.post(api_uri, { email, password });
+      return await axios.post(API_KEY, { email, password });
     } catch (error) {
       // return { error: true, message: (error as any).response.data.message };
       console.error(error);
@@ -58,10 +62,8 @@ const AuthContextProvider = ({ children }: any) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const result = await axios.post(api_uri, { email, password });
-
+      const result = await axios.post(API_KEY, { email, password });
       console.info("response:", result);
-
       setAuthState({
         isAuthenticated: true,
         token: result.data.token,
@@ -71,7 +73,7 @@ const AuthContextProvider = ({ children }: any) => {
         "Authorization"
       ] = `Bearer ${result.data.token}`;
 
-      await SecureStore.setItemAsync(tokenKey, result.data.token);
+      await SecureStore.setItemAsync(JWT_KEY, result.data.token);
 
       return result;
     } catch (error) {
@@ -81,7 +83,7 @@ const AuthContextProvider = ({ children }: any) => {
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync(tokenKey);
+    await SecureStore.deleteItemAsync(JWT_KEY);
     axios.defaults.headers.common["Authorization"] = "";
 
     setAuthState({
@@ -97,9 +99,7 @@ const AuthContextProvider = ({ children }: any) => {
     authState,
   };
 
-  return (
-    <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export { AuthContext, AuthContextProvider };
+export { AuthContext, AuthContextProvider, useAuth };

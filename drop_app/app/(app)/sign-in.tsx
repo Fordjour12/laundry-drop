@@ -3,7 +3,7 @@ import Label from "@/components/ui/Label";
 import React, { useEffect, useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
-export default function ModalScreen() {
+export default function SignIn() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
