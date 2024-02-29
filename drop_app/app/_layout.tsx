@@ -1,12 +1,12 @@
-import { AuthContextProvider } from "@/context/auth/authContext";
+import { SessionProvider } from "@/context/auth/ctx";
 import "@/global.css";
 import { Slot } from "expo-router";
 import React from "react";
 
 export default function Root() {
   return (
-    <AuthContextProvider>
+    <SessionProvider>
       <Slot screenOptions={{ headerShown: false }} />
-    </AuthContextProvider>
+    </SessionProvider>
   );
 }

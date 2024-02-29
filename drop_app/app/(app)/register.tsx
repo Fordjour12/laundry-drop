@@ -1,11 +1,10 @@
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
-import { useSession } from "@/context/auth/ctx";
-import { router } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 export default function SignIn() {
+  const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
@@ -17,13 +16,27 @@ export default function SignIn() {
     setPassword(text);
   };
 
-  const { signIn } = useSession();
+  const handleUsernameChange = (text: string) => {
+    setUsername(text);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text className="text-3xl">Login</Text>
       </View>
+
+      <View className="m-3">
+        <Label className="text-black">Username</Label>
+        <Input
+          keyboardType="default"
+          placeholder="username"
+          onChangeText={handleUsernameChange}
+          autoComplete="name"
+          value={username}
+        />
+      </View>
+
       <View className="m-3">
         <Label className="text-black">Email</Label>
         <Input
@@ -47,13 +60,7 @@ export default function SignIn() {
         />
       </View>
 
-      <Pressable
-        className="bg-teal-600 py-4 mx-4 rounded-lg"
-        onPress={() => {
-          signIn();
-          router.replace("/(app)/(tabs)/");
-        }}
-      >
+      <Pressable className="bg-teal-600 py-4 mx-4 rounded-lg">
         <Text className="text-white text-center font-bold text-lg">Login</Text>
       </Pressable>
     </SafeAreaView>
