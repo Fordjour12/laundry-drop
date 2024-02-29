@@ -1,0 +1,8 @@
+.env
+.gitingore
+README.md
+.dockerignore
+dockerfile.dev
+dockerfile.test
+docker-compose.yml
+node_modules/
