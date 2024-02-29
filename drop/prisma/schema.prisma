@@ -13,7 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model company {
   id              Int               @id @default(autoincrement())
   name            String
@@ -28,14 +27,14 @@ model company {
 }
 
 model cmpRefreshToken {
-  id        String   @id @default(cuid()) 
+  id        String   @id @default(cuid())
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   company   company  @relation(fields: [companyId], references: [id])
   companyId Int
 
-@@map("cmp_refresh_tokens")
+  @@map("cmp_refresh_tokens")
 }
 
 model userRefreshToken {
@@ -57,6 +56,7 @@ model user {
   currentLocation  GeoJson?           @relation(fields: [geoJsonId], references: [id])
   geoJsonId        Int?
   userRefreshToken userRefreshToken[]
+  Order            Order[]
 }
 
 model GeoJson {
@@ -77,4 +77,15 @@ model location {
   companyId Int?
 
   @@map("cmp_locations")
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  items     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      user     @relation(fields: [userId], references: [id])
+
+  @@map("orders")
 }
