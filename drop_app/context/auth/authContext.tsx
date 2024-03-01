@@ -4,7 +4,11 @@ import { createContext, useContext, useState } from "react";
 
 type AuthContextType = {
   authState?: { token: string | null; isAuthenticated: boolean | null };
-  onRegister?: (email: string, password: string) => Promise<any>;
+  onRegister?: (
+    email: string,
+    password: string,
+    username: string
+  ) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
 };
@@ -51,9 +55,28 @@ const AuthContextProvider = ({ children }: any) => {
   //   tokenLoaded();
   // }, []);
 
-  const register = async (email: string, password: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    username: string
+  ) => {
     try {
-      return await axios.post(API_KEY, { email, password });
+      console.log("AuthContext", { email, password, username });
+      const response = await axios.post(
+        "http://192.168.138.242:5173/api/v1/user/register",
+        {
+          email,
+          password,
+          username,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data);
     } catch (error) {
       // return { error: true, message: (error as any).response.data.message };
       console.error(error);

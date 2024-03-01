@@ -1,6 +1,6 @@
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
-import axios from "axios";
+import { useAuth } from "@/context/auth/authContext";
 import { Link } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -9,6 +9,7 @@ export default function SignIn() {
   const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -26,13 +27,37 @@ export default function SignIn() {
     email: string;
     password: string;
     username: string;
-  }
+  };
 
-  const handleRegisterTest = ({ email, password, username }:RegisterProps) => { 
-    axios.post('http://localhost:5173', {})
-  }
+  // const handleRegisterTest = async ({
+  //   email,
+  //   password,
+  //   username,
+  // }: RegisterProps) => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.post(
+  //       "http://192.168.138.242:5173/api/v1/user/register",
+  //       {
+  //         email,
+  //         password,
+  //         username,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
 
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
+  const { onRegister } = useAuth();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,8 +99,15 @@ export default function SignIn() {
         />
       </View>
 
-      <Pressable className="bg-teal-600 py-4 mx-4 rounded-lg">
-        <Text className="text-white text-center font-bold text-lg">Login</Text>
+      <Pressable
+        className="bg-teal-600 py-4 mx-4 rounded-lg"
+        onPress={() =>
+          onRegister!(String(email), String(password), String(username))
+        }
+      >
+        <Text className="text-white text-center font-bold text-lg">
+          Create New Account
+        </Text>
       </Pressable>
 
       <View className="flex-row items-center justify-center pt-6">
