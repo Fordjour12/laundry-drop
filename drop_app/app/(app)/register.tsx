@@ -1,5 +1,7 @@
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
+import axios from "axios";
+import { Link } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
@@ -20,10 +22,22 @@ export default function SignIn() {
     setUsername(text);
   };
 
+  type RegisterProps = {
+    email: string;
+    password: string;
+    username: string;
+  }
+
+  const handleRegisterTest = ({ email, password, username }:RegisterProps) => { 
+    axios.post('http://localhost:5173', {})
+  }
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text className="text-3xl">Login</Text>
+        <Text className="text-3xl">Register</Text>
       </View>
 
       <View className="m-3">
@@ -63,6 +77,17 @@ export default function SignIn() {
       <Pressable className="bg-teal-600 py-4 mx-4 rounded-lg">
         <Text className="text-white text-center font-bold text-lg">Login</Text>
       </Pressable>
+
+      <View className="flex-row items-center justify-center pt-6">
+        <Text>Have an account? </Text>
+        <Link href="/sign-in" asChild>
+          <Pressable>
+            <Text className="text-teal-700 font-bold underline">
+              Access Account Here
+            </Text>
+          </Pressable>
+        </Link>
+      </View>
     </SafeAreaView>
   );
 }
