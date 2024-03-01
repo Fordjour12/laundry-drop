@@ -1,7 +1,7 @@
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
 import { useSession } from "@/context/auth/ctx";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
@@ -22,21 +22,22 @@ export default function SignIn() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text className="text-3xl">Login</Text>
+        <Text className="text-4xl font-black text-teal-800">Login</Text>
       </View>
       <View className="m-3">
-        <Label className="text-black">Email</Label>
+        <Label className="text-black font-semibold">Email</Label>
         <Input
           keyboardType="email-address"
-          placeholder="email"
+          placeholder="daniel08hoffson@email.com"
           onChangeText={handleEmailChange}
           autoComplete="email"
           value={email}
+          className=" border-teal-800"
         />
       </View>
 
       <View className="m-3">
-        <Label className="text-black">Password</Label>
+        <Label className="text-black font-semibold">Password</Label>
         <Input
           keyboardType="visible-password"
           secureTextEntry={true}
@@ -44,6 +45,7 @@ export default function SignIn() {
           onChangeText={handlePasswordChange}
           value={password}
           autoComplete="password"
+          className="border-teal-800"
         />
       </View>
 
@@ -56,6 +58,15 @@ export default function SignIn() {
       >
         <Text className="text-white text-center font-bold text-lg">Login</Text>
       </Pressable>
+
+      <View className="flex-row items-center justify-center pt-6">
+        <Text>Don't have an account? </Text>
+        <Link href="/register" asChild>
+          <Pressable>
+            <Text className="text-teal-700 font-bold">Create New Account</Text>
+          </Pressable>
+        </Link>
+      </View>
     </SafeAreaView>
   );
 }
