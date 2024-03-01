@@ -13,8 +13,22 @@ export const unstable_settings = {
 export default function AppLayout() {
   return (
     <Stack>
-      <Stack.Screen name="sign-in" options={{ presentation: "modal" }} />
-      <Stack.Screen name="register" options={{ presentation: "modal" }} />
+      <Stack.Screen
+        name="sign-in"
+        options={{
+          presentation: "modal",
+          headerTitle: "Sign In",
+          headerTitleStyle: { color: "teal", fontWeight: "900" },
+        }}
+      />
+      <Stack.Screen
+        name="register"
+        options={{
+          presentation: "modal",
+          headerTitle: "Create New Account",
+          headerTitleStyle: { color: "teal", fontWeight: "900" },
+        }}
+      />
     </Stack>
   );
 }
