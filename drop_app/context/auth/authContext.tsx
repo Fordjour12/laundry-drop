@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type AuthContextType = {
   authState?: { token: string | null; isAuthenticated: boolean | null };
@@ -27,29 +27,29 @@ const AuthContextProvider = ({ children }: any) => {
   const JWT_KEY = "token";
   const API_KEY = String(process.env.EXPO_PUBLIC_API_ENDPOINT);
 
-  useEffect(() => {
-    const tokenLoaded = async () => {
-      const isTokenAvailable = await SecureStore.getItemAsync(JWT_KEY);
+  // useEffect(() => {
+  //   const tokenLoaded = async () => {
+  //     const isTokenAvailable = await SecureStore.getItemAsync(JWT_KEY);
 
-      if (isTokenAvailable) {
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${isTokenAvailable}`;
+  //     if (isTokenAvailable) {
+  //       axios.defaults.headers.common[
+  //         "Authorization"
+  //       ] = `Bearer ${isTokenAvailable}`;
 
-        setAuthState({
-          isAuthenticated: true,
-          token: isTokenAvailable,
-        });
-      } else {
-        setAuthState({
-          isAuthenticated: false,
-          token: null,
-        });
-      }
-    };
+  //       setAuthState({
+  //         isAuthenticated: true,
+  //         token: isTokenAvailable,
+  //       });
+  //     } else {
+  //       setAuthState({
+  //         isAuthenticated: false,
+  //         token: null,
+  //       });
+  //     }
+  //   };
 
-    tokenLoaded();
-  }, []);
+  //   tokenLoaded();
+  // }, []);
 
   const register = async (email: string, password: string) => {
     try {

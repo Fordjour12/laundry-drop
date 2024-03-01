@@ -1,6 +1,5 @@
-import { useAuth } from "@/context/auth/authContext";
-import { Redirect, Stack } from "expo-router";
-import React from "react";
+import { Stack } from "expo-router";
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -12,11 +11,24 @@ export const unstable_settings = {
 };
 
 export default function AppLayout() {
-  const { authState } = useAuth();
-
-  if (authState?.isAuthenticated === false) {
-    return <Redirect href="/sign-in" />;
-  }
-
-  return <Stack />;
+  return (
+    <Stack>
+      <Stack.Screen
+        name="sign-in"
+        options={{
+          presentation: "modal",
+          headerTitle: "Sign In",
+          headerTitleStyle: { color: "teal", fontWeight: "900" },
+        }}
+      />
+      <Stack.Screen
+        name="register"
+        options={{
+          presentation: "modal",
+          headerTitle: "Create New Account",
+          headerTitleStyle: { color: "teal", fontWeight: "900" },
+        }}
+      />
+    </Stack>
+  );
 }
