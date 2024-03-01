@@ -1,10 +1,14 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type AuthContextType = {
   authState?: { token: string | null; isAuthenticated: boolean | null };
-  onRegister?: (email: string, password: string) => Promise<any>;
+  onRegister?: (
+    email: string,
+    password: string,
+    username: string
+  ) => Promise<any>;
   onLogin?: (email: string, password: string) => Promise<any>;
   onLogout?: () => Promise<any>;
 };
@@ -27,33 +31,52 @@ const AuthContextProvider = ({ children }: any) => {
   const JWT_KEY = "token";
   const API_KEY = String(process.env.EXPO_PUBLIC_API_ENDPOINT);
 
-  useEffect(() => {
-    const tokenLoaded = async () => {
-      const isTokenAvailable = await SecureStore.getItemAsync(JWT_KEY);
+  // useEffect(() => {
+  //   const tokenLoaded = async () => {
+  //     const isTokenAvailable = await SecureStore.getItemAsync(JWT_KEY);
 
-      if (isTokenAvailable) {
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${isTokenAvailable}`;
+  //     if (isTokenAvailable) {
+  //       axios.defaults.headers.common[
+  //         "Authorization"
+  //       ] = `Bearer ${isTokenAvailable}`;
 
-        setAuthState({
-          isAuthenticated: true,
-          token: isTokenAvailable,
-        });
-      } else {
-        setAuthState({
-          isAuthenticated: false,
-          token: null,
-        });
-      }
-    };
+  //       setAuthState({
+  //         isAuthenticated: true,
+  //         token: isTokenAvailable,
+  //       });
+  //     } else {
+  //       setAuthState({
+  //         isAuthenticated: false,
+  //         token: null,
+  //       });
+  //     }
+  //   };
 
-    tokenLoaded();
-  }, []);
+  //   tokenLoaded();
+  // }, []);
 
-  const register = async (email: string, password: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    username: string
+  ) => {
     try {
-      return await axios.post(API_KEY, { email, password });
+      console.log("AuthContext", { email, password, username });
+      const response = await axios.post(
+        "http://192.168.138.242:5173/api/v1/user/register",
+        {
+          email,
+          password,
+          username,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data);
     } catch (error) {
       // return { error: true, message: (error as any).response.data.message };
       console.error(error);
