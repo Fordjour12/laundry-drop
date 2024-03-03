@@ -1,7 +1,6 @@
 import Input from "@/components/ui/Input";
 import Label from "@/components/ui/Label";
-import { useSession } from "@/context/auth/ctx";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
@@ -16,8 +15,6 @@ export default function SignIn() {
   const handlePasswordChange = (text: string) => {
     setPassword(text);
   };
-
-  const { signIn } = useSession();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,7 +36,7 @@ export default function SignIn() {
       <View className="m-3">
         <Label className="text-black font-semibold">Password</Label>
         <Input
-          keyboardType="visible-password"
+          keyboardType="default"
           secureTextEntry={true}
           placeholder="password"
           onChangeText={handlePasswordChange}
@@ -51,10 +48,7 @@ export default function SignIn() {
 
       <Pressable
         className="bg-teal-600 py-4 mx-4 rounded-lg"
-        onPress={() => {
-          signIn();
-          router.replace("/(app)/(tabs)/");
-        }}
+        onPress={() => {}}
       >
         <Text className="text-white text-center font-bold text-lg">Login</Text>
       </Pressable>

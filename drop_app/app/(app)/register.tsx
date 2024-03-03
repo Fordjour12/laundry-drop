@@ -29,34 +29,6 @@ export default function SignIn() {
     username: string;
   };
 
-  // const handleRegisterTest = async ({
-  //   email,
-  //   password,
-  //   username,
-  // }: RegisterProps) => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await axios.post(
-  //       "http://192.168.138.242:5173/api/v1/user/register",
-  //       {
-  //         email,
-  //         password,
-  //         username,
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     console.log(response.data);
-
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const { onRegister } = useAuth();
 
   return (
@@ -90,12 +62,13 @@ export default function SignIn() {
       <View className="m-3">
         <Label className="text-black">Password</Label>
         <Input
-          keyboardType="visible-password"
-          secureTextEntry={true}
+          // this is crazy it shouldn't happen every
+          keyboardType="default"
           placeholder="password"
           onChangeText={handlePasswordChange}
           value={password}
           autoComplete="password"
+          secureTextEntry={true}
         />
       </View>
 
@@ -130,3 +103,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+function getKey() {
+  throw new Error("Function not implemented.");
+}

@@ -1,8 +1,10 @@
-import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect } from "react";
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 export const unstable_settings = {
@@ -10,7 +12,31 @@ export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-export default function AppLayout() {
+SplashScreen.preventAutoHideAsync();
+
+export default function RootAppLayout() {
+  const [loaded, error] = useFonts({
+    SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return <AppLayout />;
+}
+
+export function AppLayout() {
   return (
     <Stack>
       <Stack.Screen
@@ -29,6 +55,8 @@ export default function AppLayout() {
           headerTitleStyle: { color: "teal", fontWeight: "900" },
         }}
       />
+
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 }
