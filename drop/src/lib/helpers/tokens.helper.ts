@@ -3,10 +3,12 @@ import jwt from 'jsonwebtoken';
 /**
  *  Generating an Access Token
  * 	@param payload - the payload to be signed
+ * 	@refreshToken - the refresh token
  * 	@returns a signed access token
  *
  * */
 export const generateAccessToken = async (payload: string | object | Buffer): Promise<string> => {
+	// Todo: user RefreshToken to Gen AccessToken
 	return jwt.sign(payload, String(process.env.ACCESS_TOKEN), {
 		expiresIn: '15m',
 		audience: '',
