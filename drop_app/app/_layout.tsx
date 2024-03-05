@@ -5,6 +5,9 @@ import React from "react";
 
 export default function Root() {
   return (
+  <AuthContextProvider>
      <Slot screenOptions={{ headerShown: false }} />
+  </AuthContextProvider>
   );
+
 }

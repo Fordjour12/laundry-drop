@@ -6,7 +6,7 @@ type AuthContextType = {
   onLogin: (email: string, password: string) => Promise<any>;
   onLogout: () => Promise<any>;
   onRegister: (email: string, password: string) => Promise<any>;
-  session: string | null;
+  session?: string | null;
   isLoading: boolean;
 };
 
@@ -49,7 +49,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     onLogin: login,
     onLogout: logout,
     session,
-    isLoading: false,
+    isLoading
   };
 
   return (
