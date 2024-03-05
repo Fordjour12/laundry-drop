@@ -7,7 +7,7 @@ export type InputProps = TextInputProps & {
 
 export default function Input(props: InputProps) {
   const defaultStyle =
-    "bg-transparent rounded-lg py-4 px-4 border-2 border-gray-500 text-black w-full placeholder:text-black";
+    "bg-transparent rounded-xl py-4 px-4 border-2 border-gray-500 text-black w-full placeholder:text-black";
   const { style, className, ...otherProps } = props;
   return (
     <TextInput
