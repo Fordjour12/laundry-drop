@@ -1,5 +1,6 @@
 import prisma from '$lib/db';
 import { hashPassword } from '$lib/helpers/bcrypt.helper';
+import { Session } from '$lib/helpers/session.helper';
 import { generateAccessToken, generateRefreshToken } from '$lib/helpers/tokens.helper';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
@@ -7,7 +8,16 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
 import { registerFormSchema } from './schema';
 
+
+
 export const load: PageServerLoad = async () => {
+	// validate if session has not expired
+	// const sessionId = cookies.get(Session)
+
+	// if (sessionId) {
+	// 	return redirect(301, "/dashboard")
+	// }
+
 	return {
 		form: await superValidate(zod(registerFormSchema))
 	};
@@ -34,7 +44,12 @@ export const actions: Actions = {
 		});
 
 		if (registerCompany) {
-			return message(form, 'Email already exists');
+			return message(form,
+				'Email already exists',
+				{
+					status: 400
+				}
+			);
 		}
 		const passHash = await hashPassword(password);
 
@@ -69,7 +84,7 @@ export const actions: Actions = {
 			id: registeredCompany.id
 		});
 
-		event.cookies.set('AxxTk', accessToken, {
+		event.cookies.set(Session, accessToken, {
 			path: '/',
 			maxAge: 60 * 15,
 			sameSite: 'lax',
@@ -77,13 +92,13 @@ export const actions: Actions = {
 			// secure: true // for production
 		});
 
-		redirect(303, '/login');
+		redirect(303, '/dashboard');
 
 		/**
 		 *  unreachable code
 		 * */
 		// return {
-		// 	form:
+		// form
 		// };
 	}
 };
