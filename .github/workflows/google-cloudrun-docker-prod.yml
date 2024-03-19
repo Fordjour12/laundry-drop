@@ -4,6 +4,7 @@ on:
   push:
     branches: [ "main" ]
 
+
 env:
   PROJECT_ID: laundry-drop-409012 
   GAR_LOCATION: us-central1 
@@ -23,7 +24,7 @@ jobs:
 
       - name: Google Auth
         id: auth
-        uses: 'google-github-actions/auth@v0'
+        uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
           workload_identity_provider: '${{ secrets.WIF_PROVIDER_PROD }}' 
