@@ -16,7 +16,6 @@
     "prisma:gen": "bunx prisma generate",
     "start": "bun index.js"
 
-
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
