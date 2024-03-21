@@ -13,7 +13,9 @@
     "format": "prettier --write .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "start": "bun ./index.js"
+    "start": "bun ./index.js",
+    "bun:stage": "export 8080 && bun ./dist/index.js",
+    "node:start": "export 8080 && node ./build"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",

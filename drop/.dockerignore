@@ -6,3 +6,4 @@ dockerfile.dev
 dockerfile.test
 docker-compose.yml
 node_modules/
+bun.lockb

@@ -1,35 +1,22 @@
 FROM oven/bun:latest as base
+WORKDIR /app
 
-WORKDIR /usr/src/app
-
-
-FROM base AS install
 RUN rm -rf node_modules
 RUN rm -rf build
-RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
-
-RUN cd /temp/dev && bun install --frozen-lockfile
-
-# prod
-RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
-
-
-FROM base AS prerelease
-COPY --from=install /temp/dev/node_modules node_modules
+COPY package.json .
 COPY . .
-
-ENV NODE_ENV=production
-
+RUN bun install
+RUN bun run prisma:gen
 RUN bun run build
 
-FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/build .
-COPY --from=prerelease /usr/src/app/package.json .
+FROM base as stagging
+WORKDIR /dist
+
+COPY --from=base  /app/node_modules node_modules
+COPY --from=base /app/package.json .
+COPY --from=base /app/prisma prisma
+COPY --from=base /app/build .
 
 USER bun
-EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "start" ]
+EXPOSE 3000
+ENTRYPOINT [ "bun","run","start" ]
