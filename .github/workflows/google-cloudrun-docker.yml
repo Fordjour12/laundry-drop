@@ -53,6 +53,7 @@ env:
   GAR_LOCATION: us-central1 
   SERVICE: laundry-drop
   REGION: us-central1 
+  REPOSITORY: laundry-drop
 
 jobs:
   deploy:
@@ -112,7 +113,7 @@ jobs:
         run: |-
           cd drop
           docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" -f dockerfile.dev ./
-          docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
+          docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{env.REPOSITORY}}/${{ env.SERVICE }}:${{ github.sha }}"
 
       # END - Docker auth and build
 
