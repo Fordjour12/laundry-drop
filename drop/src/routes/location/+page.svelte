@@ -104,5 +104,6 @@
 </script>
 
 <button id="find-me">Show my location</button><br />
-2<p id="status"></p>
+2
+<p id="status"></p>
 <a id="map-link" target="_blank"></a>

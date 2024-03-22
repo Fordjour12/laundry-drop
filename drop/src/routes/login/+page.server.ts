@@ -25,57 +25,52 @@ export const actions: Actions = {
 
 		const { email, password } = form.data;
 
-
 		const company = await prisma.company.findUnique({
 			where: {
 				email: email
-			}, select: {
+			},
+			select: {
 				id: true,
 				name: true,
 				email: true,
-				password: true,
-
+				password: true
 			}
-		})
+		});
 
 		if (!company) {
-			return message(form,
-				"Email does not exist",
-				{
-					status: 400
-				}
-			)
+			return message(form, 'Email does not exist', {
+				status: 400
+			});
 		}
 
-		const validatePassword = await comparePassword(password, String(company?.password))
+		const validatePassword = await comparePassword(password, String(company?.password));
 		if (!validatePassword) {
-			return message(form, "Password does not exist",
-				{
-					status: 400
-				}
-			)
+			return message(form, 'Password does not exist', {
+				status: 400
+			});
 		}
-		console.log(validatePassword)
+		console.log(validatePassword);
 
-		const accessToken = await generateAccessToken({ id: company.id, name: company.name, email: company.email })
+		const accessToken = await generateAccessToken({
+			id: company.id,
+			name: company.name,
+			email: company.email
+		});
 
 		event.cookies.set(Session, accessToken, {
-			path: "/",
+			path: '/',
 			maxAge: 60 * 15,
 			sameSite: 'lax',
 			httpOnly: true
 			// secure: true // for production
-		})
+		});
 
+		console.log(accessToken, { ...company });
 
-
-		console.log(accessToken, { ...company })
-
-		redirect(303, "/dashboard")
+		redirect(303, '/dashboard');
 
 		// return {
 		// form
 		// };
 	}
 };
-

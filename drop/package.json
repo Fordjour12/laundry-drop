@@ -14,8 +14,9 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "prisma:gen": "bunx prisma generate",
+    "migrate": "bunx prisma migrate deploy",
+    "studio": "bunx prisma studio",
     "start": "bun index.js"
-
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
@@ -56,8 +57,10 @@
     "formsnap": "^0.5.0",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
+    "lucide-svelte": "^0.363.0",
     "mode-watcher": "^0.2.1",
     "paneforge": "^0.0.2",
+    "phosphor-svelte": "^1.4.2",
     "radix-icons-svelte": "^1.2.1",
     "svelte-sonner": "^0.3.18",
     "sveltekit-superforms": "^2.4.0",

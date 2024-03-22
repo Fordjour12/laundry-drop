@@ -1,4 +1,3 @@
-<div>
-	<p>Hello World</p>
-	<p>Welcome to the dashboard</p>
-</div>
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+	This is the content of the page
+</h1>
