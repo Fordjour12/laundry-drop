@@ -13,7 +13,7 @@
     "format": "prettier --write .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "prisma:gen": "bunx prisma generate",
+    "generate": "bunx prisma generate",
     "migrate": "bunx prisma migrate deploy",
     "studio": "bunx prisma studio",
     "start": "bun index.js"

@@ -6,7 +6,7 @@ RUN rm -rf build
 COPY package.json .
 COPY . .
 RUN bun install
-RUN bun run prisma:gen
+RUN bun run generate
 RUN bun run build
 
 FROM base as stagging
