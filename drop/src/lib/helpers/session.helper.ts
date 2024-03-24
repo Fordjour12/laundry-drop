@@ -1,1 +1,1 @@
-export const Session = "session_id"
+export const Session = 'session_id';

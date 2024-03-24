@@ -34,8 +34,8 @@
 				>
 					{#if word === 'Create an account or Sign in'}
 						<span>
-							<Button href="register">Create an account</Button> or <Button href="/login"
-								>Sign in</Button
+							<Button href="register">Create an account</Button> or <Button
+								href="/login">Sign in</Button
 							>
 						</span>
 					{:else}
