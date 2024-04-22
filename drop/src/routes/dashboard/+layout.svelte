@@ -5,4 +5,6 @@
 	export let data: LayoutData;
 </script>
 
-<DaBoard defaultCollapsed={data.collapsed} defaultLayout={data.layout} navCollapsedSize={4} />
+<DaBoard defaultCollapsed={data.collapsed} defaultLayout={data.layout} navCollapsedSize={4}>
+	<slot />
+</DaBoard>

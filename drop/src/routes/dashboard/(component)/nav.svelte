@@ -42,7 +42,7 @@
 				</Tooltip.Root>
 			{:else}
 				<Button
-					href="#"
+					href={route.url}
 					variant={route.variant}
 					size="sm"
 					class={cn('justify-start', {
