@@ -57,6 +57,7 @@ const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 function RootLayoutNav() {
 	const colorScheme = useColorScheme();
 
+
 	return (
 		<ThemeProvider
 			value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
