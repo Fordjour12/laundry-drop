@@ -1,8 +1,12 @@
 # Laundry Drop
 
 - [ ] Expo Mobile  Application
-  - [ ] Register the user with Oauth and EmailPassword
-  - [ ] Login  the user with Oauth and EmailPassword
+  - [ ] Register
+    - [ ] Oauth
+    - [x]Email, Username, Password
+  - [ ] Login
+    - [ ] Oauth
+    - [x] Email,Password
   - [ ] Map View of laundries
   - [ ] Select a services
   - [ ] Add users items
