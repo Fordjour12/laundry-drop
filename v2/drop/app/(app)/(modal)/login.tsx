@@ -59,6 +59,7 @@ export default function Login() {
 
 			await setActive({ session: completeSignIn.createdSessionId });
 		} catch (err) {
+			console.error(err.errors[0].message);
 			console.error("Error:> " + err?.status || "");
 			console.error(
 				"Error:> " + err?.errors ? JSON.stringify(err.errors) : err,
@@ -79,9 +80,9 @@ export default function Login() {
 				style={styles.text}
 				onChangeText={(password) => setPassword(password)}
 			/>
-			
+
 			<View style={{ marginTop: 20, marginBottom: 10 }}>
-				<Button title="Login" />
+				<Button title="Login" onPress={onSignInPress} />
 			</View>
 
 			<View style={styles.separatorView}>
