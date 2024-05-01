@@ -3,6 +3,7 @@ import { ButtonWithIcon } from "@/components/ui/Button";
 import PinInput from "@/components/ui/PinInput";
 import Separator from "@/components/ui/separator";
 import { useSignUp } from "@clerk/clerk-expo";
+import { router } from "expo-router";
 import * as React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 // import { styles } from "../../components/Styles";
@@ -25,9 +26,13 @@ export default function Page() {
 				},
 			);
 
-			await setActive({
+			const res = await setActive({
 				session: completeSignUp.createdSessionId,
 			});
+			console.log(res);
+
+			router.replace("/profile");
+
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		} catch (err: any) {
 			console.error(err.errors[0].message);

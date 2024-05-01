@@ -49,7 +49,9 @@ export default function Register() {
 		if (!isLoaded) return;
 
 		try {
+			//TODO: user name is required
 			await signUp.create({
+				username: "test",
 				emailAddress,
 				password,
 			});
@@ -59,7 +61,7 @@ export default function Register() {
 			});
 			router.replace("/verify-code");
 		} catch (err) {
-			console.error(err);
+			console.error(err.errors[0].message);
 		}
 	}, [emailAddress, password, isLoaded, signUp]);
 
