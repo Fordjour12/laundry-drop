@@ -14,7 +14,6 @@ export default function Page() {
 		try {
 			await signOut();
 		} catch (err) {
-			// console.error(err.error[0].message);
 			console.error("Error:> " + err?.status || "");
 			console.error(
 				"Error:> " + err?.errors ? JSON.stringify(err.errors) : err,
