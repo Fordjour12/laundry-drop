@@ -2,6 +2,7 @@ import { Button, ButtonWithIcon } from "@/components/ui/Button";
 import TextInputWithLabel from "@/components/ui/TextInput";
 import Separator from "@/components/ui/separator";
 import { shark600 } from "@/constants/Colors";
+import { useSignIn } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -40,10 +41,45 @@ export default function Login() {
 	// 	}
 	// };
 
+	const { signIn, setActive, isLoaded } = useSignIn();
+
+	const [emailAddress, setEmailAddress] = React.useState("");
+	const [password, setPassword] = React.useState("");
+
+	const onSignInPress = React.useCallback(async () => {
+		if (!isLoaded) {
+			return;
+		}
+
+		try {
+			const completeSignIn = await signIn.create({
+				identifier: emailAddress,
+				password,
+			});
+
+			await setActive({ session: completeSignIn.createdSessionId });
+		} catch (err) {
+			console.error("Error:> " + err?.status || "");
+			console.error(
+				"Error:> " + err?.errors ? JSON.stringify(err.errors) : err,
+			);
+		}
+	}, [isLoaded, emailAddress, password, setActive, signIn]);
+
 	return (
 		<View style={styles.container}>
-			<TextInputWithLabel placeholder="email" />
-
+			<TextInputWithLabel
+				placeholder="email"
+				style={styles.text}
+				onChangeText={(email) => setEmailAddress(email)}
+			/>
+			<TextInputWithLabel
+				placeholder="password"
+				secureTextEntry
+				style={styles.text}
+				onChangeText={(password) => setPassword(password)}
+			/>
+			
 			<View style={{ marginTop: 20, marginBottom: 10 }}>
 				<Button title="Login" />
 			</View>
