@@ -2,44 +2,71 @@ import { Button, ButtonWithIcon } from "@/components/ui/Button";
 import TextInputWithLabel from "@/components/ui/TextInput";
 import Separator from "@/components/ui/separator";
 import { shark600 } from "@/constants/Colors";
-import { useSignIn } from "@clerk/clerk-expo";
-import { router } from "expo-router";
+import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
+import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-// enum OAuthStrategy {
-// 	Google = "oauth_google",
-// 	Facebook = "oauth_facebook",
-// 	Apple = "oauth_apple",
-// }
+enum OAuthStrategy {
+	Google = "oauth_google",
+	Facebook = "oauth_facebook",
+	// Apple = "oauth_apple",
+}
 
 export default function Login() {
-	// useWarmUpBrowser();
-
-	// const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" });
-	// const { startOAuthFlow: facebookAuth } = useOAuth({
-	// 	strategy: "oauth_facebook",
-	// });
+	useWarmUpBrowser();
+	const router = useRouter();
+	const { startOAuthFlow: googleAuth } = useOAuth({
+		strategy: "oauth_google",
+	});
+	const { startOAuthFlow: facebookAuth } = useOAuth({
+		strategy: "oauth_facebook",
+	});
 	// const { startOAuthFlow: appleAuth } = useOAuth({ strategy: "oauth_apple" });
 
-	// const onSelectedAuth = async (strategy: OAuthStrategy) => {
-	// 	const selectedAuth = {
-	// 		[OAuthStrategy.Google]: googleAuth,
-	// 		[OAuthStrategy.Facebook]: facebookAuth,
-	// 		[OAuthStrategy.Apple]: appleAuth,
-	// 	}[strategy];
+	const onSelectedAuth = async (strategy: OAuthStrategy) => {
+		const selectedAuth = {
+			[OAuthStrategy.Google]: googleAuth,
+			[OAuthStrategy.Facebook]: facebookAuth,
+			// [OAuthStrategy.Apple]: appleAuth,
+		}[strategy];
 
+		try {
+			const { createdSessionId, setActive } = await selectedAuth();
+			if (createdSessionId) {
+				// setActive?.({ session: createdSessionId });
+				// setActive({
+				// session:
+				// })
+				console.log("createdSessionId", createdSessionId);
+			} else {
+				signIn;
+			}
+		} catch (error) {
+			console.error(error.errors[0].message);
+			console.error("Error starting OAuth flow", error);
+		}
+	};
+
+	// const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+	// const router = useRouter();
+
+	// const onPress = React.useCallback(async () => {
 	// 	try {
-	// 		const { createdSessionId, setActive } = await selectedAuth();
-	// 		if (createdSessionId) {
-	// 			setActive?.({ session: createdSessionId });
+	// 		const { createdSessionId, signIn, signUp, setActive } =
+	// 			await startOAuthFlow();
 
-	// 			// TODO: set router here
+	// 		console.log("createdSessionId", createdSessionId);
+
+	// 		if (createdSessionId && setActive) {
+	// 			await setActive({ session: createdSessionId });
+	// 			router.back();
 	// 		}
-	// 	} catch (error) {
-	// 		console.error("Error starting OAuth flow", error);
+	// 	} catch (err) {
+	// 		console.error("OAuth error", err);
 	// 	}
-	// };
+	// }, [startOAuthFlow]);
 
 	const { signIn, setActive, isLoaded } = useSignIn();
 
@@ -96,7 +123,7 @@ export default function Login() {
 				<ButtonWithIcon
 					title="Continue with Google"
 					iconName="google"
-					// onPress={() => onSelectedAuth(OAuthStrategy.Google)}
+					onPress={() => onSelectedAuth(OAuthStrategy.Google)}
 				/>
 				<ButtonWithIcon
 					title="Continue with Facebook"
