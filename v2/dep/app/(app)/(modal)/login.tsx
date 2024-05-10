@@ -35,15 +35,11 @@ export default function Login() {
 		try {
 			const { createdSessionId, setActive } = await selectedAuth();
 			if (createdSessionId) {
-				// setActive?.({ session: createdSessionId });
-				// setActive({
-				// session:
-				// })
+				setActive?.({ session: createdSessionId });
 				console.log("createdSessionId", createdSessionId);
-			} else {
-				signIn;
 			}
-		} catch (error) {
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		} catch (error: any) {
 			console.error(error.errors[0].message);
 			console.error("Error starting OAuth flow", error);
 		}
@@ -85,11 +81,12 @@ export default function Login() {
 			});
 
 			await setActive({ session: completeSignIn.createdSessionId });
-		} catch (err) {
+		} catch (err: any) {
 			console.error(err.errors[0].message);
-			console.error("Error:> " + err?.status || "");
+			console.error(`Error:> ${err?.status}` || "");
 			console.error(
-				"Error:> " + err?.errors ? JSON.stringify(err.errors) : err,
+				// biome-ignore lint/correctness/noConstantCondition: <explanation>
+				`Error:> ${err?.errors}` ? JSON.stringify(err.errors) : err,
 			);
 		}
 	}, [isLoaded, emailAddress, password, setActive, signIn]);
