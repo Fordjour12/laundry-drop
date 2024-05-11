@@ -1,8 +1,10 @@
-<script>
-	import Menu from '$lib/components/menu.svelte';
+<script lang="ts">
+	import type { LayoutData } from './$types';
+	import DaBoard from './(component)/daboard.svelte';
+
+	export let data: LayoutData;
 </script>
 
-<main class="m-h-screen flex gap-4 w-full">
-	<Menu />
+<DaBoard defaultCollapsed={data.collapsed} defaultLayout={data.layout} navCollapsedSize={4}>
 	<slot />
-</main>
+</DaBoard>

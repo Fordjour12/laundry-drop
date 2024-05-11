@@ -8,8 +8,6 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
 import { registerFormSchema } from './schema';
 
-
-
 export const load: PageServerLoad = async () => {
 	// validate if session has not expired
 	// const sessionId = cookies.get(Session)
@@ -44,12 +42,9 @@ export const actions: Actions = {
 		});
 
 		if (registerCompany) {
-			return message(form,
-				'Email already exists',
-				{
-					status: 400
-				}
-			);
+			return message(form, 'Email already exists', {
+				status: 400
+			});
 		}
 		const passHash = await hashPassword(password);
 
