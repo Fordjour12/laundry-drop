@@ -50,3 +50,9 @@ Join our community of developers creating universal apps.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
 
 -[Expo Go Applications](https://expo.dev/go): View the apps been developed
+
+{/*<Stack>
+    <Stack.Screen name="(modal)" options={{ headerShown: false }} />
+    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    <Stack.Screen name="+not-found" />
+   </Stack>*/}

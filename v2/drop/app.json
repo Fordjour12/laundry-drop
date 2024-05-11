@@ -20,7 +20,13 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.thedevelophantom.drop"
+      "package": "com.thedevelophantom.drop",
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyBCPxPnf_FhBCTrO_Lny9CuANxitTKDgY4"
+        }
+      }
+      
     },
     "web": {
       "bundler": "metro",
@@ -29,7 +35,13 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
