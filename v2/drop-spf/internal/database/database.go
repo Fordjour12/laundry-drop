@@ -15,6 +15,7 @@ import (
 
 type Service interface {
 	Health() map[string]string
+	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
 }
 
 type AccountScanner interface {
