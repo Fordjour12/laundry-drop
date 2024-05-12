@@ -43,7 +43,6 @@ func InvalidJSON() APIError {
 
 type APIFunc func(w http.ResponseWriter, r *http.Request) error
 
-
 func MakeHTTPHandler(h APIFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := h(w, r); err != nil {
@@ -61,4 +60,22 @@ func MakeHTTPHandler(h APIFunc) http.HandlerFunc {
 		}
 
 	}
+}
+
+func (u UserAccountReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Username == "" {
+		errors["username"] = "Username is required"
+	}
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Password == "" {
+		errors["password"] = "Password is required"
+	}
+
+	return errors
 }
