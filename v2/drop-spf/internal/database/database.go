@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"drop-spf/internal/helper"
 	"fmt"
 	"log"
 	"os"
@@ -14,6 +15,10 @@ import (
 
 type Service interface {
 	Health() map[string]string
+}
+
+type AccountScanner interface {
+	Scan(*sql.Row) error
 }
 
 type service struct {
@@ -50,4 +55,53 @@ func (s *service) Health() map[string]string {
 	return map[string]string{
 		"message": "It's healthy",
 	}
+}
+
+// TODO: Refactor this func to be use in getting email by all the services
+func (s *service) GetAccountByEmail(table, email string, account AccountScanner) (AccountScanner, error) {
+
+	query := fmt.Sprintf("select * from %s where email = $1", email)
+
+	getData := s.db.QueryRow(query, email)
+	err := account.Scan(getData)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		log.Fatalf("error scanning account: %v", err)
+	}
+
+	return account, nil
+}
+
+func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
+	fmt.Printf("Create User Account +%v", ca)
+
+	return ca, nil
+}
+
+func (s *service) UpdateUserAccount() error {
+	return nil
+}
+func (s *service) GetUserAccount() error {
+	return nil
+}
+func (s *service) DeleteUserAccount() error {
+	return nil
+}
+
+func (s *service) CreateCompanyAccount() error {
+	return nil
+}
+func (s *service) UpdateCompanyAccount() error {
+	return nil
+}
+func (s *service) GetCompayAccount() error {
+	return nil
+}
+func (s *service) DeleteCompayAccount() error {
+	return nil
+}
+func (s *service) GetAllCompany() error {
+	return nil
 }
