@@ -62,6 +62,7 @@ func MakeHTTPHandler(h APIFunc) http.HandlerFunc {
 	}
 }
 
+// FIXME:Add a validation library to validate the request body
 func (u UserAccountReq) Validate() map[string]string {
 	errors := make(map[string]string)
 
