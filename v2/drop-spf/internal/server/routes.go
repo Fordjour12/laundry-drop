@@ -65,6 +65,16 @@ func (s *Server) CreateNewUserAccount(w http.ResponseWriter, r *http.Request) er
 		return helper.InvalidRequestData(errors)
 	}
 
-	return helper.WriteJSON(w, http.StatusOK, "Create New User Account")
+	userAccount, err := helper.NewUserAccountRequest(createUserReq.Username, createUserReq.Email, createUserReq.Password)
+	if err != nil {
+		return err
+	}
+
+	dataStore, err := s.db.CreateUserAccount(userAccount)
+	if err != nil {
+		return err
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, dataStore)
 
 }
