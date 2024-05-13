@@ -72,9 +72,9 @@ func (s *Server) CreateNewUserAccount(w http.ResponseWriter, r *http.Request) er
 
 	dataStore, err := s.db.CreateUserAccount(userAccount)
 	if err != nil {
-		return err
+		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
-	return helper.WriteJSON(w, http.StatusOK, dataStore)
+	return helper.WriteJSON(w, http.StatusCreated, dataStore)
 
 }
