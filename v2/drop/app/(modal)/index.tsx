@@ -1,4 +1,5 @@
 import { Button, ButtonOutline } from "@/components/ui/Button";
+import { AppColor } from "@/constants/Colors";
 import {
 	BottomSheetModal,
 	BottomSheetModalProvider,
@@ -14,7 +15,7 @@ export default function Index() {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
 	// variables
-	const snapPoints = useMemo(() => ["25%", "50%"], []);
+	const snapPoints = useMemo(() => ["25%", "50%","75%"], []);
 
 	// callbacks
 	const handlePresentModalPress = useCallback(() => {
@@ -48,7 +49,15 @@ export default function Index() {
 							onChange={handleSheetChanges}
 						>
 							<BottomSheetView style={styles.contentContainer}>
-								<Text>Awesome 🎉</Text>
+								<Text
+									style={{
+										color: AppColor[950],
+										fontSize: 50,
+										fontWeight: "900",
+									}}
+								>
+									Awesome 🎉
+								</Text>
 							</BottomSheetView>
 						</BottomSheetModal>
 					</View>
