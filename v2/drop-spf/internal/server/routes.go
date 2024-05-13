@@ -32,7 +32,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Get("/", s.HelloWorldHandler)
 	r.Get("/health", s.healthHandler)
 
-	r.Get("/api/v1/create-account", helper.MakeHTTPHandler(s.CreateNewUserAccount))
+	r.Post("/api/v1/create-account", helper.MakeHTTPHandler(s.CreateNewUserAccount))
 
 	return r
 }
