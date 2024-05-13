@@ -1,4 +1,4 @@
-import { shark900 } from "@/constants/Colors";
+import { AppColor } from "@/constants/Colors";
 import type React from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -7,11 +7,9 @@ type SeparatorProps = {
 	color?: string;
 };
 
-export default function Separator({ height = 1, color = shark900 }) {
+export default function Separator({ height = 1, color = AppColor[900] }) {
 	return (
-		<View
-			style={[styles.separator, { height, borderBottomColor: color }]}
-		/>
+		<View style={[styles.separator, { height, borderBottomColor: color }]} />
 	);
 }
 
