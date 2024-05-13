@@ -58,4 +58,6 @@ Join our community of developers creating universal apps.
 - [Washing Machine 3](https://www.svgrepo.com/svg/385037/washing-machine-washing-machine-washingmachine)
 - [Washing Machine 4](https://www.svgrepo.com/svg/478451/washing-machine-free-3)
 
-<https://www.waldo.com/blog/react-native-maps-tutorial-with-examples>
+- [react native maps](https://www.waldo.com/blog/react-native-maps-tutorial-with-examples)
+
+- [webview facebook auth](https://medium.com/swlh/expo-webview-facebook-authentication-with-firebase-2b864c031340)
