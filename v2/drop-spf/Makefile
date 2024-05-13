@@ -57,4 +57,10 @@ watch:
 	    fi; \
 	fi
 
+up:
+	GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" goose up
+
+status:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" goose status
+
 .PHONY: all build run test clean

@@ -51,8 +51,13 @@ Join our community of developers creating universal apps.
 
 -[Expo Go Applications](https://expo.dev/go): View the apps been developed
 
-{/*<Stack>
-    <Stack.Screen name="(modal)" options={{ headerShown: false }} />
-    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    <Stack.Screen name="+not-found" />
-   </Stack>*/}
+### Icon showing in the app
+
+- [Washing Machine 1](https://www.svgrepo.com/svg/526433/washing-machine-minimalistic)
+- [Washing Machine 2](https://www.svgrepo.com/svg/528804/washing-machine-minimalistic)
+- [Washing Machine 3](https://www.svgrepo.com/svg/385037/washing-machine-washing-machine-washingmachine)
+- [Washing Machine 4](https://www.svgrepo.com/svg/478451/washing-machine-free-3)
+
+- [react native maps](https://www.waldo.com/blog/react-native-maps-tutorial-with-examples)
+
+- [webview facebook auth](https://medium.com/swlh/expo-webview-facebook-authentication-with-firebase-2b864c031340)

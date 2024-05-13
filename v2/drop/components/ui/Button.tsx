@@ -45,6 +45,14 @@ export function ButtonWithIcon(props: ButtonWithIconProps) {
 	);
 }
 
+export function ButtonOutline(props: ButtonProps) {
+	return (
+		<TouchableOpacity style={[styles.btnOutline, props.style]} {...props}>
+			<Text style={styles.buttonOutlineText}>{props.title}</Text>
+		</TouchableOpacity>
+	);
+}
+
 const styles = StyleSheet.create({
 	button: {
 		backgroundColor: AppColor[800],

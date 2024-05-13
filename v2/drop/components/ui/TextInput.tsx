@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		fontSize: 16,
 		fontWeight: "bold",
+		color: AppColor[50],
 	},
 	input: {
 		borderWidth: 1,

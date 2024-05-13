@@ -30,3 +30,20 @@
 
 - [ ] **Dockerize Go Application**: Create a Dockerfile to package your Go application.
 - [ ] **Deployment Strategy**: Decide on a deployment strategy (e.g., Docker Swarm, Kubernetes, or a cloud platform like AWS, GCP, or Azure) and deploy your Dockerized application.
+
+
+
+
+
+
+
+-- create table employee (
+--   id serial primary key,
+--   name varchar(255) not null,
+--   email varchar(255) unique not null,
+--   password varchar(500) not null,
+--   role varchar(6) default '782312' check (role in ('782312', '478909')),
+--   company_id integer references lnd_cmp(id) on delete cascade,
+--   created_at timestamp with time zone default current_timestamp,
+--   updated_at timestamp with time zone default current_timestamp,
+-- )
