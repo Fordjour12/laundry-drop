@@ -69,14 +69,30 @@ func (s *service) GetAccountByEmail(table, email string, account AccountScanner)
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
-		log.Fatalf("error scanning account: %v", err)
 	}
 
 	return account, nil
 }
 
 func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
-	fmt.Printf("Create User Account +%v", ca)
+	query := `insert into user_account (username, email, password) values ($1, $2, $3) returning id, username, email, password`
+
+	err := s.db.QueryRow(query,
+		ca.Username,
+		ca.Email,
+		ca.Password,
+	).Scan(
+		&ca.Id,
+		&ca.Username,
+		&ca.Email,
+		&ca.Password)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
 
 	return ca, nil
 }
