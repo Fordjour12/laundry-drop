@@ -23,10 +23,10 @@ export default function Register() {
 
 	const handleInputChange =
 		(setter: React.Dispatch<React.SetStateAction<string>>) =>
-			(text: string) => {
-				setter(text);
-				// console.log(text);
-			};
+		(text: string) => {
+			setter(text);
+			// console.log(text);
+		};
 
 	const registerUserAccount = async ({
 		username,
@@ -82,9 +82,9 @@ export default function Register() {
 						onPress={() => registerUserAccount({ username, email, password })}
 					/>
 					<View style={styles.separatorView}>
-						<Separator height={2} />
+						<Separator height={3} color={AppColor[100]} />
 						<Text style={styles.text}>or</Text>
-						<Separator height={2} />
+						<Separator height={3} color={AppColor[100]} />
 					</View>
 
 					<View style={{ marginTop: 20, marginBottom: 10 }}>
@@ -127,6 +127,4 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginVertical: 20,
 	},
-
 });
-
