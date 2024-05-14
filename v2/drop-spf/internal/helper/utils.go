@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
+	"time"
+
+	jwt "github.com/golang-jwt/jwt/v5"
 )
 
 type APIError struct {
@@ -95,6 +99,29 @@ func (u LoginUserAccountReq) Validate() map[string]string {
 	return errors
 }
 
-func CreateJWTToken() {
+func (u DeleteUserAccountReq) Validate() map[string]string {
+	errors := make(map[string]string)
 
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	return errors
+}
+
+func CreateJWTToken(ac *UserAccount) (string, error) {
+
+	claims := &jwt.MapClaims{
+		"Audience":   "user",
+		"ExpiresAt":  time.Now().Add(time.Hour * 24).Unix(),
+		"Id":         ac.Id,
+		"Username":   ac.Username,
+		"AuthStatus": "authenticated",
+	}
+
+	secretJWT := os.Getenv("JWT_SECRET")
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString([]byte(secretJWT))
 }
