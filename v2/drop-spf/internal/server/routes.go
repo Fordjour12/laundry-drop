@@ -35,6 +35,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Post("/api/v1/create-account", helper.MakeHTTPHandler(s.CreateNewUserAccount))
 	r.Post("/api/v1/login-account", helper.MakeHTTPHandler(s.LoginUserAccount))
 
+	// FIXME: Add middleware to check if user is authenticated
+	// soft delete user account
+	r.Delete("/api/v1/delete-account", helper.MakeHTTPHandler(s.DeleteUserAccount))
 	return r
 }
 
@@ -105,6 +108,37 @@ func (s *Server) LoginUserAccount(w http.ResponseWriter, r *http.Request) error 
 		return helper.NewAPIError(http.StatusUnauthorized, err)
 	}
 
-	return helper.WriteJSON(w, http.StatusOK, user)
+	token, err := helper.CreateJWTToken(user)
+	if err != nil {
+		// return helper.NewAPIError(http.StatusInternalServerError, err)
+		return err
+	}
 
+	return helper.WriteJSON(w, http.StatusOK, map[string]any{"token": token, "user": user})
+
+}
+
+func (s *Server) DeleteUserAccount(w http.ResponseWriter, r *http.Request) error {
+
+	var deleteUserReq helper.DeleteUserAccountReq
+	if err := json.NewDecoder(r.Body).Decode(&deleteUserReq); err != nil {
+		return helper.InvalidJSON()
+	}
+
+	defer r.Body.Close()
+
+	if errors := deleteUserReq.Validate(); len(errors) > 0 {
+		return helper.InvalidRequestData(errors)
+	}
+
+	acc, err := helper.DeleteUserAccountRequest(deleteUserReq.Email)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	if err := s.db.DeleteUserAccount(acc.Email); err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, map[string]string{"message": "User account deleted successfully"})
 }
