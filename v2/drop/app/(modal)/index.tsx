@@ -1,4 +1,5 @@
 import { Button, ButtonOutline } from "@/components/ui/Button";
+import TextInputWithLabel from "@/components/ui/TextInput";
 import { AppColor } from "@/constants/Colors";
 import {
 	BottomSheetModal,
@@ -15,12 +16,17 @@ export default function Index() {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
 	// variables
-	const snapPoints = useMemo(() => ["25%", "50%","75%"], []);
+	const snapPoints = useMemo(() => ["25%", "50%"], []);
 
 	// callbacks
-	const handlePresentModalPress = useCallback(() => {
-		bottomSheetModalRef.current?.present();
-	}, []);
+	// const handlePresentModalPress = useCallback(() => {
+	// 	bottomSheetModalRef.current?.present();
+	// }, []);
+
+	const handlePresentModalPress = () => {
+		router.push("/(tabs)/");
+	};
+
 	const handleSheetChanges = useCallback((index: number) => {
 		console.log("handleSheetChanges", index);
 	}, []);
@@ -35,6 +41,12 @@ export default function Index() {
 						onPress={() => router.push("/(modal)/register")}
 					/>
 					<View style={{ marginVertical: 8 }} />
+					<Button
+						title="Login-test"
+						onPress={() => router.push("/(modal)/sign-in")}
+					/>
+					<View style={{ marginVertical: 8 }} />
+
 					<View>
 						<ButtonOutline
 							title="Login to your account"
@@ -47,17 +59,28 @@ export default function Index() {
 							index={1}
 							snapPoints={snapPoints}
 							onChange={handleSheetChanges}
+							backgroundStyle={{ backgroundColor: AppColor[950] }}
+							handleIndicatorStyle={{ backgroundColor: AppColor[100] }}
 						>
 							<BottomSheetView style={styles.contentContainer}>
 								<Text
 									style={{
-										color: AppColor[950],
+										color: AppColor[100],
 										fontSize: 50,
 										fontWeight: "900",
 									}}
 								>
 									Awesome 🎉
 								</Text>
+
+								<View style={{ marginHorizontal: 16 }}>
+									<TextInputWithLabel
+										label="email"
+										style={{ color: AppColor[100] }}
+									/>
+									<TextInputWithLabel label="password" />
+									<Button title="Login" />
+								</View>
 							</BottomSheetView>
 						</BottomSheetModal>
 					</View>
@@ -105,7 +128,17 @@ const styles = StyleSheet.create({
 		backgroundColor: "grey",
 	},
 	contentContainer: {
-		flex: 1,
-		alignItems: "center",
+		// flex: 1,
+		// alignItems: "center",
+		justifyContent: "center",
+	},
+	input: {
+		marginTop: 8,
+		marginBottom: 10,
+		borderRadius: 10,
+		fontSize: 16,
+		lineHeight: 20,
+		padding: 8,
+		backgroundColor: "rgba(151, 151, 151, 0.25)",
 	},
 });
