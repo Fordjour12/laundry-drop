@@ -16,6 +16,8 @@ import (
 type Service interface {
 	Health() map[string]string
 	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
+	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
+	DeleteUserAccount(email string) error
 }
 
 type AccountScanner interface {
@@ -58,27 +60,61 @@ func (s *service) Health() map[string]string {
 	}
 }
 
-// TODO: Refactor this func to be use in getting email by all the services
-func (s *service) GetAccountByEmail(table, email string, account AccountScanner) (AccountScanner, error) {
+// // TODO: Refactor this func to be use in getting email by all the services
+// func (s *service) GetAccountByEmail(table, email string, account AccountScanner) (AccountScanner, error) {
 
-	query := fmt.Sprintf("select * from %s where email = $1", email)
+// 	query := fmt.Sprintf("select * from %s where email = $1", email)
 
-	getData := s.db.QueryRow(query, email)
-	err := account.Scan(getData)
+// 	getData := s.db.QueryRow(query, email)
+// 	err := account.Scan(getData)
+// 	if err != nil {
+// 		if err == sql.ErrNoRows {
+// 			return nil, nil
+// 		}
+// 	}
+
+// 	return account, nil
+// }
+
+func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
+	query := `insert into user_account (username, email, password) values ($1, $2, $3) returning id, username, email, password`
+
+	err := s.db.QueryRow(query,
+		ca.Username,
+		ca.Email,
+		ca.Password,
+	).Scan(
+		&ca.Id,
+		&ca.Username,
+		&ca.Email,
+		&ca.Password)
+
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
-		log.Fatalf("error scanning account: %v", err)
+		return nil, err
 	}
 
-	return account, nil
+	return ca, nil
 }
 
-func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
-	fmt.Printf("Create User Account +%v", ca)
+func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, error) {
+	query := `select * from user_account where email = $1`
 
-	return ca, nil
+	var ua helper.UserAccount
+	if err := s.db.QueryRow(query, email).Scan(
+		&ua.Id,
+		&ua.Username,
+		&ua.Email,
+		&ua.Password,
+		&ua.Created_at,
+		&ua.Updated_at,
+	); err != nil {
+		return nil, err
+	}
+
+	return &ua, nil
 }
 
 func (s *service) UpdateUserAccount() error {
@@ -87,7 +123,13 @@ func (s *service) UpdateUserAccount() error {
 func (s *service) GetUserAccount() error {
 	return nil
 }
-func (s *service) DeleteUserAccount() error {
+func (s *service) DeleteUserAccount(email string) error {
+	query := `delete from user_account where email = $1`
+	_, err := s.db.Exec(query, email)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

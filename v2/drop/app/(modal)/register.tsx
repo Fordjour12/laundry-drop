@@ -1,6 +1,7 @@
 import { Button, ButtonWithIcon } from "@/components/ui/Button";
 import TextInputWithLabel from "@/components/ui/TextInput";
 import Separator from "@/components/ui/separator";
+import Spinner from "@/components/ui/spinner";
 import { AppColor } from "@/constants/Colors";
 import axios from "axios";
 import React from "react";
@@ -18,6 +19,7 @@ export default function Register() {
 	const [username, setUsername] = React.useState("");
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	const API_URI = process.env.EXPO_PUBLIC_API_URL as string;
 
@@ -33,19 +35,27 @@ export default function Register() {
 		email,
 		password,
 	}: RegisterProps) => {
-		await axios.post(
-			`${API_URI}create-account`,
-			{
-				username: username,
-				email: email,
-				password: password,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
+		setIsLoading(true);
+		try {
+			const res = await axios.post(
+				`${API_URI}create-account`,
+				{
+					username: username,
+					email: email,
+					password: password,
 				},
-			},
-		);
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				},
+			);
+			console.log(res.data);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -77,15 +87,23 @@ export default function Register() {
 						onChangeText={handleInputChange(setPassword)}
 						value={password}
 					/>
-					<Button
-						title="Sign Up"
-						onPress={() => registerUserAccount({ username, email, password })}
-					/>
+
+					{isLoading ? (
+						<Spinner />
+					) : (
+						<Button
+							title="Sign Up"
+							onPress={() => registerUserAccount({ username, email, password })}
+						/>
+					)}
+
 					<View style={styles.separatorView}>
 						<Separator height={3} color={AppColor[100]} />
 						<Text style={styles.text}>or</Text>
 						<Separator height={3} color={AppColor[100]} />
 					</View>
+
+					<Spinner />
 
 					<View style={{ marginTop: 20, marginBottom: 10 }}>
 						<ButtonWithIcon title="Continue with Google" iconName="google" />
