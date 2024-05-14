@@ -10,7 +10,7 @@ type UserAccount struct {
 	Id         int       `json:"id"`
 	Username   string    `json:"username"`
 	Email      string    `json:"email"`
-	Password   string    `json:"password"`
+	Password   string    `json:"-"`
 	Created_at time.Time `json:"created_at"`
 	Updated_at time.Time `json:"updated_at"`
 }
@@ -25,6 +25,11 @@ type LoginUserAccountReq struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+type DeleteUserAccountReq struct {
+	Email string `json:"email"`
+}
+
 type LaundryCompany struct {
 	Id         int       `json:"id"`
 	Name       string    `json:"name"`
@@ -66,5 +71,11 @@ func LoginUserAccountRequest(email, password string) (*UserAccount, error) {
 	return &UserAccount{
 		Email:    email,
 		Password: password,
+	}, nil
+}
+
+func DeleteUserAccountRequest(email string) (*UserAccount, error) {
+	return &UserAccount{
+		Email: email,
 	}, nil
 }
