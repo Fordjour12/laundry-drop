@@ -80,3 +80,21 @@ func (u UserAccountReq) Validate() map[string]string {
 
 	return errors
 }
+
+func (u LoginUserAccountReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Password == "" {
+		errors["password"] = "Password is required"
+	}
+
+	return errors
+}
+
+func CreateJWTToken() {
+
+}
