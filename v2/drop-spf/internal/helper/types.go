@@ -21,6 +21,10 @@ type UserAccountReq struct {
 	Password string `json:"password"`
 }
 
+type LoginUserAccountReq struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 type LaundryCompany struct {
 	Id         int       `json:"id"`
 	Name       string    `json:"name"`
@@ -41,6 +45,10 @@ type Employee struct {
 	Updated_at time.Time `json:"updated_at"`
 }
 
+func ValidateUserPassword(password, hash string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+}
+
 func NewUserAccountRequest(username, email, password string) (*UserAccount, error) {
 	passHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -51,5 +59,12 @@ func NewUserAccountRequest(username, email, password string) (*UserAccount, erro
 		Username: username,
 		Email:    email,
 		Password: string(passHash),
+	}, nil
+}
+
+func LoginUserAccountRequest(email, password string) (*UserAccount, error) {
+	return &UserAccount{
+		Email:    email,
+		Password: password,
 	}, nil
 }
