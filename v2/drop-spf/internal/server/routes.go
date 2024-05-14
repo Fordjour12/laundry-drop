@@ -79,7 +79,13 @@ func (s *Server) CreateNewUserAccount(w http.ResponseWriter, r *http.Request) er
 		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
-	return helper.WriteJSON(w, http.StatusCreated, dataStore)
+	token, err := helper.CreateJWTToken(dataStore)
+	if err != nil {
+		// return helper.NewAPIError(http.StatusInternalServerError, err)
+		return err
+	}
+
+	return helper.WriteJSON(w, http.StatusCreated, map[string]any{"token": token, "user": dataStore})
 
 }
 
