@@ -17,6 +17,7 @@ type Service interface {
 	Health() map[string]string
 	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
 	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
+	DeleteUserAccount(email string) error
 }
 
 type AccountScanner interface {
@@ -122,7 +123,13 @@ func (s *service) UpdateUserAccount() error {
 func (s *service) GetUserAccount() error {
 	return nil
 }
-func (s *service) DeleteUserAccount() error {
+func (s *service) DeleteUserAccount(email string) error {
+	query := `delete from user_account where email = $1`
+	_, err := s.db.Exec(query, email)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
