@@ -61,3 +61,5 @@ Join our community of developers creating universal apps.
 - [react native maps](https://www.waldo.com/blog/react-native-maps-tutorial-with-examples)
 
 - [webview facebook auth](https://medium.com/swlh/expo-webview-facebook-authentication-with-firebase-2b864c031340)
+
+- [gorhom/bottom-sheet](https://github.dev/gorhom/react-native-bottom-sheet/blob/master/example/app/src/screens/advanced/CustomBackgroundExample.tsx)
