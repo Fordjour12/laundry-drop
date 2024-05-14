@@ -57,3 +57,5 @@ make clean
 ```
 
 [comparing> db orms](https://blog.jetbrains.com/go/2023/04/27/comparing-db-packages/)
+
+[Golang validation](https://github.com/go-playground/validator)
