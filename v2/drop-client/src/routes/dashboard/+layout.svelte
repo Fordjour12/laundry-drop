@@ -26,7 +26,7 @@
 				<Tooltip.Trigger asChild let:builder>
 					<a
 						href="/dashboard"
-						class="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+						class="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
 						use:builder.action
 						{...builder}
 					>
@@ -125,7 +125,7 @@
 			<Tooltip.Root>
 				<Tooltip.Trigger asChild let:builder>
 					<a
-						href="##"
+						href="/dashboard/settings"
 						class="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
 						use:builder.action
 						{...builder}

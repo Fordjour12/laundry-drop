@@ -1,92 +1,32 @@
 import { Button, ButtonOutline } from "@/components/ui/Button";
-import TextInputWithLabel from "@/components/ui/TextInput";
-import { AppColor } from "@/constants/Colors";
-import {
-	BottomSheetModal,
-	BottomSheetModalProvider,
-	BottomSheetView,
-} from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import { useCallback, useMemo, useRef } from "react";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, View } from "react-native";
 
 export default function Index() {
 	const backgroundImage = require("../../assets/images/laundry.jpg");
 	// ref
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-	// variables
-	const snapPoints = useMemo(() => ["25%", "50%"], []);
-
-	// callbacks
-	// const handlePresentModalPress = useCallback(() => {
-	// 	bottomSheetModalRef.current?.present();
-	// }, []);
-
-	const handlePresentModalPress = () => {
-		router.push("/(tabs)/");
-	};
-
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log("handleSheetChanges", index);
-	}, []);
 
 	return (
-		<BottomSheetModalProvider>
-			<ImageBackground source={backgroundImage} style={styles.container}>
-				<View style={{ flex: 1 }} />
-				<View>
-					<Button
-						title="Continue"
-						onPress={() => router.push("/(modal)/register")}
-					/>
-					<View style={{ marginVertical: 8 }} />
-					<Button
-						title="Login-test"
-						onPress={() => router.push("/(modal)/sign-in")}
-					/>
-					<View style={{ marginVertical: 8 }} />
+		<ImageBackground source={backgroundImage} style={styles.container}>
+			<View style={{ flex: 1 }} />
+			<View>
+				<Button
+					title="Continue"
+					onPress={() => router.push("/(modal)/register")}
+				/>
+				<View style={{ marginVertical: 8 }} />
+				<Button
+					title="testing verify code"
+					onPress={() => router.push("/(modal)/verify-code")}
+				/>
+				<View style={{ marginVertical: 8 }} />
 
-					<View>
-						<ButtonOutline
-							title="Login to your account"
-							onPress={handlePresentModalPress}
-						/>
-
-						<BottomSheetModal
-							animateOnMount={true}
-							ref={bottomSheetModalRef}
-							index={1}
-							snapPoints={snapPoints}
-							onChange={handleSheetChanges}
-							backgroundStyle={{ backgroundColor: AppColor[950] }}
-							handleIndicatorStyle={{ backgroundColor: AppColor[100] }}
-						>
-							<BottomSheetView style={styles.contentContainer}>
-								<Text
-									style={{
-										color: AppColor[100],
-										fontSize: 50,
-										fontWeight: "900",
-									}}
-								>
-									Awesome 🎉
-								</Text>
-
-								<View style={{ marginHorizontal: 16 }}>
-									<TextInputWithLabel
-										label="email"
-										style={{ color: AppColor[100] }}
-									/>
-									<TextInputWithLabel label="password" />
-									<Button title="Login" />
-								</View>
-							</BottomSheetView>
-						</BottomSheetModal>
-					</View>
-				</View>
-			</ImageBackground>
-		</BottomSheetModalProvider>
+				<ButtonOutline
+					title="Login to your account"
+					onPress={() => router.push("/(modal)/sign-in")}
+				/>
+			</View>
+		</ImageBackground>
 	);
 
 	// return (
