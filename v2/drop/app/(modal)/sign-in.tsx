@@ -3,7 +3,7 @@ import TextInputWithLabel from "@/components/ui/TextInput";
 import Separator from "@/components/ui/separator";
 import Spinner from "@/components/ui/spinner";
 import { AppColor } from "@/constants/Colors";
-import axios from "axios";
+import { useSession } from "@/hooks/context/authenticationContext";
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
 
@@ -15,7 +15,8 @@ type SignInProps = {
 export default function SignIn() {
 	const backgroundImage = require("../../assets/images/laundry.jpg");
 
-	const [username, setUsername] = React.useState("");
+	const { login } = useSession();
+
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [isLoading, setIsLoading] = React.useState(false);
@@ -26,30 +27,15 @@ export default function SignIn() {
 		(setter: React.Dispatch<React.SetStateAction<string>>) =>
 		(text: string) => {
 			setter(text);
-			// console.log(text);
 		};
 
 	const signInUserAccount = async ({ email, password }: SignInProps) => {
 		setIsLoading(true);
-		try {
-			const res = await axios.post(
-				`${API_URI}login-account`,
-				{
-					email: email,
-					password: password,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-					},
-				},
-			);
-			console.log(res.data);
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setIsLoading(false);
-		}
+		await login({
+			email: email,
+			password: password,
+		});
+		setIsLoading(false);
 	};
 
 	return (
@@ -80,7 +66,7 @@ export default function SignIn() {
 						<Spinner />
 					) : (
 						<Button
-							title="Sign Up"
+							title="Log In"
 							onPress={() => signInUserAccount({ email, password })}
 						/>
 					)}
@@ -90,8 +76,6 @@ export default function SignIn() {
 						<Text style={styles.text}>or</Text>
 						<Separator height={3} color={AppColor[100]} />
 					</View>
-
-					<Spinner />
 
 					<View style={{ marginTop: 20, marginBottom: 10 }}>
 						<ButtonWithIcon title="Continue with Google" iconName="google" />
