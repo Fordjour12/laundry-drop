@@ -1,7 +1,15 @@
-import { Stack } from "expo-router";
+import { useSession } from "@/hooks/context/authenticationContext";
+import { Redirect, Stack } from "expo-router";
 import React from "react";
 
 export default function AuthLayout() {
+	const { session } = useSession();
+
+	if (session) {
+		console.log(session);
+		return <Redirect href={"/(tabs)/"} />;
+	}
+
 	return (
 		<Stack
 			screenOptions={{
