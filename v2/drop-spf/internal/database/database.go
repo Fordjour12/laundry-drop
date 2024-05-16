@@ -77,7 +77,10 @@ func (s *service) Health() map[string]string {
 // }
 
 func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
-	query := `insert into user_account (username, email, password) values ($1, $2, $3) returning id, username, email, password`
+	query := `insert into user_account (username, email, password) 
+				values ($1, $2, $3) 
+				returning id, username, email, password, created_at, updated_at
+				`
 
 	err := s.db.QueryRow(query,
 		ca.Username,
@@ -87,7 +90,10 @@ func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount
 		&ca.Id,
 		&ca.Username,
 		&ca.Email,
-		&ca.Password)
+		&ca.Password,
+		&ca.Created_at,
+		&ca.Updated_at,
+	)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -100,7 +106,7 @@ func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount
 }
 
 func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, error) {
-	query := `select * from user_account where email = $1`
+	query := `select * from user_account where email = $1 and deleted_at is null`
 
 	var ua helper.UserAccount
 	if err := s.db.QueryRow(query, email).Scan(
@@ -110,6 +116,7 @@ func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, erro
 		&ua.Password,
 		&ua.Created_at,
 		&ua.Updated_at,
+		&ua.Deleted_at,
 	); err != nil {
 		return nil, err
 	}
@@ -124,7 +131,8 @@ func (s *service) GetUserAccount() error {
 	return nil
 }
 func (s *service) DeleteUserAccount(email string) error {
-	query := `delete from user_account where email = $1`
+	// query := `delete from user_account where email = $1`
+	query := `update user_account set deleted_at = now() where email = $1`
 	_, err := s.db.Exec(query, email)
 	if err != nil {
 		return err
