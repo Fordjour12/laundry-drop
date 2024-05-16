@@ -35,8 +35,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Post("/api/v1/create-account", helper.MakeHTTPHandler(s.CreateNewUserAccount))
 	r.Post("/api/v1/login-account", helper.MakeHTTPHandler(s.LoginUserAccount))
 
-	// FIXME: Add middleware to check if user is authenticated
-	// soft delete user account
 	r.Delete("/api/v1/delete-account", helper.AuthMiddleware(helper.MakeHTTPHandler(s.DeleteUserAccount)))
 	return r
 }
@@ -58,7 +56,6 @@ func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(jsonResp)
 }
 
-// FIXME: return dates time and token
 func (s *Server) CreateNewUserAccount(w http.ResponseWriter, r *http.Request) error {
 	var createUserReq helper.UserAccountReq
 	if err := json.NewDecoder(r.Body).Decode(&createUserReq); err != nil {
@@ -80,13 +77,17 @@ func (s *Server) CreateNewUserAccount(w http.ResponseWriter, r *http.Request) er
 		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
-	//	token, err := helper.CreateJWTToken(dataStore)
-	//	if err != nil {
-	//		// return helper.NewAPIError(http.StatusInternalServerError, err)
-	//		return err
-	//	}
+	token, err := helper.CreateJWTToken(dataStore)
+	if err != nil {
+		return err
+	}
 
-	return helper.WriteJSON(w, http.StatusCreated, dataStore)
+	log.Printf("token information here %+v", token)
+
+	return helper.WriteJSON(w, http.StatusCreated, map[string]any{
+		"token": token,
+		"user":  dataStore,
+	})
 
 }
 
@@ -121,7 +122,10 @@ func (s *Server) LoginUserAccount(w http.ResponseWriter, r *http.Request) error 
 		return err
 	}
 
-	return helper.WriteJSON(w, http.StatusOK, map[string]any{"token": token, "user": user})
+	return helper.WriteJSON(w, http.StatusOK, map[string]any{
+		"token": token,
+		"user":  user,
+	})
 
 }
 
