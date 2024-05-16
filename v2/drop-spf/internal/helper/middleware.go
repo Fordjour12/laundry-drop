@@ -11,20 +11,14 @@ import (
 func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the JWT token from the header
+
+		// TODO: return custom error messages
 		token := r.Header.Get("Authorization")
 		// If the token is missing, return an unauthorized status
 		if token == "" {
-			// writejson
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
-		// FIXME: Validate the token
-		// If the token is invalid, return an unauthorized status
-		// if !m.ValidateToken(token) {
-		// 	w.WriteHeader(http.StatusUnauthorized)
-		// 	return
-		// }
-		// custom err
 		if !strings.HasPrefix(token, "Bearer ") {
 			http.Error(w, "Invalid token format", http.StatusUnauthorized)
 			return
