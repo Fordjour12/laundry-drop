@@ -1,7 +1,170 @@
-import BottomSheet from "@gorhom/bottom-sheet";
-import { useCallback, useMemo, useRef } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import MapView from "react-native-maps";
+// TODO: Not needed Remove from codebase
+// export const cstMap = [
+// 	{
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#f4f9f8", // Lightest color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		elementType: "labels.icon",
+// 		stylers: [
+// 			{
+// 				// visibility: "#ccc",
+// 				color: AppColor["400"],
+// 			},
+// 		],
+// 	},
+// 	{
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#253c39", // Dark color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		elementType: "labels.text.stroke",
+// 		stylers: [
+// 			{
+// 				color: "#f4f9f8", // Lightest color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "administrative.land_parcel",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				// color: "#b6d9d0", // Light color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "poi",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#dbece8", // Light color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "poi",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#2f5651", // Darker color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "poi.park",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#8abeb4", // Medium color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "poi.park",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#294643", // Dark color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "road",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#b6d9d0", // Light color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "road.arterial",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#2f5651", // Darker color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "road.highway",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#61a095", // Medium color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "road.highway",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#376a64", // Dark color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "road.local",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#2f5651", // Darker color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "transit.line",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#dbece8", // Light color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "transit.station",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#b6d9d0", // Light color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "water",
+// 		elementType: "geometry",
+// 		stylers: [
+// 			{
+// 				color: "#8abeb4", // Medium color
+// 			},
+// 		],
+// 	},
+// 	{
+// 		featureType: "water",
+// 		elementType: "labels.text.fill",
+// 		stylers: [
+// 			{
+// 				color: "#2f5651", // Darker color
+// 			},
+// 		],
+// 	},
+// ];
+
+import type BottomSheet from "@gorhom/bottom-sheet";
+import type { Text, View } from "lucide-react-native";
+import { useCallback, useRef } from "react";
+import { StyleSheet } from "react-native";
 
 export default function Home() {
 	// const icon = require("../../assets/images/pointer.png");
@@ -75,25 +238,23 @@ export default function Home() {
 		console.log("handleSheetChanges", index);
 	}, []);
 
-	const snapPoints = useMemo(() => ["15%", "25%", "50%"], []);
-
 	return (
-		<View style={{ flex: 1 }}>
-			<MapView style={{ flex: 1 }} />
+		<View style={styles.container}>
 			<BottomSheet
 				ref={bottomSheetRef}
-				index={0}
-				snapPoints={snapPoints}
-				onChange={handleSheetChanges}
+	index={1}
+	snapPoints={["25%", "50%"]}
+	onChange={handleSheetChanges}
 			>
 				<View>
 					<View style={styles.contentContainer}>
-						<Text>Awesome 🎉</Text>
+						<Text>Awesome
+	🎉</Text>
 					</View>
 				</View>
 			</BottomSheet>
 		</View>
-	);
+	)
 }
 // <BottomSheetModalProvider>
 // 	<View style={styles.container}>

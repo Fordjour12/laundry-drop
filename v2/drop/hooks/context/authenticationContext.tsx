@@ -65,7 +65,11 @@ export const AuthenticationProvider = (props: PropsWithChildren) => {
 					},
 				},
 			);
-			console.log(res.data);
+
+			if (res.status === 200) {
+				setSession(res.data.token);
+				console.log(res.data.token);
+			}
 		} catch (error) {
 			console.error(error);
 		}
