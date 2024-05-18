@@ -8,7 +8,22 @@ create table if not exists lndy_comp (
   privilege varchar(6) default '974929' check (privilege in ('782312', '974929')),
   created_at timestamp with time zone default current_timestamp,
   updated_at timestamp with time zone default current_timestamp
+  deleted_at timestamp with time zone
 )
+
+create or replace function update_updated_at_column()
+returns trigger as $$
+BEGIN
+  new.updated_at = now();
+  return new;
+end;
+$$ language plpgsql;
+
+-- create trigger to call the function on update
+create trigger lndy_comp_updated_at before update on lndy_comp
+for each row
+execute function update_updated_at_column();
+
 -- +goose StatementEnd
 
 -- +goose Down
