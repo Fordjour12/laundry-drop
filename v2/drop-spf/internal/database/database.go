@@ -18,6 +18,10 @@ type Service interface {
 	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
 	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
 	DeleteUserAccount(email string) error
+
+	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
+	GetCompayAccount(email string) (*helper.LaundryCompany, error)
+	DeleteCompayAccount(email string) error
 }
 
 type AccountScanner interface {
@@ -141,18 +145,50 @@ func (s *service) DeleteUserAccount(email string) error {
 	return nil
 }
 
-func (s *service) CreateCompanyAccount() error {
-	return nil
+func (s *service) CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error) {
+	query := `insert into lndy_comp (name, email, password) 
+	values ($1, $2, $3) 
+	returning id, name,email,password, created_at,updated_at`
+
+	err := s.db.QueryRow(
+		query,
+		lnc.Name,
+		lnc.Email,
+		lnc.Password,
+	).Scan(
+		&lnc.Id,
+		&lnc.Name,
+		&lnc.Email,
+		&lnc.Password,
+		&lnc.Created_at,
+		&lnc.Updated_at,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return lnc, nil
 }
+
 func (s *service) UpdateCompanyAccount() error {
 	return nil
 }
-func (s *service) GetCompayAccount() error {
+func (s *service) GetCompayAccount(email string) (*helper.LaundryCompany, error) {
+
+	return nil, nil
+}
+
+func (s *service) DeleteCompayAccount(email string) error {
+	query := ` update lndy_comp set deleted_at = now() where email = $1`
+	_, err := s.db.Exec(query, email)
+	if err != nil {
+		return nil
+	}
+
 	return nil
 }
-func (s *service) DeleteCompayAccount() error {
-	return nil
-}
+
 func (s *service) GetAllCompany() error {
 	return nil
 }
+
