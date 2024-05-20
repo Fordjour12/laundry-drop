@@ -13,26 +13,26 @@ export type Route = {
 export const menuRoutes: Route[] = [
     {
         name: "My Dashboard",
-        url: "/dash",
+        url: "/dashboard",
         label: "128",
         icon: Icons.Archive,
         variant: "default",
     },
     {
         name: "Drafts",
-        url: "#",
+        url: "",
         label: "9",
         icon: Icons.CircleAlert,
         variant: "ghost",
     }, {
         name: "Hello",
-        url: "/dash/hello",
+        url: "/dashboard/hello",
         icon: Icons.Ampersand,
         variant: "ghost",
         label: "New"
     }, {
         name: "Hello2",
-        url: "/dash/hello2",
+        url: "/dashboard/hello2",
         icon: Icons.Airplay,
         variant: "ghost",
         label: "New"
