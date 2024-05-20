@@ -7,7 +7,7 @@ create table if not exists lndy_comp (
   password varchar(500) not null,
   privilege varchar(6) default '974929' check (privilege in ('782312', '974929')),
   created_at timestamp with time zone default current_timestamp,
-  updated_at timestamp with time zone default current_timestamp
+  updated_at timestamp with time zone default current_timestamp,
   deleted_at timestamp with time zone
 )
 

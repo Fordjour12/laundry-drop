@@ -107,25 +107,35 @@ func (s *Server) LoginUserAccount(w http.ResponseWriter, r *http.Request) error 
 		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
-	user, err := s.db.GetUserAccountByEmail(acc.Email)
-	if err != nil {
+	user, err := s.db.GetAccountByEmail("user_account", acc.Email)
+	use, ok := user.(*helper.UserAccount)
+	if !ok {
+
 		return helper.NewAPIError(http.StatusNotFound, err)
+
 	}
 
-	if err := helper.ValidateUserPassword(loginUserReq.Password, user.Password); err != nil {
-		return helper.NewAPIError(http.StatusUnauthorized, err)
-	}
+	return helper.WriteJSON(w, http.StatusOK, use)
 
-	token, err := helper.CreateJWTToken(user)
-	if err != nil {
-		// return helper.NewAPIError(http.StatusInternalServerError, err)
-		return err
-	}
+	// user, err := s.db.GetUserAccountByEmail(acc.Email)
+	// if err != nil {
+	// 	return helper.NewAPIError(http.StatusNotFound, err)
+	// }
 
-	return helper.WriteJSON(w, http.StatusOK, map[string]any{
-		"token": token,
-		"user":  user,
-	})
+	// if err := helper.ValidateUserPassword(loginUserReq.Password, user.Password); err != nil {
+	// 	return helper.NewAPIError(http.StatusUnauthorized, err)
+	// }
+
+	// token, err := helper.CreateJWTToken(user)
+	// if err != nil {
+	// 	// return helper.NewAPIError(http.StatusInternalServerError, err)
+	// 	return err
+	// }
+
+	// return helper.WriteJSON(w, http.StatusOK, map[string]any{
+	// 	"token": token,
+	// 	"user":  user,
+	// })
 
 }
 
