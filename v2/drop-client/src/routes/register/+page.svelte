@@ -8,7 +8,7 @@
 <div class="h-screen w-screen bg-[url('/bgImage.jpg')] bg-cover p-4">
 	<div class="flex h-full w-[450px] flex-col justify-center rounded-xl bg-neutral-800 px-6">
 		<div class="flex flex-col items-start px-6 py-3">
-			<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-white lg:text-5xl">
+			<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-white lg:text-4xl">
 				Sign Up
 			</h1>
 			<p class="leading-7 text-white [&:not(:first-child)]:mt-6">

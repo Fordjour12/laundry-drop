@@ -85,6 +85,24 @@ func (u UserAccountReq) Validate() map[string]string {
 	return errors
 }
 
+func (u LaundryCompanyReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Name == "" {
+		errors["name"] = "Name is required"
+	}
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Password == "" {
+		errors["password"] = "Password is required"
+	}
+
+	return errors
+}
+
 func (u LoginUserAccountReq) Validate() map[string]string {
 	errors := make(map[string]string)
 
@@ -100,6 +118,16 @@ func (u LoginUserAccountReq) Validate() map[string]string {
 }
 
 func (u DeleteUserAccountReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	return errors
+}
+
+func (u DeleteLaundryCompanyReq) Validate() map[string]string {
 	errors := make(map[string]string)
 
 	if u.Email == "" {

@@ -16,6 +16,8 @@ type UserAccount struct {
 	Deleted_at *time.Time `json:"deleted_at"`
 }
 
+// FIXME:  some of the fields are the same as the user account struct so we can create a generic struct for both
+
 type UserAccountReq struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
@@ -40,6 +42,16 @@ type LaundryCompany struct {
 	Created_at time.Time  `json:"created_at"`
 	Updated_at time.Time  `json:"updated_at"`
 	Deleted_at *time.Time `json:"deleted_at"`
+}
+
+type LaundryCompanyReq struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type DeleteLaundryCompanyReq struct {
+	Email string `json:"email"`
 }
 
 type Employee struct {
@@ -69,6 +81,19 @@ func NewUserAccountRequest(username, email, password string) (*UserAccount, erro
 	}, nil
 }
 
+func NewLaundryCompanyRequest(name, email, password string) (*LaundryCompany, error) {
+	passHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LaundryCompany{
+		Name:     name,
+		Email:    email,
+		Password: string(passHash),
+	}, nil
+}
+
 func LoginUserAccountRequest(email, password string) (*UserAccount, error) {
 	return &UserAccount{
 		Email:    email,
@@ -78,6 +103,12 @@ func LoginUserAccountRequest(email, password string) (*UserAccount, error) {
 
 func DeleteUserAccountRequest(email string) (*UserAccount, error) {
 	return &UserAccount{
+		Email: email,
+	}, nil
+}
+
+func DeleteLaundryCompanyRequest(email string) (*LaundryCompany, error) {
+	return &LaundryCompany{
 		Email: email,
 	}, nil
 }

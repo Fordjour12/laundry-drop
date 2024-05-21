@@ -35,8 +35,20 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Post("/api/v1/create-account", helper.MakeHTTPHandler(s.CreateNewUserAccount))
 	r.Post("/api/v1/login-account", helper.MakeHTTPHandler(s.LoginUserAccount))
 
+	// FIXME: by this time the use will be logged in and the token will be available
+	// so we can delete the account by and id (/api/v1/delete-account/:id) <- this is the best way to do it
 	r.Delete("/api/v1/delete-account", helper.AuthMiddleware(helper.MakeHTTPHandler(s.DeleteUserAccount)))
+
+	// Company api's
+	r.Post("/api/v1/create-company", helper.MakeHTTPHandler(s.CreateNewCompanyAccount))
+	// FIXME: auth middleware should be added here
+	r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
+	// r.put("/api/v1/update-company/{id}", helper.MakeHTTPHandler(s.UpdateCompanyAccount))
+	// r.Delete("/api/v1/delete-company/{id}", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
+	// r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetCompanyAccount))
+
 	return r
+
 }
 
 func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
@@ -107,35 +119,25 @@ func (s *Server) LoginUserAccount(w http.ResponseWriter, r *http.Request) error 
 		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
-	user, err := s.db.GetAccountByEmail("user_account", acc.Email)
-	use, ok := user.(*helper.UserAccount)
-	if !ok {
-
+	user, err := s.db.GetUserAccountByEmail(acc.Email)
+	if err != nil {
 		return helper.NewAPIError(http.StatusNotFound, err)
-
 	}
 
-	return helper.WriteJSON(w, http.StatusOK, use)
+	if err := helper.ValidateUserPassword(loginUserReq.Password, user.Password); err != nil {
+		return helper.NewAPIError(http.StatusUnauthorized, err)
+	}
 
-	// user, err := s.db.GetUserAccountByEmail(acc.Email)
-	// if err != nil {
-	// 	return helper.NewAPIError(http.StatusNotFound, err)
-	// }
+	token, err := helper.CreateJWTToken(user)
+	if err != nil {
+		// return helper.NewAPIError(http.StatusInternalServerError, err)
+		return err
+	}
 
-	// if err := helper.ValidateUserPassword(loginUserReq.Password, user.Password); err != nil {
-	// 	return helper.NewAPIError(http.StatusUnauthorized, err)
-	// }
-
-	// token, err := helper.CreateJWTToken(user)
-	// if err != nil {
-	// 	// return helper.NewAPIError(http.StatusInternalServerError, err)
-	// 	return err
-	// }
-
-	// return helper.WriteJSON(w, http.StatusOK, map[string]any{
-	// 	"token": token,
-	// 	"user":  user,
-	// })
+	return helper.WriteJSON(w, http.StatusOK, map[string]any{
+		"token": token,
+		"user":  user,
+	})
 
 }
 
@@ -162,4 +164,53 @@ func (s *Server) DeleteUserAccount(w http.ResponseWriter, r *http.Request) error
 	}
 
 	return helper.WriteJSON(w, http.StatusOK, map[string]string{"message": "User account deleted successfully"})
+}
+
+func (s *Server) CreateNewCompanyAccount(w http.ResponseWriter, r *http.Request) error {
+	var createCompanyReq helper.LaundryCompanyReq
+	if err := json.NewDecoder(r.Body).Decode(&createCompanyReq); err != nil {
+		return helper.InvalidJSON()
+	}
+	defer r.Body.Close()
+
+	if errors := createCompanyReq.Validate(); len(errors) > 0 {
+		return helper.InvalidRequestData(errors)
+	}
+
+	company, err := helper.NewLaundryCompanyRequest(createCompanyReq.Name, createCompanyReq.Email, createCompanyReq.Password)
+	if err != nil {
+		return err
+	}
+
+	cmpData, err := s.db.CreateCompanyAccount(company)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusCreated, cmpData)
+
+}
+
+func (s *Server) DeleteCompanyAccount(w http.ResponseWriter, r *http.Request) error {
+	var deleteCompanyReq helper.DeleteLaundryCompanyReq
+	if err := json.NewDecoder(r.Body).Decode(&deleteCompanyReq); err != nil {
+		return helper.InvalidJSON()
+	}
+	defer r.Body.Close()
+
+	if errors := deleteCompanyReq.Validate(); len(errors) > 0 {
+		return helper.InvalidRequestData(errors)
+	}
+
+	company, err := helper.DeleteLaundryCompanyRequest(deleteCompanyReq.Email)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	if err := s.db.DeleteCompanyAccount(company.Email); err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, map[string]string{"message": "Company account deleted successfully"})
+
 }

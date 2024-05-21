@@ -1,10 +1,31 @@
-### Todo List
+# Todo List
 
-#### 1. Setup Docker Environment
+## User Account
 
-- [ ] **Docker Installation**: Install Docker on your development machine.
-- [ ] **Docker Compose Configuration**: Set up a `docker-compose.yml` file to define services for Redis, Postgres, and your Go application.
-- [ ] **Database Initialization Script**: Write a script to initialize the Postgres database schema and seed initial data if required.
+- [x] create user account
+- [x] read/get user account
+- [] update user account
+- [x] Delete user account
+
+## Company Account
+
+- [x] create account
+- [] read/get account
+- [] update account
+- [x] Delete Account
+- [] create Employee account
+- [] Delete Employee account
+
+## Employee Account
+
+[] read/get user account
+[] update user account
+
+<!-- #### 1. Setup Docker Environment
+
+- [x] **Docker Installation**: Install Docker on your development machine.
+- [x] **Docker Compose Configuration**: Set up a `docker-compose.yml` file to define services for Redis, Postgres, and your Go application.
+- [x] **Database Initialization Script**: Write a script to initialize the Postgres database schema and seed initial data if required.
 
 #### 2. Implement Authentication
 
@@ -29,21 +50,4 @@
 #### 6. Deployment
 
 - [ ] **Dockerize Go Application**: Create a Dockerfile to package your Go application.
-- [ ] **Deployment Strategy**: Decide on a deployment strategy (e.g., Docker Swarm, Kubernetes, or a cloud platform like AWS, GCP, or Azure) and deploy your Dockerized application.
-
-
-
-
-
-
-
--- create table employee (
---   id serial primary key,
---   name varchar(255) not null,
---   email varchar(255) unique not null,
---   password varchar(500) not null,
---   role varchar(6) default '782312' check (role in ('782312', '478909')),
---   company_id integer references lnd_cmp(id) on delete cascade,
---   created_at timestamp with time zone default current_timestamp,
---   updated_at timestamp with time zone default current_timestamp,
--- )
+- [ ] **Deployment Strategy**: Decide on a deployment strategy (e.g., Docker Swarm, Kubernetes, or a cloud platform like AWS, GCP, or Azure) and deploy your Dockerized application. -->

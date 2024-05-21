@@ -15,15 +15,18 @@ import (
 
 type Service interface {
 	Health() map[string]string
+
+	// universal
+
+	// user account
 	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
 	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
 	DeleteUserAccount(email string) error
 
+	// company account
 	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
 	GetCompanyAccount(email string) (*helper.LaundryCompany, error)
 	DeleteCompanyAccount(email string) error
-
-	GetAccountByEmail(table, email string) (AccountType, error)
 }
 
 type service struct {
@@ -62,19 +65,14 @@ func (s *service) Health() map[string]string {
 	}
 }
 
-/*
-	TODO:
-	- [] Create a function to get account by email
-	- [] CRUD for company account
-*/
-
-
 type AccountType interface{}
 
+// FIXME: we can make an account struct that will be used to get the account by email
 func (s *service) GetAccountByEmail(table, email string) (AccountType, error) {
 	query := fmt.Sprintf("select * from %s where email = $1 and deleted_at is null", table)
 	var account AccountType
-	err := s.db.QueryRow(query, email).Scan(&account)
+
+	err := s.db.QueryRow(query, email).Scan(&account) // <- this is not correct(throws sql error)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -83,30 +81,6 @@ func (s *service) GetAccountByEmail(table, email string) (AccountType, error) {
 	}
 	return account, nil
 }
-
-// func (s *service) GetCompanyAccount(email string) (*helper.LaundryCompany, error) {
-// 	query := `select * from lndy_comp where email = $1 and deleted_at is null`
-
-// 	var lnc helper.LaundryCompany
-
-// 	err := s.db.QueryRow(
-// 		query,
-// 		email,
-// 	).Scan(
-// 		&lnc.Id,
-// 		&lnc.Name,
-// 		&lnc.Email,
-// 		&lnc.Password,
-// 		&lnc.Created_at,
-// 		&lnc.Updated_at,
-// 		&lnc.Deleted_at,
-// 	)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return &lnc, nil
-// }
 
 func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
 	query := `insert into user_account (username, email, password) 
@@ -156,12 +130,6 @@ func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, erro
 	return &ua, nil
 }
 
-func (s *service) UpdateUserAccount() error {
-	return nil
-}
-func (s *service) GetUserAccount() error {
-	return nil
-}
 func (s *service) DeleteUserAccount(email string) error {
 	// query := `delete from user_account where email = $1`
 	query := `update user_account set deleted_at = now() where email = $1`
@@ -230,16 +198,11 @@ func (s *service) GetCompanyAccount(email string) (*helper.LaundryCompany, error
 }
 
 func (s *service) DeleteCompanyAccount(email string) error {
-	query := ` update lndy_comp set deleted_at = now() where email = $1`
+	query := `update lndy_comp set deleted_at = now() where email = $1`
 	_, err := s.db.Exec(query, email)
 	if err != nil {
-		return nil
+		return err
 	}
-
-	return nil
-}
-
-func (s *service) GetAllCompany() error {
 
 	return nil
 }
