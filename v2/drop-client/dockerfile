@@ -11,12 +11,16 @@ RUN bun install
 RUN bun run build
 
 
+FROM base as stg-prod
+RUN mkdir -p /stg/dev
+COPY package.json bun.lockb /stg/dev/
+RUN cd /stg/dev && bun install --production
+
 FROM base as stagging
 WORKDIR /dist
 COPY package.json .
-RUN bun install
 
-COPY --from=base /app/node_modules node_modules
+COPY --from=stg-prod /stg/dev/node_modules node_modules
 COPY --from=base /app/build .
 
 USER bun
