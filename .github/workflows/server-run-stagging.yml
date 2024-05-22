@@ -11,7 +11,7 @@ permissions:
 env:
   PROJECT_ID: laundry-drop-409012 
   GAR_LOCATION: us-central1 
-  SERVICE: laundry-drop
+  SERVICE: laundry-drop-spf
   REGION: us-central1 
   REPOSITORY: laundry-drop-spf
 
