@@ -1,16 +1,13 @@
 <script lang="ts">
 	import * as Tooltip from '@/components/ui/tooltip/index.js';
-	import { Package2Icon, SettingsIcon } from 'lucide-svelte';
 	import { activeNavItems } from '@/store/navStore';
+	import { Package2Icon, SettingsIcon } from 'lucide-svelte';
 	import type { RouteConfig } from '../routesConfig';
+
 	export let routes: RouteConfig[];
 
 	function setActiveNavItems(routeId: number) {
 		activeNavItems.set(routeId);
-	}
-
-	function createActiveNavItems(initialVal: number) {
-		let actNav = $state(initialVal);
 	}
 </script>
 
