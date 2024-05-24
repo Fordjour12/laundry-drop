@@ -107,65 +107,47 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</header>
-	<h1>Services</h1>
 
-	<main>
-		<h1 class="mb-8 text-center text-3xl font-bold">Our Services</h1>
-
-		<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-			<Card.Root class="sm:col-span-2">
-				<Card.Header class="pb-3">
-					<Card.Title>New Services</Card.Title>
-					<Card.Description class="max-w-lg text-balance leading-relaxed">
-						Introducing Our Dynamic Orders Dashboard for Seamless Management and Insightful
-						Analysis.
-					</Card.Description>
-				</Card.Header>
-				<Card.Footer>
-					<Button>Create New Services</Button>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-
-		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{#each services as service}
-				<div class="rounded-lg bg-accent p-6 shadow-md">
-					<img
-						src={service.image}
-						alt={service.name}
-						class="mb-4 h-48 w-full rounded-md object-cover"
-					/>
-					<h2 class="mb-2 text-xl font-semibold">{service.name}</h2>
-					<p class="mb-4 text-gray-700">{service.description}</p>
-					<p class="mb-4 font-bold text-gray-900">{service.price}</p>
-					<button class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-						>Book Now</button
-					>
-				</div>
-			{/each}
-		</div>
-
-		<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-			{#each services as service}
-				<Card.Root class="sm:col-span-2">
+	<main class="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
+		<div class="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+			<!--	<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+				<Card.Root class="sm:col-span-3">
 					<Card.Header class="pb-3">
-						<img
-							src={service.image}
-							alt={service.name}
-							class="mb-4 h-48 w-full rounded-md object-cover"
-						/>
-
-						<Card.Title>{service.name}</Card.Title>
+						<Card.Title>New Services</Card.Title>
 						<Card.Description class="max-w-lg text-balance leading-relaxed">
-							<span class="flex">{service.price}</span>
-							{service.description}
+							Introducing Our Dynamic Orders Dashboard for Seamless Management and Insightful
+							Analysis.
 						</Card.Description>
 					</Card.Header>
 					<Card.Footer>
 						<Button>Create New Services</Button>
 					</Card.Footer>
 				</Card.Root>
-			{/each}
+			</div>
+					-->
+
+			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
+				{#each services as service}
+					<Card.Root class="sm:col-span-2">
+						<Card.Header class="pb-3">
+							<img
+								src={service.image}
+								alt={service.name}
+								class="mb-4 h-48 w-full rounded-md object-cover"
+							/>
+
+							<Card.Title>{service.name}</Card.Title>
+							<Card.Description class="max-w-lg text-balance leading-relaxed">
+								<span class="flex">{service.price}</span>
+								{service.description}
+							</Card.Description>
+						</Card.Header>
+						<Card.Footer>
+							<Button>Book Now</Button>
+						</Card.Footer>
+					</Card.Root>
+				{/each}
+			</div>
 		</div>
 	</main>
 </div>
