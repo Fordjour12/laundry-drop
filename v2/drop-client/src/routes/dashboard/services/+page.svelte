@@ -6,7 +6,7 @@
 	import { Search } from 'lucide-svelte';
 	import Input from '@/components/ui/input/input.svelte';
 
-	let services = [
+	const services = [
 		{
 			id: 1,
 			name: 'Dry Cleaning',
@@ -110,7 +110,7 @@
 
 	<main class="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
 		<div class="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-			<!--	<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
 				<Card.Root class="sm:col-span-3">
 					<Card.Header class="pb-3">
 						<Card.Title>New Services</Card.Title>
@@ -124,7 +124,6 @@
 					</Card.Footer>
 				</Card.Root>
 			</div>
-					-->
 
 			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
 				{#each services as service}
@@ -148,6 +147,9 @@
 					</Card.Root>
 				{/each}
 			</div>
+		</div>
+		<div>
+			<h1 class="text-2xl font-semibold text-primary">Recent Orders</h1>
 		</div>
 	</main>
 </div>
