@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as Breadcrumb from '@/components/ui/breadcrumb/index.js';
-	import * as DropdownMenu from '@/components/ui/dropdown-menu/index.js';
-	import * as Card from '@/components/ui/card/index.js';
 	import { Button } from '@/components/ui/button/index.js';
-	import { Search } from 'lucide-svelte';
+	import * as Card from '@/components/ui/card/index.js';
+	import * as DropdownMenu from '@/components/ui/dropdown-menu/index.js';
 	import Input from '@/components/ui/input/input.svelte';
+	import { Search } from 'lucide-svelte';
 
 	const services = [
 		{
@@ -108,7 +108,7 @@
 		</DropdownMenu.Root>
 	</header>
 
-	<main class="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
+	<main class="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
 		<div class="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
 			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
 				<Card.Root class="sm:col-span-3">
@@ -127,7 +127,7 @@
 
 			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
 				{#each services as service}
-					<Card.Root class="sm:col-span-2">
+					<Card.Root class="sm:col-span-1">
 						<Card.Header class="pb-3">
 							<img
 								src={service.image}
@@ -147,9 +147,6 @@
 					</Card.Root>
 				{/each}
 			</div>
-		</div>
-		<div>
-			<h1 class="text-2xl font-semibold text-primary">Recent Orders</h1>
 		</div>
 	</main>
 </div>
