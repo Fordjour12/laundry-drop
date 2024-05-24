@@ -1,6 +1,7 @@
 import type { TypeIcon } from "lucide-svelte";
 import type { ComponentType } from "svelte";
 import * as Icons from "./icons";
+
 export type RouteConfig = {
 	id: number;
 	path: string;
