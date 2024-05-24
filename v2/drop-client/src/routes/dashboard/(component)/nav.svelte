@@ -8,6 +8,10 @@
 	function setActiveNavItems(routeId: number) {
 		activeNavItems.set(routeId);
 	}
+
+	function createActiveNavItems(initialVal: number) {
+		let actNav = $state(initialVal);
+	}
 </script>
 
 <nav class="flex flex-col items-center gap-4 px-2 py-4">
