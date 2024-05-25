@@ -1,14 +1,11 @@
 <script lang="ts">
 	import * as Tooltip from '@/components/ui/tooltip/index.js';
-	import { activeNavItems } from '@/store/navStore';
 	import { Package2Icon, SettingsIcon } from 'lucide-svelte';
-	import type { RouteConfig } from '../routesConfig';
+	import { routesConfig } from '../routesConfig';
 
-	export let routes: RouteConfig[];
+	import { page } from '$app/stores';
 
-	function setActiveNavItems(routeId: number) {
-		activeNavItems.set(routeId);
-	}
+	let routeId = $page.route.id;
 </script>
 
 <nav class="flex flex-col items-center gap-4 px-2 py-4">
@@ -20,14 +17,13 @@
 		<span class="sr-only">Acme Inc</span>
 	</a>
 
-	{#each routes as route}
+	{#each routesConfig as route}
 		<Tooltip.Root>
 			<Tooltip.Trigger asChild let:builder>
 				<a
 					href={route.path}
-					on:click={() => setActiveNavItems(route.id)}
 					class={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
-					class:bg-accent={$activeNavItems === route.id}
+					class:bg-accent={routeId === route.path}
 					use:builder.action
 					{...builder}
 				>
