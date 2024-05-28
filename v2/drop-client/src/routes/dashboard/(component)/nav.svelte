@@ -5,7 +5,11 @@
 
 	import { page } from '$app/stores';
 
-	let routeId = $page.route.id;
+	let routeId = $state($page.route.id);
+
+	$effect(() => {
+		console.log(routeId);
+	});
 </script>
 
 <nav class="flex flex-col items-center gap-4 px-2 py-4">
@@ -23,6 +27,7 @@
 				<a
 					href={route.path}
 					class={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8`}
+					onclick={() => (routeId = route.path)}
 					class:bg-accent={routeId === route.path}
 					use:builder.action
 					{...builder}

@@ -82,87 +82,77 @@
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</header>
+	<main class="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+		<div class="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+				<Card.Root>
+					<Card.Header class="pb-2">
+						<Card.Description>This year</Card.Description>
+						<Card.Title class="text-3xl">$1329</Card.Title>
+					</Card.Header>
+					<Card.Content>
+						<div class="text-xs text-muted-foreground">+25% from last week</div>
+					</Card.Content>
+					<Card.Footer>
+						<Progress value={25} aria-label="25% increase" />
+					</Card.Footer>
+				</Card.Root>
 
-	<main class="min-h-screen p-8">
-		<h1 class="mb-8 text-center text-3xl font-bold">Analytics Dashboard</h1>
+				<Card.Root>
+					<Card.Header class="pb-2">
+						<Card.Description>This Week</Card.Description>
+						<Card.Title class="text-3xl">$1329</Card.Title>
+					</Card.Header>
+					<Card.Content>
+						<div class="text-xs text-muted-foreground">+25% from last week</div>
+					</Card.Content>
+					<Card.Footer>
+						<Progress value={25} aria-label="25% increase" />
+					</Card.Footer>
+				</Card.Root>
 
-		<!-- Key Metrics Section -->
-		<section class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-			<div class="rounded-lg bg-app-mixed-300 p-6 text-center shadow-md">
-				<h2 class="mb-2 text-2xl font-semibold">Total Orders</h2>
-				<p class="text-4xl font-bold">{keyMetrics.totalOrders}</p>
-			</div>
-			<div class="rounded-lg bg-app-mixed-300 p-6 text-center shadow-md">
-				<h2 class="mb-2 text-2xl font-semibold">Total Revenue</h2>
-				<p class="text-4xl font-bold">${keyMetrics.totalRevenue}</p>
-			</div>
-			<div class="rounded-lg bg-app-mixed-300 p-6 text-center shadow-md">
-				<h2 class="mb-2 text-2xl font-semibold">Avg Order Value</h2>
-				<p class="text-4xl font-bold">${keyMetrics.averageOrderValue}</p>
-			</div>
-			<div class="rounded-lg bg-app-mixed-300 p-6 text-center shadow-md">
-				<h2 class="mb-2 text-2xl font-semibold">Customer Satisfaction</h2>
-				<p class="text-4xl font-bold">{keyMetrics.customerSatisfaction}★</p>
-			</div>
-		</section>
+				<Card.Root>
+					<Card.Header class="pb-2">
+						<Card.Description>This Month</Card.Description>
+						<Card.Title class="text-3xl">$5,329</Card.Title>
+					</Card.Header>
+					<Card.Content>
+						<div class="text-xs text-muted-foreground">+10% from last month</div>
+					</Card.Content>
+					<Card.Footer>
+						<Progress value={12} aria-label="12% increase" />
+					</Card.Footer>
+				</Card.Root>
 
-		<div class="grid md:gap-8 lg:grid-cols-2">
-			<!-- Revenue Graph Section -->
-			<section class="mb-8 rounded-lg bg-app-mixed-300 p-6 shadow-md">
-				<h2 class="mb-4 text-2xl font-semibold">Revenue Over Time</h2>
-				<!-- Placeholder for chart -->
-				<div class="h-64 bg-blend-darken">[Revenue Chart Here]</div>
-			</section>
+				<Card.Root>
+					<Card.Header class="pb-2">
+						<Card.Description>This Month</Card.Description>
+						<Card.Title class="text-3xl">$5,329</Card.Title>
+					</Card.Header>
+					<Card.Content>
+						<div class="text-xs text-muted-foreground">+10% from last month</div>
+					</Card.Content>
+					<Card.Footer>
+						<Progress value={12} aria-label="12% increase" />
+					</Card.Footer>
+				</Card.Root>
+			</div>
 
-			<!-- Order Status Section -->
-			<section class="mb-8 rounded-lg bg-app-mixed-300 p-6 shadow-md">
-				<h2 class="mb-4 text-2xl font-semibold">Order Status</h2>
-				<!-- Placeholder for chart -->
-				<div class="h-64 bg-blend-darken">[Order Status Chart Here]</div>
-			</section>
+			<!-- chart components grid -->
+			<div class="grid flex-1 items-start gap-4 md:gap-8 lg:grid-cols-2">
+				<section class="mb-8 rounded-lg bg-black p-6 shadow-md">
+					<h2 class="mb-4 text-2xl font-semibold">Revenue Over Time</h2>
+					<!-- Placeholder for chart -->
+					<div class="h-64 bg-blend-darken">[Revenue Chart Here ]</div>
+				</section>
+
+				<!-- Order Status Section -->
+				<section class="mb-8 rounded-lg bg-black p-6 shadow-md">
+					<h2 class="mb-4 text-2xl font-semibold">Order Status</h2>
+					<!-- Placeholder for chart -->
+					<div class="h-64 bg-blend-darken">[Order Status Chart Here]</div>
+				</section>
+			</div>
 		</div>
 	</main>
-
-	<!--
-	<main class="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-			<Card.Root class="sm:col-span-2">
-				<Card.Header class="pb-2">
-					<Card.Description>This year</Card.Description>
-					<Card.Title class="text-3xl">$1329</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<div class="text-xs text-muted-foreground">+25% from last week</div>
-				</Card.Content>
-				<Card.Footer>
-					<Progress value={25} aria-label="25% increase" />
-				</Card.Footer>
-			</Card.Root>
-			<Card.Root>
-				<Card.Header class="pb-2">
-					<Card.Description>This Week</Card.Description>
-					<Card.Title class="text-3xl">$1329</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<div class="text-xs text-muted-foreground">+25% from last week</div>
-				</Card.Content>
-				<Card.Footer>
-					<Progress value={25} aria-label="25% increase" />
-				</Card.Footer>
-			</Card.Root>
-			<Card.Root>
-				<Card.Header class="pb-2">
-					<Card.Description>This Month</Card.Description>
-					<Card.Title class="text-3xl">$5,329</Card.Title>
-				</Card.Header>
-				<Card.Content>
-					<div class="text-xs text-muted-foreground">+10% from last month</div>
-				</Card.Content>
-				<Card.Footer>
-					<Progress value={12} aria-label="12% increase" />
-				</Card.Footer>
-			</Card.Root>
-		</div> 
-	</main>
-	-->
 </div>
