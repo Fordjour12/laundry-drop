@@ -57,5 +57,6 @@ make clean
 ```
 
 [comparing> db orms](https://blog.jetbrains.com/go/2023/04/27/comparing-db-packages/)
-
 [Golang validation](https://github.com/go-playground/validator)
+[DBDiagram](https://dbdiagram.io/d/665334b1f84ecd1d222a9467)
+[chatgpt aid](https://chatgpt.com/share/dba9e975-0189-4276-b2ed-16d4c92de343)
