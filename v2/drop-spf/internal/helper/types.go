@@ -44,6 +44,11 @@ type LaundryCompany struct {
 	Deleted_at *time.Time `json:"deleted_at"`
 }
 
+type LoginLaundryCompanyAccountReq struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type LaundryCompanyReq struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
@@ -65,6 +70,10 @@ type Employee struct {
 }
 
 func ValidateUserPassword(password, hash string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+}
+
+func ValidateCompanyPassword(password, hash string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
@@ -96,6 +105,13 @@ func NewLaundryCompanyRequest(name, email, password string) (*LaundryCompany, er
 
 func LoginUserAccountRequest(email, password string) (*UserAccount, error) {
 	return &UserAccount{
+		Email:    email,
+		Password: password,
+	}, nil
+}
+
+func LoginLaundryCompanyRequest(email, password string) (*LaundryCompany, error) {
+	return &LaundryCompany{
 		Email:    email,
 		Password: password,
 	}, nil
