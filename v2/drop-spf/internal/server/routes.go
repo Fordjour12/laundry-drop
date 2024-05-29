@@ -41,6 +41,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// Company api's
 	r.Post("/api/v1/create-company", helper.MakeHTTPHandler(s.CreateNewCompanyAccount))
+	r.Post("/api/v1/login-company", helper.MakeHTTPHandler(s.LoginCompanyAccount))
 	// FIXME: auth middleware should be added here
 	r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	// r.put("/api/v1/update-company/{id}", helper.MakeHTTPHandler(s.UpdateCompanyAccount))
@@ -188,6 +189,44 @@ func (s *Server) CreateNewCompanyAccount(w http.ResponseWriter, r *http.Request)
 	}
 
 	return helper.WriteJSON(w, http.StatusCreated, cmpData)
+
+}
+
+func (s *Server) LoginCompanyAccount(w http.ResponseWriter, r *http.Request) error {
+	var loginCompanyReq helper.LoginLaundryCompanyAccountReq
+	if err := json.NewDecoder(r.Body).Decode(&loginCompanyReq); err != nil {
+		return helper.InvalidJSON()
+	}
+	defer r.Body.Close()
+
+	if errors := loginCompanyReq.Validate(); len(errors) > 0 {
+		return helper.InvalidRequestData(errors)
+	}
+
+	company, err := helper.LoginLaundryCompanyRequest(loginCompanyReq.Email, loginCompanyReq.Password)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	cmpData, err := s.db.GetCompanyAccountByEmail(company.Email)
+	if err != nil {
+		return helper.NewAPIError(http.StatusNotFound, err)
+	}
+
+	if err := helper.ValidateCompanyPassword(loginCompanyReq.Password, cmpData.Password); err != nil {
+		return helper.NewAPIError(http.StatusUnauthorized, err)
+	}
+
+	token, err := helper.CreateCmpJWTToken(cmpData)
+	if err != nil {
+		// return helper.NewAPIError(http.StatusInternalServerError, err)
+		return err
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, map[string]any{
+		"token": token,
+		"user":  cmpData,
+	})
 
 }
 
