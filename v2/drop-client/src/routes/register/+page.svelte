@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import RegisterForm from './register-form.svelte';
-
 	export let data: PageData;
 </script>
 
@@ -16,6 +14,7 @@
 				Create New Account for your Laundry Service
 			</p>
 		</div>
+
 		<RegisterForm data={data.form} />
 
 		<small class="leading-7 text-white [&:not(:first-child)]:mt-6">
