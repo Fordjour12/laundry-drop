@@ -25,7 +25,7 @@ type Service interface {
 
 	// company account
 	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
-	GetCompanyAccount(email string) (*helper.LaundryCompany, error)
+	GetCompanyAccountByEmail(email string) (*helper.LaundryCompany, error)
 	DeleteCompanyAccount(email string) error
 }
 
@@ -173,7 +173,7 @@ func (s *service) UpdateCompanyAccount() error {
 	return nil
 }
 
-func (s *service) GetCompanyAccount(email string) (*helper.LaundryCompany, error) {
+func (s *service) GetCompanyAccountByEmail(email string) (*helper.LaundryCompany, error) {
 	query := `select * from lndy_comp where email = $1 and deleted_at is null`
 
 	var lnc helper.LaundryCompany
@@ -186,6 +186,7 @@ func (s *service) GetCompanyAccount(email string) (*helper.LaundryCompany, error
 		&lnc.Name,
 		&lnc.Email,
 		&lnc.Password,
+		&lnc.Privilege,
 		&lnc.Created_at,
 		&lnc.Updated_at,
 		&lnc.Deleted_at,
