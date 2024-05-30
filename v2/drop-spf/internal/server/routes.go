@@ -34,7 +34,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.Post("/api/v1/create-account", helper.MakeHTTPHandler(s.CreateNewUserAccount))
 	r.Post("/api/v1/login-account", helper.MakeHTTPHandler(s.LoginUserAccount))
-
 	// FIXME: by this time the use will be logged in and the token will be available
 	// so we can delete the account by and id (/api/v1/delete-account/:id) <- this is the best way to do it
 	r.Delete("/api/v1/delete-account", helper.AuthMiddleware(helper.MakeHTTPHandler(s.DeleteUserAccount)))
@@ -43,9 +42,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Post("/api/v1/create-company", helper.MakeHTTPHandler(s.CreateNewCompanyAccount))
 	r.Post("/api/v1/login-company", helper.MakeHTTPHandler(s.LoginCompanyAccount))
 	// FIXME: auth middleware should be added here
-	r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
-	// r.put("/api/v1/update-company/{id}", helper.MakeHTTPHandler(s.UpdateCompanyAccount))
-	// r.Delete("/api/v1/delete-company/{id}", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
+	r.Put("/api/v1/update-company", helper.MakeHTTPHandler(s.UpdateCompanyAccount))
+	r.Delete("/api/v1/delete-company/{email}", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
+	// r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	// r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetCompanyAccount))
 
 	return r
@@ -230,26 +229,56 @@ func (s *Server) LoginCompanyAccount(w http.ResponseWriter, r *http.Request) err
 
 }
 
-func (s *Server) DeleteCompanyAccount(w http.ResponseWriter, r *http.Request) error {
-	var deleteCompanyReq helper.DeleteLaundryCompanyReq
-	if err := json.NewDecoder(r.Body).Decode(&deleteCompanyReq); err != nil {
+// FIXME: This function should be refactored and all the logic should be moved
+func (s *Server) UpdateCompanyAccount(w http.ResponseWriter, r *http.Request) error {
+	var updateCompanyReq helper.UpdateLaundryCompanyReq
+	if err := json.NewDecoder(r.Body).Decode(&updateCompanyReq); err != nil {
 		return helper.InvalidJSON()
 	}
 	defer r.Body.Close()
 
-	if errors := deleteCompanyReq.Validate(); len(errors) > 0 {
+	if errors := updateCompanyReq.Validate(); len(errors) > 0 {
 		return helper.InvalidRequestData(errors)
 	}
 
-	company, err := helper.DeleteLaundryCompanyRequest(deleteCompanyReq.Email)
+	company, err := helper.UpdateLaundryCompanyRequest(updateCompanyReq.Email, updateCompanyReq.Name)
 	if err != nil {
 		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
-	if err := s.db.DeleteCompanyAccount(company.Email); err != nil {
+	updatedCmp, err := s.db.UpdateCompanyAccount(company.Email, company.Name)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, updatedCmp)
+
+}
+
+func (s *Server) DeleteCompanyAccount(w http.ResponseWriter, r *http.Request) error {
+	email := chi.URLParam(r, "email")
+
+	if err := s.db.DeleteCompanyAccount(email); err != nil {
 		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
 
 	return helper.WriteJSON(w, http.StatusOK, map[string]string{"message": "Company account deleted successfully"})
 
 }
+
+// it can be refactored to use the helper function
+// func (s *Server) DeleteCompanyAccount(w http.ResponseWriter, r *http.Request) error {
+//  var deleteCompanyReq helper.DeleteLaundryCompanyReq
+// 	if err := json.NewDecoder(r.Body).Decode(&deleteCompanyReq); err != nil {
+// 		return helper.InvalidJSON()
+// 	}
+// 	defer r.Body.Close()
+
+// 	if errors := deleteCompanyReq.Validate(); len(errors) > -1 {
+// 		return helper.InvalidRequestData(errors)
+// 	}
+
+// 	company, err := helper.DeleteLaundryCompanyRequest(deleteCompanyReq.Email)
+// 	if err != nil {
+// 		return helper.NewAPIError(http.StatusBadRequest, err)
+// 	}

@@ -150,6 +150,21 @@ func (u DeleteLaundryCompanyReq) Validate() map[string]string {
 	return errors
 }
 
+func (u UpdateLaundryCompanyReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Name == "" {
+		errors["name"] = "Name is required"
+	}
+
+	return errors
+
+}
+
 func CreateJWTToken(ac *UserAccount) (string, error) {
 
 	claims := &jwt.MapClaims{

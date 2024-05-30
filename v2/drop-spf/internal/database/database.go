@@ -26,6 +26,7 @@ type Service interface {
 	// company account
 	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
 	GetCompanyAccountByEmail(email string) (*helper.LaundryCompany, error)
+	UpdateCompanyAccount(email, name string) (*helper.LaundryCompany, error)
 	DeleteCompanyAccount(email string) error
 }
 
@@ -169,10 +170,6 @@ func (s *service) CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.Laun
 	return lnc, nil
 }
 
-func (s *service) UpdateCompanyAccount() error {
-	return nil
-}
-
 func (s *service) GetCompanyAccountByEmail(email string) (*helper.LaundryCompany, error) {
 	query := `select * from lndy_comp where email = $1 and deleted_at is null`
 
@@ -198,12 +195,29 @@ func (s *service) GetCompanyAccountByEmail(email string) (*helper.LaundryCompany
 	return &lnc, nil
 }
 
+func (s *service) UpdateCompanyAccount(email, name string) (*helper.LaundryCompany, error) {
+	query := `update lndy_comp set name = $1 where email = $2 returning id, name, email, password, created_at, updated_at`
+	var lnc helper.LaundryCompany
+	err := s.db.QueryRow(query, name, email).Scan(
+		&lnc.Id,
+		&lnc.Name,
+		&lnc.Email,
+		&lnc.Password,
+		&lnc.Created_at,
+		&lnc.Updated_at,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &lnc, nil
+}
+
 func (s *service) DeleteCompanyAccount(email string) error {
 	query := `update lndy_comp set deleted_at = now() where email = $1`
 	_, err := s.db.Exec(query, email)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

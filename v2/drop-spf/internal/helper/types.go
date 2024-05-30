@@ -59,6 +59,11 @@ type DeleteLaundryCompanyReq struct {
 	Email string `json:"email"`
 }
 
+type UpdateLaundryCompanyReq struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
 type Employee struct {
 	Id         int       `json:"id"`
 	Name       string    `json:"name"`
@@ -120,6 +125,13 @@ func LoginLaundryCompanyRequest(email, password string) (*LaundryCompany, error)
 func DeleteUserAccountRequest(email string) (*UserAccount, error) {
 	return &UserAccount{
 		Email: email,
+	}, nil
+}
+
+func UpdateLaundryCompanyRequest(email, name string) (*LaundryCompany, error) {
+	return &LaundryCompany{
+		Email: email,
+		Name:  name,
 	}, nil
 }
 

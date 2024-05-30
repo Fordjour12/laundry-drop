@@ -10,7 +10,7 @@
 ## Company Account
 
 - [x] create account
-- [] read/get account
+- [X] read/get account
 - [] update account
 - [x] Delete Account
 - [] create Employee account
@@ -29,9 +29,9 @@
 
 #### 2. Implement Authentication
 
-- [ ] **User Registration**: Implement an endpoint to allow users to register with email and password. Store user credentials securely in Postgres.
-- [ ] **User Login**: Implement an endpoint to authenticate users using email and password. Use Redis for session management and JWT (JSON Web Tokens) for authentication.
-- [ ] **Password Hashing**: Hash user passwords before storing them in the database using a secure hashing algorithm like bcrypt.
+- [x] **User Registration**: Implement an endpoint to allow users to register with email and password. Store user credentials securely in Postgres.
+- [x] **User Login**: Implement an endpoint to authenticate users using email and password. Use Redis for session management and JWT (JSON Web Tokens) for authentication.
+- [x] **Password Hashing**: Hash user passwords before storing them in the database using a secure hashing algorithm like bcrypt.
 
 #### 3. Implement Authorization
 
@@ -40,7 +40,7 @@
 
 #### 4. CORS Handling
 
-- [ ] **Configure CORS Middleware**: Use Chi's CORS middleware to handle Cross-Origin Resource Sharing (CORS) to allow your frontend to interact with your backend APIs from a different origin.
+- [X] **Configure CORS Middleware**: Use Chi's CORS middleware to handle Cross-Origin Resource Sharing (CORS) to allow your frontend to interact with your backend APIs from a different origin.
 
 #### 5. Testing and Documentation
 
@@ -51,3 +51,33 @@
 
 - [ ] **Dockerize Go Application**: Create a Dockerfile to package your Go application.
 - [ ] **Deployment Strategy**: Decide on a deployment strategy (e.g., Docker Swarm, Kubernetes, or a cloud platform like AWS, GCP, or Azure) and deploy your Dockerized application. -->
+
+## Delete Company Account
+
++-----------+                       +------------+                       +--------+
+|  Browser  |                       |  Backend   |                       |Database|
++-----------+                       +------------+                       +--------+
+      |                                   |                                  |
+      |                                   |                                  |
+      |    (1) User Enters ID & Clicks    |                                  |
+      |    "Delete Account"               |                                  |
+      |---------------------------------->|                                  |
+      |                                   |                                  |
+      |                                   |                                  |
+      |                                   | (2) DELETE /api/user/{userID}    |
+      |                                   |--------------------------------->|
+      |                                   |                                  |
+      |                                   |                                  |
+      |                                   | (3) Execute SQL: DELETE FROM     |
+      |                                   |     users WHERE id = {userID}    |
+      |                                   |--------------------------------->|
+      |                                   |                                  |
+      |                                   |                                  |
+      |                                   |         (4) SQL Result           |
+      |                                   |<---------------------------------|
+      |                                   |                                  |
+      |  (5) Response: "User deleted      |                                  |
+      |  successfully"                    |                                  |
+      |<----------------------------------|                                  |
+      |                                   |                                  |
+      |                                   |                                  |
