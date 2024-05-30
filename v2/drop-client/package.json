@@ -45,9 +45,11 @@
     "svelte-preprocess"
   ],
   "dependencies": {
+    "@internationalized/date": "^3.5.4",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "bits-ui": "^0.21.7",
+    "bits-ui": "^0.21.10",
     "clsx": "^2.1.1",
+    "cmdk-sv": "^0.0.17",
     "formsnap": "^1.0.0",
     "lucide-svelte": "^0.376.1",
     "mini-svg-data-uri": "^1.4.4",
