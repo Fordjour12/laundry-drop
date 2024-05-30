@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
+	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { loginFormSchema, type LoginFormSchema } from './schema';
-	import { toast } from 'svelte-sonner';
 
 	export let data: SuperValidated<Infer<LoginFormSchema>>;
 
