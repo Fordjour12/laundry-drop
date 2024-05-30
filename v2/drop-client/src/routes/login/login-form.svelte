@@ -4,11 +4,15 @@
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { loginFormSchema, type LoginFormSchema } from './schema';
+	import { toast } from 'svelte-sonner';
 
 	export let data: SuperValidated<Infer<LoginFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(loginFormSchema)
+		validators: zodClient(loginFormSchema),
+		onError({ result }) {
+			toast.error(result.error.message);
+		}
 	});
 
 	const { form: formData, enhance } = form;
