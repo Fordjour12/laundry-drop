@@ -1,10 +1,9 @@
 <script>
-	import ModeToggler from '@/components/ui/modeToggler/mode-toggler.svelte';
 	import { ModeWatcher } from 'mode-watcher';
+	import { Toaster } from '@/components/ui/sonner/index';
 	import '../app.pcss';
 </script>
 
 <ModeWatcher />
-<!-- <ModeToggler /> -->
-
+<Toaster />
 <slot></slot>

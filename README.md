@@ -38,3 +38,7 @@ Navigate to the project directory:
 ## Client
 
 ## Server
+
+security
+
+https://cloud.google.com/run/docs/authenticating/end-users

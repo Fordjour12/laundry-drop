@@ -6,7 +6,8 @@
 	import { Button } from '@/components/ui/button';
 </script>
 
-<div class="h-screen w-screen bg-[url('/bgImage.jpg')] bg-cover p-4">
+<!--bg-[url('/bgImage.jpg')]-->
+<div class="h-screen w-screen bg-cover p-4">
 	<div class="flex h-full w-[450px] flex-col justify-center rounded-xl bg-neutral-800 px-6">
 		<div class="flex flex-col items-start px-6 py-4">
 			<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-white lg:text-5xl">
@@ -17,11 +18,6 @@
 			</p>
 		</div>
 
-		<!-- {#if form?.message}
-			<p class="px-6 pb-2 text-sm leading-4 text-red-600 [&:not(:first-child)]:mt-6">
-				{form?.message}
-			</p>
-			{/if}  -->
 		<LoginForm data={data.form} />
 
 		<small class="pt-4 text-center text-white"

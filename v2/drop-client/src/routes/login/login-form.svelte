@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
+	import { toast } from 'svelte-sonner';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { loginFormSchema, type LoginFormSchema } from './schema';
@@ -8,7 +9,10 @@
 	export let data: SuperValidated<Infer<LoginFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(loginFormSchema)
+		validators: zodClient(loginFormSchema),
+		onError({ result }) {
+			toast.error(result.error.message);
+		}
 	});
 
 	const { form: formData, enhance } = form;
