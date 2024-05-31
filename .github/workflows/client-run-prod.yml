@@ -2,10 +2,8 @@ name: Build and Deploy to Cloud Run Vprod
 
 on:
   push:
-    branches:
-      - master
-    # tags:
-    # - "v*.*.*"
+    tags:
+      - "v*.*.*"
 
 env:
   PROJECT_ID: laundry-drop-409012
@@ -48,7 +46,7 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
-          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}
+          image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{env.REPOSITORY}}/${{ env.SERVICE }}:${{ github.sha }}
 
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
