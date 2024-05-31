@@ -5,7 +5,7 @@ on:
     branches:
       - master
     # tags:
-      # - "v*.*.*"
+    # - "v*.*.*"
 
 env:
   PROJECT_ID: laundry-drop-409012
@@ -29,8 +29,8 @@ jobs:
         id: auth
         uses: "google-github-actions/auth@v2"
         with:
-          workload_identity_provider: "${{ secrets.WIF_PROVIDER }}"
-          service_account: "${{ secrets.WIF_SERVICE_ACCOUNT }}"
+          workload_identity_provider: "${{ secrets.WIF_PROVIDER_PROD }}"
+          service_account: "${{ secrets.WIF_SERVICE_ACCOUNT_PROD }}"
 
       - name: Gcloud Docker Auth
         id: docker-gcloud-auth
