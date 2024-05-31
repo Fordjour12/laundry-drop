@@ -1,9 +1,6 @@
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({locals}) => {
-
-    console.log('PageServerLoad =>', locals.session);
-
+export const load: PageServerLoad = async ({ locals }) => {
     const dt = locals.session;
 
     if (dt) {
@@ -11,6 +8,4 @@ export const load: PageServerLoad = async ({locals}) => {
             validSession: locals.session
         }
     }
-    
-    
 };

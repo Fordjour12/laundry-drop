@@ -1,13 +1,9 @@
-//import prisma from '$lib/db';
-//import { hashPassword } from '$lib/helpers/bcrypt.helper';
-//import { Session } from '$lib/helpers/session.helper';
-//import { generateAccessToken, generateRefreshToken } from '$lib/helpers/tokens.helper';
-// message => superValidate => zod => registerFormSchema
-import { fail } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
-import type { Actions, PageServerLoad } from './$types';
-import { registerFormSchema } from './schema';
+import { env } from "$env/dynamic/private";
+import { fail, redirect, error } from "@sveltejs/kit";
+import { message, superValidate } from "sveltekit-superforms";
+import { zod } from "sveltekit-superforms/adapters";
+import type { Actions, PageServerLoad } from "./$types";
+import { registerFormSchema } from "./schema";
 
 export const load: PageServerLoad = async () => {
 	// validate if session has not expired
@@ -18,84 +14,42 @@ export const load: PageServerLoad = async () => {
 	// }
 
 	return {
-		form: await superValidate(zod(registerFormSchema))
+		form: await superValidate(zod(registerFormSchema)),
 	};
 };
 
-export const actions: Actions = {
+export const actions = {
 	register: async (event) => {
 		const form = await superValidate(event, zod(registerFormSchema));
 		if (!form.valid) {
 			return fail(400, {
-				form
+
+				form,
 			});
 		}
+
+		const { email, password, name } = form.data;
+		console.log(env.DEPLOYMENT_API_URL);
+		const response = await event.fetch(
+			"http://localhost:8080/api/v1/create-company",
+			{
+				method: "POST",
+				mode: "cors",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ email, password, name }),
+			},
+		);
+
+		if (!response.ok) {
+			const data = await response.json();
+			error(404, {
+				message: data.message,
+			});
+		}
+
+		return redirect(301, "/login");
+
 	}
-}
-//		const { email, password, name } = form.data;
-//
-//		const registerCompany = await prisma.company.findUnique({
-//			where: {
-//				email: email
-//			},
-//			include: {
-//				cmpRefreshToken: true
-//			}
-//		});
-//
-//		if (registerCompany) {
-//			return message(form, 'Email already exists', {
-//				status: 400
-//			});
-//		}
-//		const passHash = await hashPassword(password);
-//
-//		const companyRefreshToken = await generateRefreshToken({
-//			email: email,
-//			name: name
-//		});
-//
-//		const registeredCompany = await prisma.company.create({
-//			data: {
-//				email: email,
-//				password: passHash,
-//				name: name,
-//				cmpRefreshToken: {
-//					create: {
-//						token: companyRefreshToken
-//					}
-//					// TODO: will have to look more into this
-//					// createMany: {
-//					// 	// token: companyRefreshToken
-//					// 	data: {
-//					// 		token: companyRefreshToken
-//					// 	}
-//					// }
-//				}
-//			}
-//		});
-//
-//		const accessToken = await generateAccessToken({
-//			email: registeredCompany.email,
-//			name: registeredCompany.name,
-//			id: registeredCompany.id
-//		});
-//
-//		event.cookies.set(Session, accessToken, {
-//			path: '/',
-//			maxAge: 60 * 15,
-//			sameSite: 'lax',
-//			httpOnly: true
-//			// secure: true // for production
-//		});
-//
-//		redirect(303, '/dashboard');
-//
-//		/**
-//		 *  unreachable code
-//		 * */
-//		// return {
-//		// form
-//		// };
-//	}
-//};
+} satisfies Actions;

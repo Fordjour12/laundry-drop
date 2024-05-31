@@ -85,6 +85,37 @@ func (u UserAccountReq) Validate() map[string]string {
 	return errors
 }
 
+func (u LaundryCompanyReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Name == "" {
+		errors["name"] = "Name is required"
+	}
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Password == "" {
+		errors["password"] = "Password is required"
+	}
+
+	return errors
+}
+func (u LoginLaundryCompanyAccountReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Password == "" {
+		errors["password"] = "Password is required"
+	}
+
+	return errors
+}
+
 func (u LoginUserAccountReq) Validate() map[string]string {
 	errors := make(map[string]string)
 
@@ -109,6 +140,31 @@ func (u DeleteUserAccountReq) Validate() map[string]string {
 	return errors
 }
 
+func (u DeleteLaundryCompanyReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	return errors
+}
+
+func (u UpdateLaundryCompanyReq) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Email == "" {
+		errors["email"] = "Email is required"
+	}
+
+	if u.Name == "" {
+		errors["name"] = "Name is required"
+	}
+
+	return errors
+
+}
+
 func CreateJWTToken(ac *UserAccount) (string, error) {
 
 	claims := &jwt.MapClaims{
@@ -116,6 +172,23 @@ func CreateJWTToken(ac *UserAccount) (string, error) {
 		"ExpiresAt":  time.Now().Add(time.Hour * 24).Unix(),
 		"Id":         ac.Id,
 		"Username":   ac.Username,
+		"AuthStatus": "authenticated",
+	}
+
+	secretJWT := os.Getenv("JWT_SECRET")
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString([]byte(secretJWT))
+}
+
+func CreateCmpJWTToken(ac *LaundryCompany) (string, error) {
+
+	claims := &jwt.MapClaims{
+		"Audience":   "user",
+		"ExpiresAt":  time.Now().Add(time.Hour * 24).Unix(),
+		"Id":         ac.Id,
+		"Username":   ac.Name,
 		"AuthStatus": "authenticated",
 	}
 

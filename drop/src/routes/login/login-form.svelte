@@ -11,10 +11,14 @@
 		validators: zodClient(loginFormSchema)
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance,message } = form;
 </script>
 
-<form method="POST" use:enhance class="px-6 text-white">
+{#if $message}
+	<div class="bg-red-500"> {$message} </div>
+{/if}
+
+<form method="POST" action="?/login" use:enhance class="px-6 text-white">
 	<Form.Field {form} name="email">
 		<Form.Control let:attrs>
 			<Form.Label>Username</Form.Label>
