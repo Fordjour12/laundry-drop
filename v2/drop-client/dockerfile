@@ -1,0 +1,33 @@
+FROM oven/bun:latest as base
+WORKDIR /app
+
+RUN rm -Rf node_modules
+RUN rm -Rf build
+
+COPY package.json .
+COPY . .
+
+RUN bun install
+RUN bun run build
+
+
+FROM base as stg-prod
+RUN mkdir -p /stg/dev
+COPY package.json bun.lockb /stg/dev/
+RUN cd /stg/dev && bun install --production
+
+FROM base as stagging
+WORKDIR /dist
+COPY package.json .
+
+COPY --from=stg-prod /stg/dev/node_modules node_modules
+COPY --from=base /app/build .
+
+USER bun
+
+ENV HOST 0.0.0.0
+ENV PORT 8080
+
+EXPOSE 8080/tcp
+
+ENTRYPOINT [ "bun","run","start" ]

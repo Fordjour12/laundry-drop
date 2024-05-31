@@ -71,6 +71,9 @@ USER appuser
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
 
+ENV HOST 0.0.0.0
+ENV PORT 8080
+
 # Expose the port that the application listens on.
 EXPOSE 8080
 
