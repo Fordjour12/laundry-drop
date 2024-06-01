@@ -1,34 +1,36 @@
-import BottomSheet from "@gorhom/bottom-sheet";
-import { useCallback, useMemo, useRef } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import MapView from "react-native-maps";
+import Card from "@/components/ui/Card";
+// import { customMapStyle } from "@/constants/customMapStyles";
+import * as Location from "expo-location";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+// import MapView from "react-native-maps";
 
 export default function Home() {
 	// const icon = require("../../assets/images/pointer.png");
-	// const initialRegion = {
-	// 	latitude: 7.9465, // Center latitude of Ghana
-	// 	longitude: -1.0232, // Center longitude of Ghana
-	// 	latitudeDelta: 5.0, // Latitude span of the map
-	// 	longitudeDelta: 5.0,
-	// };
+	const initialRegion = {
+		latitude: 7.9465, // Center latitude of Ghana
+		longitude: -1.0232, // Center longitude of Ghana
+		latitudeDelta: 5.0, // Latitude span of the map
+		longitudeDelta: 5.0,
+	};
 
-	// const [location, setLocation] = useState<Location.LocationObject | null>(
-	// 	null,
-	// );
-	// const [errorMsg, setErrorMsg] = useState<string | null>(null);
+	const [location, setLocation] = useState<Location.LocationObject | null>(
+		null,
+	);
+	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-	// useEffect(() => {
-	// 	(async () => {
-	// 		const { status } = await Location.requestForegroundPermissionsAsync();
-	// 		if (status !== "granted") {
-	// 			setErrorMsg("Permission to access location was denied");
-	// 			return;
-	// 		}
+	useEffect(() => {
+		(async () => {
+			const { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== "granted") {
+				setErrorMsg("Permission to access location was denied");
+				return;
+			}
 
-	// 		const location = await Location.getCurrentPositionAsync({});
-	// 		setLocation(location);
-	// 	})();
-	// }, []);
+			const location = await Location.getCurrentPositionAsync({});
+			setLocation(location);
+		})();
+	}, []);
 
 	// let text = "Waiting..";
 	// if (errorMsg) {
@@ -38,119 +40,116 @@ export default function Home() {
 	// }
 	// console.log("location", location);
 
-	// const camera = {
-	// 	center: {
-	// 		latitude: location?.coords.latitude || initialRegion.latitude,
-	// 		longitude: location?.coords.longitude || initialRegion.longitude,
-	// 	},
-	// 	pitch: 45, // Tilt of the map
-	// 	heading: 90, // Orientation (bearing)
-	// 	altitude: 1000, // Altitude of the camera
-	// 	zoom: 15, // Zoom level
-	// };
+	const camera = {
+		center: {
+			latitude: location?.coords.latitude || initialRegion.latitude,
+			longitude: location?.coords.longitude || initialRegion.longitude,
+		},
+		pitch: 45, // Tilt of the map
+		heading: 90, // Orientation (bearing)
+		altitude: 1000, // Altitude of the camera
+		zoom: 15, // Zoom level
+	};
 
 	// const userCoords = {
 	// 	latitude: location?.coords.latitude || initialRegion.latitude,
 	// 	longitude: location?.coords.longitude || initialRegion.longitude,
 	// };
 
-	// // ref
-	// const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+	type CardData = {
+		id: number;
+		title: string;
+		description: string;
+	};
 
-	// // variables
-	// const snapPoints = useMemo(() => ["25%", "50%"], []);
-
-	// // callbacks
-	// const handlePresentModalPress = useCallback(() => {
-	// 	bottomSheetModalRef.current?.present();
-	// }, []);
-	// const handleSheetChanges = useCallback((index: number) => {
-	// 	console.log("handleSheetChanges", index);
-	// }, []);
-
-	const bottomSheetRef = useRef<BottomSheet>(null);
-
-	// callbacks
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log("handleSheetChanges", index);
-	}, []);
-
-	const snapPoints = useMemo(() => ["15%", "25%", "50%"], []);
+	const cardData: CardData[] = [
+		{
+			id: 1,
+			title: "Card 1",
+			description: "Description for Card 1",
+		},
+		{
+			id: 2,
+			title: "Card 2",
+			description: "Description for Card 2",
+		},
+		{
+			id: 3,
+			title: "Card 3",
+			description: "Description for Card 3",
+		},
+		{
+			id: 4,
+			title: "Card 4",
+			description: "Description for Card 4",
+		},
+		{
+			id: 5,
+			title: "Card 5",
+			description: "Description for Card 5",
+		},
+		{
+			id: 6,
+			title: "Card 6",
+			description: "Description for Card 6",
+		},
+		{
+			id: 7,
+			title: "Card 7",
+			description: "Description for Card 7",
+		},
+		{
+			id: 8,
+			title: "Card 8",
+			description: "Description for Card 8",
+		},
+		{
+			id: 9,
+			title: "Card 9",
+			description: "Description for Card 9",
+		},
+		{
+			id: 10,
+			title: "Card 10",
+			description: "Description for Card 10",
+		},
+	];
 
 	return (
-		<View style={{ flex: 1 }}>
-			<MapView style={{ flex: 1 }} />
-			<BottomSheet
-				ref={bottomSheetRef}
-				index={0}
-				snapPoints={snapPoints}
-				onChange={handleSheetChanges}
+		<View style={styles.container}>
+			{/* <MapView
+				initialRegion={initialRegion}
+				camera={camera}
+				googleRenderer="LATEST"
+				customMapStyle={customMapStyle}
+				showsCompass={false}
+				style={{ flex: 1 }}
+			/> */}
+			<ScrollView
+				horizontal
+				style={{
+					paddingVertical: 30,
+					position: "absolute",
+				}}
 			>
-				<View>
-					<View style={styles.contentContainer}>
-						<Text>Awesome 🎉</Text>
+				{cardData.map((data: CardData) => (
+					<View key={data.id} style={{ marginRight: 10 }}>
+						<Card
+							key={data.id}
+							title={data.title}
+							description={data.description}
+							price="GHS 100 - GHS 200"
+						/>
 					</View>
-				</View>
-			</BottomSheet>
+				))}
+			</ScrollView>
 		</View>
 	);
 }
-// <BottomSheetModalProvider>
-// 	<View style={styles.container}>
-// 		<MapView
-// 			initialRegion={initialRegion}
-// 			camera={camera}
-// 			followsUserLocation={true}
-// 			provider={PROVIDER_GOOGLE}
-// 			style={styles.map}
-// 			customMapStyle={gemCstMap}
-// 		>
-// 			<Marker
-// 				coordinate={userCoords}
-// 				title={"Marker Title"}
-// 				description={text}
-// 				icon={icon}
-// 			/>
-// 		</MapView>
-// 		<SafeAreaView style={{ flex: 1, position: "absolute" }}>
-// 			<Button onPress={handlePresentModalPress} title="Show Bottom Sheet" />
-// 			<BottomSheetModal
-// 				ref={bottomSheetModalRef}
-// 				index={1}
-// 				snapPoints={snapPoints}
-// 				onChange={handleSheetChanges}
-// 			>
-// 				<BottomSheetView style={styles.contentContainer}>
-// 					<Text>Awesome 🎉</Text>
-// 				</BottomSheetView>
-// 			</BottomSheetModal>
-// 		</SafeAreaView>
-// 	</View>
-// </BottomSheetModalProvider>
-// );
-// }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 24,
-		backgroundColor: "grey",
-	},
-	contentContainer: {
-		flex: 1,
-		alignItems: "center",
+		justifyContent: "flex-end",
 	},
 });
-
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 	},
-// 	map: {
-// 		...StyleSheet.absoluteFillObject,
-// 	},
-// 	contentContainer: {
-// 		flex: 1,
-// 		alignItems: "center",
-// 	},
-// });
