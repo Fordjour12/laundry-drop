@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Button } from '@/components/ui/button/index.js';
 	import type { PageData } from './$types';
 	import RegisterForm from './register-form.svelte';
 	export let data: PageData;
@@ -17,7 +18,14 @@
 
 		<RegisterForm data={data.form} />
 
-		<small class="leading-7 text-white [&:not(:first-child)]:mt-6">
+		<small class="text-center text-white"
+			>Have an account <Button
+				href="/login"
+				variant="link"
+				class="text-[#afc0b0] underline underline-offset-4">Login Account</Button
+			></small
+		>
+		<small class="leading-7 text-white [&:not(:first-child)]:mt-2">
 			By signing up, you agree to our <a href="/terms" class="font-bold">Terms of Use</a> and
 			<a href="/policy" class="font-bold">Privacy Policy</a>
 		</small>
