@@ -22,7 +22,7 @@
 
 		<small class="pt-4 text-center text-white"
 			>Don't have an account <Button
-				href="/signup"
+				href="/register"
 				variant="link"
 				class="text-[#afc0b0] underline underline-offset-4">Create Account</Button
 			></small
