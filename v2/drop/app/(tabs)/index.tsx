@@ -1,61 +1,11 @@
 import Card from "@/components/ui/Card";
-// import { customMapStyle } from "@/constants/customMapStyles";
-import * as Location from "expo-location";
-import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-// import MapView from "react-native-maps";
+import SearchBar from "@/components/ui/SearchBar";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import React, { useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Home() {
-	// const icon = require("../../assets/images/pointer.png");
-	const initialRegion = {
-		latitude: 7.9465, // Center latitude of Ghana
-		longitude: -1.0232, // Center longitude of Ghana
-		latitudeDelta: 5.0, // Latitude span of the map
-		longitudeDelta: 5.0,
-	};
-
-	const [location, setLocation] = useState<Location.LocationObject | null>(
-		null,
-	);
-	const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-	useEffect(() => {
-		(async () => {
-			const { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				setErrorMsg("Permission to access location was denied");
-				return;
-			}
-
-			const location = await Location.getCurrentPositionAsync({});
-			setLocation(location);
-		})();
-	}, []);
-
-	// let text = "Waiting..";
-	// if (errorMsg) {
-	// 	text = errorMsg;
-	// } else if (location) {
-	// 	text = JSON.stringify(location);
-	// }
-	// console.log("location", location);
-
-	const camera = {
-		center: {
-			latitude: location?.coords.latitude || initialRegion.latitude,
-			longitude: location?.coords.longitude || initialRegion.longitude,
-		},
-		pitch: 45, // Tilt of the map
-		heading: 90, // Orientation (bearing)
-		altitude: 1000, // Altitude of the camera
-		zoom: 15, // Zoom level
-	};
-
-	// const userCoords = {
-	// 	latitude: location?.coords.latitude || initialRegion.latitude,
-	// 	longitude: location?.coords.longitude || initialRegion.longitude,
-	// };
-
+export default function Discovery() {
 	type CardData = {
 		id: number;
 		title: string;
@@ -115,41 +65,118 @@ export default function Home() {
 		},
 	];
 
+	const username = "Alfred";
+	const location = "Dome";
+	const district = "Ga East Municipal";
+	const city = " Accra";
+	const [searchQuery, setSearchQuery] = useState("");
+
 	return (
-		<View style={styles.container}>
-			{/* <MapView
-				initialRegion={initialRegion}
-				camera={camera}
-				googleRenderer="LATEST"
-				customMapStyle={customMapStyle}
-				showsCompass={false}
-				style={{ flex: 1 }}
-			/> */}
-			<ScrollView
-				horizontal
-				style={{
-					paddingVertical: 30,
-					position: "absolute",
-				}}
-			>
-				{cardData.map((data: CardData) => (
-					<View key={data.id} style={{ marginRight: 10 }}>
-						<Card
-							key={data.id}
-							title={data.title}
-							description={data.description}
-							price="GHS 100 - GHS 200"
-						/>
+		<SafeAreaView>
+			<ScrollView>
+				<View style={{ backgroundColor: "gray", paddingVertical: 20 }}>
+					<Text
+						style={{
+							fontFamily: "PoppinsBold",
+							fontSize: 22,
+						}}
+					>
+						Welcome, {username}
+					</Text>
+					<View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
+						<FontAwesome name="location-arrow" size={24} color="black" />
+						<View>
+							<Text
+								style={{
+									fontFamily: "PoppinsSemi",
+									fontWeight: "600",
+									fontSize: 13,
+								}}
+							>
+								{location},{city}
+							</Text>
+							<Text
+								style={{
+									fontFamily: "PoppinsSemi",
+									fontSize: 13,
+								}}
+							>
+								{district}
+							</Text>
+						</View>
 					</View>
-				))}
+					<SearchBar />
+				</View>
+
+				<View>
+					<Text
+						style={{
+							fontSize: 20,
+							fontFamily: "PoppinsBold",
+						}}
+					>
+						Discovery
+					</Text>
+
+					<View>
+						<Text
+							style={{
+								fontFamily: "Poppins",
+								fontWeight: "400",
+								fontSize: 15,
+							}}
+						>
+							Popular Laundry
+						</Text>
+
+						<ScrollView
+							horizontal
+							showsHorizontalScrollIndicator={false}
+							style={{ paddingHorizontal: 20, paddingTop: 10 }}
+						>
+							{cardData.map((data: CardData) => (
+								<View key={data.id} style={{ marginRight: 10 }}>
+									<Card
+										key={data.id}
+										title={data.title}
+										description={data.description}
+										price="GHS 100 - GHS 200"
+									/>
+								</View>
+							))}
+						</ScrollView>
+					</View>
+
+					<View>
+						<Text
+							style={{
+								fontFamily: "Poppins",
+								fontWeight: "400",
+								fontSize: 15,
+							}}
+						>
+							Laundry Products
+						</Text>
+
+						<ScrollView
+							horizontal
+							showsHorizontalScrollIndicator={false}
+							style={{ paddingHorizontal: 20, paddingTop: 10 }}
+						>
+							{cardData.map((data: CardData) => (
+								<View key={data.id} style={{ marginRight: 10 }}>
+									<Card
+										key={data.id}
+										title={data.title}
+										description={data.description}
+										price="GHS 100 - GHS 200"
+									/>
+								</View>
+							))}
+						</ScrollView>
+					</View>
+				</View>
 			</ScrollView>
-		</View>
+		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "flex-end",
-	},
-});
