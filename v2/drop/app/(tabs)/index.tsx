@@ -65,6 +65,37 @@ export default function Discovery() {
 		},
 	];
 
+	type CategoryData = {
+		id: number;
+		title: string;
+	};
+	const categoryData: CategoryData[] = [
+		{
+			id: 1,
+			title: "Washing",
+		},
+		{
+			id: 2,
+			title: "Dry Cleaning",
+		},
+		{
+			id: 3,
+			title: "Ironing",
+		},
+		{
+			id: 4,
+			title: "Products",
+		},
+		{
+			id: 5,
+			title: "Bedding",
+		},
+		{
+			id: 6,
+			title: "Washing + Ironing",
+		},
+	];
+
 	const username = "Alfred";
 	const location = "Dome";
 	const district = "Ga East Municipal";
@@ -106,6 +137,38 @@ export default function Discovery() {
 						</View>
 					</View>
 					<SearchBar />
+				</View>
+
+				<View>
+					<Text
+						style={{
+							fontSize: 20,
+							fontFamily: "PoppinsBold",
+						}}
+					>
+						Categories
+					</Text>
+
+					<ScrollView
+						horizontal
+						showsHorizontalScrollIndicator={false}
+						style={{ paddingHorizontal: 20, paddingTop: 10 }}
+					>
+						{categoryData.map((data: CategoryData) => (
+							<View key={data.id} style={{ alignItems: "center" }}>
+								<View
+									style={{
+										width: 100,
+										height: 100,
+										backgroundColor: "gray",
+										borderRadius: 10,
+										marginRight: 10,
+									}}
+								/>
+								<Text style={{ fontFamily: "PoppinsSemi" }}>{data.title}</Text>
+							</View>
+						))}
+					</ScrollView>
 				</View>
 
 				<View>
