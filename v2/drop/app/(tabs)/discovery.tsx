@@ -70,28 +70,64 @@ export default function Discovery() {
 	const district = "Ga East Municipal";
 	const city = " Accra";
 	const [searchQuery, setSearchQuery] = useState("");
+
 	return (
 		<SafeAreaView>
 			<ScrollView>
-				<View>
-					<Text>Welcome, {username}</Text>
+				<View style={{ backgroundColor: "gray", paddingVertical: 20 }}>
+					<Text
+						style={{
+							fontFamily: "PoppinsBold",
+							fontSize: 22,
+						}}
+					>
+						Welcome, {username}
+					</Text>
 					<View style={{ flexDirection: "row", gap: 20, alignItems: "center" }}>
 						<FontAwesome name="location-arrow" size={24} color="black" />
 						<View>
-							<Text>
+							<Text
+								style={{
+									fontFamily: "PoppinsSemi",
+									fontWeight: "600",
+									fontSize: 13,
+								}}
+							>
 								{location},{city}
 							</Text>
-							<Text>{district}</Text>
+							<Text
+								style={{
+									fontFamily: "PoppinsSemi",
+									fontSize: 13,
+								}}
+							>
+								{district}
+							</Text>
 						</View>
 					</View>
+					<SearchBar />
 				</View>
-				<SearchBar />
 
 				<View>
-					<Text>Discovery</Text>
+					<Text
+						style={{
+							fontSize: 20,
+							fontFamily: "PoppinsBold",
+						}}
+					>
+						Discovery
+					</Text>
 
 					<View>
-						<Text>Nearest Laundry</Text>
+						<Text
+							style={{
+								fontFamily: "Poppins",
+								fontWeight: "400",
+								fontSize: 15,
+							}}
+						>
+							Popular Laundry
+						</Text>
 
 						<ScrollView
 							horizontal
@@ -112,7 +148,15 @@ export default function Discovery() {
 					</View>
 
 					<View>
-						<Text>Laundry Products</Text>
+						<Text
+							style={{
+								fontFamily: "Poppins",
+								fontWeight: "400",
+								fontSize: 15,
+							}}
+						>
+							Laundry Products
+						</Text>
 
 						<ScrollView
 							horizontal
