@@ -3,7 +3,9 @@
 	import { Button } from '@/components/ui/button/index.js';
 	import * as Card from '@/components/ui/card/index.js';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu/index.js';
-	import Input from '@/components/ui/input/input.svelte';
+	import { Input } from '@/components/ui/input/index.js';
+	import { Label } from '@/components/ui/label/index.js';
+	import * as Sheet from '@/components/ui/sheet/index.js';
 	import { Search } from 'lucide-svelte';
 
 	const services = [
@@ -120,7 +122,34 @@
 						</Card.Description>
 					</Card.Header>
 					<Card.Footer>
-						<Button>Create New Services</Button>
+						<Sheet.Root>
+							<Sheet.Trigger asChild let:builder>
+								<Button builders={[builder]}>Create New Services</Button>
+							</Sheet.Trigger>
+							<Sheet.Content side="right">
+								<Sheet.Header>
+									<Sheet.Title>Edit profile</Sheet.Title>
+									<Sheet.Description>
+										Make changes to your profile here. Click save when you're done.
+									</Sheet.Description>
+								</Sheet.Header>
+								<div class="grid gap-4 py-4">
+									<div class="grid grid-cols-4 items-center gap-4">
+										<Label for="name" class="text-right">Name</Label>
+										<Input id="name" value="Pedro Duarte" class="col-span-3" />
+									</div>
+									<div class="grid grid-cols-4 items-center gap-4">
+										<Label for="username" class="text-right">Username</Label>
+										<Input id="username" value="@peduarte" class="col-span-3" />
+									</div>
+								</div>
+								<Sheet.Footer>
+									<Sheet.Close asChild let:builder>
+										<Button builders={[builder]} type="submit">Save changes</Button>
+									</Sheet.Close>
+								</Sheet.Footer>
+							</Sheet.Content>
+						</Sheet.Root>
 					</Card.Footer>
 				</Card.Root>
 			</div>
