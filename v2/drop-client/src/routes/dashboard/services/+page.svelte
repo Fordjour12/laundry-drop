@@ -128,7 +128,7 @@
 							</Sheet.Trigger>
 							<Sheet.Content side="right">
 								<Sheet.Header>
-									<Sheet.Title>Edit profile</Sheet.Title>
+									<Sheet.Title>Adding New Services</Sheet.Title>
 									<Sheet.Description>
 										Make changes to your profile here. Click save when you're done.
 									</Sheet.Description>
