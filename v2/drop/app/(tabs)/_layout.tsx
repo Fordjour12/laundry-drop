@@ -18,6 +18,15 @@ export default function TabLayout() {
 					title: "Explore",
 				}}
 			/>
+			<Tabs.Screen
+				name="chat"
+				options={{
+					title: "Chat"
+				}} />
+			<Tabs.Screen
+				name="profile"
+				options={{ title: "Profile" }}
+			/>
 		</Tabs>
 	);
 }
