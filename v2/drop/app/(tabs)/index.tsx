@@ -182,6 +182,7 @@ export default function Discovery() {
 					</Text>
 
 					<View>
+						<View></View>
 						<Text
 							style={{
 								fontFamily: "Poppins",
