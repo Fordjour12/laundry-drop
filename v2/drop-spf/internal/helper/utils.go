@@ -165,6 +165,28 @@ func (u UpdateLaundryCompanyReq) Validate() map[string]string {
 
 }
 
+func (u UserLocation) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Address == "" {
+		errors["address"] = "Address is required"
+	}
+	if u.Latitude == "" {
+		errors["latitude"] = "Latitude is required"
+	}
+	if u.Longitude == "" {
+		errors["longitude"] = "Longitude is required"
+	}
+	if u.UserId == nil {
+		errors["userId"] = "UserId is required"
+	}
+	if u.IsPreferred {
+		errors["isPreferred"] = "IsPreferred is required"
+	}
+
+	return errors
+}
+
 func CreateJWTToken(ac *UserAccount) (string, error) {
 
 	claims := &jwt.MapClaims{

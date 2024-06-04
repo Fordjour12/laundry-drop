@@ -33,6 +33,15 @@ type DeleteUserAccountReq struct {
 	Email string `json:"email"`
 }
 
+type UserLocation struct {
+	AddressId   int          `json:"id"`
+	Address     string       `json:"address"`
+	Latitude    string       `json:"latitude"`
+	Longitude   string       `json:"longitude"`
+	IsPreferred bool         `json:"is_preferred"`
+	UserId      *UserAccount `json:"user_id"`
+}
+
 type LaundryCompany struct {
 	Id         int        `json:"id"`
 	Name       string     `json:"name"`
@@ -92,6 +101,16 @@ func NewUserAccountRequest(username, email, password string) (*UserAccount, erro
 		Username: username,
 		Email:    email,
 		Password: string(passHash),
+	}, nil
+}
+
+func NewUserLocationRequest(address, latitude, longitude string, isPreferred bool, userId *UserAccount) (*UserLocation, error) {
+	return &UserLocation{
+		Address:     address,
+		Latitude:    latitude,
+		Longitude:   longitude,
+		IsPreferred: isPreferred,
+		UserId:      userId,
 	}, nil
 }
 
