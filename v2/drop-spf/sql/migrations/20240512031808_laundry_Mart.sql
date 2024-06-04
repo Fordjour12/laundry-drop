@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-create table if not exists lndy_comp (
+create table if not exists laundryMart (
   id serial primary key,
   name varchar(255) not null,
   email varchar(255) unique not null,
@@ -19,12 +19,12 @@ end;
 $$ language plpgsql;
 
 -- create trigger to call the function on update
-create trigger lndy_comp_updated_at before update on lndy_comp
+create trigger lnd_mt_updated_at before update on laundryMart
 for each row
 execute function update_updated_at_column();
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-drop table if exists lndy_comp
+drop table if exists laundryMart
 -- +goose StatementEnd
