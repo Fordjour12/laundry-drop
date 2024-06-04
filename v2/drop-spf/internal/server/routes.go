@@ -45,7 +45,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Put("/api/v1/update-company", helper.MakeHTTPHandler(s.UpdateCompanyAccount))
 	r.Delete("/api/v1/delete-company/{email}", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	// r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
-	// r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetCompanyAccount))
+	r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetAllCompany))
 
 	return r
 
@@ -166,6 +166,41 @@ func (s *Server) DeleteUserAccount(w http.ResponseWriter, r *http.Request) error
 	return helper.WriteJSON(w, http.StatusOK, map[string]string{"message": "User account deleted successfully"})
 }
 
+func (s *Server) CreateUserLocation(w http.ResponseWriter, r *http.Request) error {
+	var userId = chi.URLParam(r, "userId")
+	var createLocationReq helper.UserLocation
+	if err := json.NewDecoder(r.Body).Decode(&createLocationReq); err != nil {
+		return helper.InvalidJSON()
+	}
+	defer r.Body.Close()
+
+	if errors := createLocationReq.Validate(); len(errors) > 0 {
+		return helper.InvalidRequestData(errors)
+	}
+
+	location, err := helper.NewUserLocationRequest(
+		createLocationReq.Address,
+		createLocationReq.Latitude,
+		createLocationReq.Longitude,
+		createLocationReq.IsPreferred,
+		createLocationReq.UserId,
+	)
+	if err != nil {
+		return err
+	}
+
+	locationData, err := s.db.AddUserLocation(userId, location)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusCreated, locationData)
+}
+
+/*
+*	@params: Company api's
+ */
+
 func (s *Server) CreateNewCompanyAccount(w http.ResponseWriter, r *http.Request) error {
 	var createCompanyReq helper.LaundryCompanyReq
 	if err := json.NewDecoder(r.Body).Decode(&createCompanyReq); err != nil {
@@ -264,6 +299,15 @@ func (s *Server) DeleteCompanyAccount(w http.ResponseWriter, r *http.Request) er
 
 	return helper.WriteJSON(w, http.StatusOK, map[string]string{"message": "Company account deleted successfully"})
 
+}
+
+func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
+	companies, err := s.db.GetAllCompany()
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, companies)
 }
 
 // it can be refactored to use the helper function

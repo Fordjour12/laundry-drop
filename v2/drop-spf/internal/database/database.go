@@ -22,12 +22,14 @@ type Service interface {
 	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
 	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
 	DeleteUserAccount(email string) error
+	AddUserLocation(ua *helper.UserAccount, loc *helper.UserLocation) (*helper.UserLocation, error)
 
 	// company account
 	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
 	GetCompanyAccountByEmail(email string) (*helper.LaundryCompany, error)
 	UpdateCompanyAccount(email, name string) (*helper.LaundryCompany, error)
 	DeleteCompanyAccount(email string) error
+	GetAllCompany() (*[]helper.LaundryCompany, error)
 }
 
 type service struct {
@@ -127,8 +129,37 @@ func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, erro
 	); err != nil {
 		return nil, err
 	}
-
 	return &ua, nil
+}
+
+func (s *service) AddUserLocation(ua *helper.UserAccount, loc *helper.UserLocation) (*helper.UserLocation, error) {
+	query := `insert into user_location (user_id, address,latitude,longitude,is_preferred) 
+				values ($1, $2, $3, $4) 
+				returning id, user_id, address, latitude, longitude, is_preferred
+				`
+
+	err := s.db.QueryRow(query,
+		ua.Id,
+		loc.Address,
+		loc.Latitude,
+		loc.Longitude,
+		loc.IsPreferred,
+	).Scan(
+		&loc.UserId,
+		&loc.AddressId,
+		&loc.Latitude,
+		&loc.Longitude,
+		&loc.IsPreferred,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return loc, nil
 }
 
 func (s *service) DeleteUserAccount(email string) error {
@@ -220,4 +251,32 @@ func (s *service) DeleteCompanyAccount(email string) error {
 		return err
 	}
 	return nil
+}
+
+func (s *service) GetAllCompany() (*[]helper.LaundryCompany, error) {
+	query := `select * from lndy_comp where deleted_at is null`
+	rows, err := s.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var companies []helper.LaundryCompany
+	for rows.Next() {
+		var company helper.LaundryCompany
+		if err := rows.Scan(
+			&company.Id,
+			&company.Name,
+			&company.Email,
+			&company.Password,
+			&company.Privilege,
+			&company.Created_at,
+			&company.Updated_at,
+			&company.Deleted_at,
+		); err != nil {
+			return nil, err
+		}
+		companies = append(companies, company)
+	}
+	return &companies, nil
 }
