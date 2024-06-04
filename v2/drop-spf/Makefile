@@ -1,5 +1,6 @@
 # Simple Makefile for a Go project
 
+
 # Build the application
 all: build
 
@@ -40,6 +41,7 @@ clean:
 	@echo "Cleaning..."
 	@rm -f main
 
+
 # Live Reload
 watch:
 	@if command -v air > /dev/null; then \
@@ -57,10 +59,10 @@ watch:
 	    fi; \
 	fi
 
-run-up:
-	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" goose up 
-
+migrate:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" GOOSE_MIGRATION_DIR='sql/migrations' goose up
 status:
-	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" goose status
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" GOOSE_MIGRATION_DIR='sql/migrations' goose status
 
-.PHONY: all build run test clean
+
+.PHONY: all build run test clean 
