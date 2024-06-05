@@ -16,17 +16,18 @@ export default function TabLayout() {
 				name="explore"
 				options={{
 					title: "Explore",
+					tabBarStyle: {
+						display: "none",
+					},
 				}}
 			/>
 			<Tabs.Screen
 				name="chat"
 				options={{
-					title: "Chat"
-				}} />
-			<Tabs.Screen
-				name="profile"
-				options={{ title: "Profile" }}
+					title: "Chat",
+				}}
 			/>
+			<Tabs.Screen name="profile" options={{ title: "Profile" }} />
 		</Tabs>
 	);
 }

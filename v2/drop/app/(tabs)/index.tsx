@@ -182,7 +182,6 @@ export default function Discovery() {
 					</Text>
 
 					<View>
-						<View></View>
 						<Text
 							style={{
 								fontFamily: "Poppins",
@@ -204,6 +203,7 @@ export default function Discovery() {
 										key={data.id}
 										title={data.title}
 										description={data.description}
+										image="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80"
 										price="GHS 100 - GHS 200"
 									/>
 								</View>
@@ -232,6 +232,7 @@ export default function Discovery() {
 									<Card
 										key={data.id}
 										title={data.title}
+										image="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80"
 										description={data.description}
 										price="GHS 100 - GHS 200"
 									/>
