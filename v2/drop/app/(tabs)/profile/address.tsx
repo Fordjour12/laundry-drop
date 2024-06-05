@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+// biome-ignore lint/style/useImportType: <explanation>
+import CustomBackdrop from "@/components/ui/BottomSheetBackDrop";
+import TextInputWithLabel from "@/components/ui/TextInput";
+import Separator from "@/components/ui/separator";
 import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+	BottomSheetModal,
+	BottomSheetModalProvider,
+	BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Address() {
 	const [addresses, setAddresses] = useState([
@@ -29,18 +33,39 @@ export default function Address() {
 		},
 	]);
 
+	const bottomSheetRef = useRef<BottomSheetModal>(null);
+	const snapPoints = useMemo(() => ["25%", "55%"], []);
+
+	const handleSheetChanges = useCallback((index: number) => {
+		console.log("handleSheetChanges", index);
+	}, []);
+
+	const handlePresentModal = useCallback(() => {
+		bottomSheetRef.current?.present();
+	}, []);
+
+	const handleClosePress = useCallback(() => {
+		bottomSheetRef.current?.dismiss();
+	}, []);
+
 	const renderItem = ({ item }) => (
 		<View style={styles.itemContainer}>
 			<Text style={styles.itemTitle}>{item.title}</Text>
 			<Text style={styles.itemDescription}>{item.description}</Text>
 			{item.default && <Text style={styles.defaultLabel}>Default</Text>}
-			<TouchableOpacity style={styles.editButton}>
-				<Text style={styles.editButtonText}>Edit</Text>
-			</TouchableOpacity>
+
+			<View style={{ flexDirection: "row", gap: 10 }}>
+				<Pressable style={styles.editButton}>
+					<Text style={styles.editButtonText}>Edit</Text>
+				</Pressable>
+				<Pressable style={styles.editButton}>
+					<Text style={styles.editButtonText}>Remove</Text>
+				</Pressable>
+			</View>
 		</View>
 	);
 	return (
-		<View>
+		<BottomSheetModalProvider>
 			<View style={styles.container}>
 				<Text style={styles.header}>My Addresses</Text>
 				<FlatList
@@ -49,11 +74,38 @@ export default function Address() {
 					keyExtractor={(item) => item.id}
 					contentContainerStyle={styles.list}
 				/>
-				<TouchableOpacity style={styles.addButton}>
+				<Pressable style={styles.addButton} onPress={handlePresentModal}>
 					<Text style={styles.addButtonText}>Add New Address</Text>
-				</TouchableOpacity>
+				</Pressable>
 			</View>
-		</View>
+			<BottomSheetModal
+				ref={bottomSheetRef}
+				snapPoints={snapPoints}
+				index={1}
+				onChange={handleSheetChanges}
+				backdropComponent={CustomBackdrop}
+			>
+				<BottomSheetView>
+					<View>
+						<Text>Address details</Text>
+						<Text>Complete address would assist better us in serving you</Text>
+					</View>
+					<Separator height={2} />
+					<View style={{ marginHorizontal: 16 }}>
+						<TextInputWithLabel />
+						<TextInputWithLabel />
+						<TextInputWithLabel />
+						{/* <Button title="Save Address" onPress={handleClosePress} /> */}
+					</View>
+					<Pressable
+						style={[styles.addButton, { marginHorizontal: 16 }]}
+						onPress={handleClosePress}
+					>
+						<Text style={styles.addButtonText}>Save Address</Text>
+					</Pressable>
+				</BottomSheetView>
+			</BottomSheetModal>
+		</BottomSheetModalProvider>
 	);
 }
 const styles = StyleSheet.create({
