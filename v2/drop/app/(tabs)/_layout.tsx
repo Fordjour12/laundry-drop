@@ -27,7 +27,15 @@ export default function TabLayout() {
 					title: "Chat",
 				}}
 			/>
-			<Tabs.Screen name="profile" options={{ title: "Profile" }} />
+			<Tabs.Screen
+				name="profile"
+				options={{
+					title: "Profile",
+					tabBarStyle: {
+						display: "none",
+					},
+				}}
+			/>
 		</Tabs>
 	);
 }
