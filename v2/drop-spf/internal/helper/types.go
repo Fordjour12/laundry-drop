@@ -34,12 +34,22 @@ type DeleteUserAccountReq struct {
 }
 
 type UserLocation struct {
-	AddressId   int          `json:"id"`
-	Address     string       `json:"address"`
-	Latitude    string       `json:"latitude"`
-	Longitude   string       `json:"longitude"`
-	IsPreferred bool         `json:"is_preferred"`
-	UserId      *UserAccount `json:"user_id"`
+	AddressId   int       `json:"id"`
+	Address     string    `json:"address"`
+	Latitude    string    `json:"latitude"`
+	Longitude   string    `json:"longitude"`
+	IsPreferred bool      `json:"is_preferred"`
+	UserId      string    `json:"user_id"`
+	Created_at  time.Time `json:"created_at"`
+	Updated_at  time.Time `json:"updated_at"`
+}
+
+type UserLocationReq struct {
+	Address     string `json:"address"`
+	Latitude    string `json:"latitude"`
+	Longitude   string `json:"longitude"`
+	IsPreferred bool   `json:"is_preferred"`
+	UserId      string `json:"user_id"`
 }
 
 type LaundryCompany struct {
@@ -104,7 +114,7 @@ func NewUserAccountRequest(username, email, password string) (*UserAccount, erro
 	}, nil
 }
 
-func NewUserLocationRequest(address, latitude, longitude string, isPreferred bool, userId *UserAccount) (*UserLocation, error) {
+func NewUserLocationRequest(address, latitude, longitude, userId string, isPreferred bool) (*UserLocation, error) {
 	return &UserLocation{
 		Address:     address,
 		Latitude:    latitude,

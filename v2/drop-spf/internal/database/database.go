@@ -22,7 +22,7 @@ type Service interface {
 	CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error)
 	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
 	DeleteUserAccount(email string) error
-	AddUserLocation(ua *helper.UserAccount, loc *helper.UserLocation) (*helper.UserLocation, error)
+	AddUserLocation(userId string, loc *helper.UserLocation) (*helper.UserLocation, error)
 
 	// company account
 	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
@@ -132,21 +132,23 @@ func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, erro
 	return &ua, nil
 }
 
-func (s *service) AddUserLocation(ua *helper.UserAccount, loc *helper.UserLocation) (*helper.UserLocation, error) {
-	query := `insert into user_location (user_id, address,latitude,longitude,is_preferred) 
-				values ($1, $2, $3, $4) 
-				returning id, user_id, address, latitude, longitude, is_preferred
+// FIXME: refactor the logic
+func (s *service) AddUserLocation(userId string, loc *helper.UserLocation) (*helper.UserLocation, error) {
+	query := `insert into customerAddress (customerID,address,latitude,longitude,isPreferred) 
+				values ($1, $2, $3, $4,$5) 
+				returning addressId,customerID,address,latitude,longitude,isPreferred
 				`
 
 	err := s.db.QueryRow(query,
-		ua.Id,
+		userId,
 		loc.Address,
 		loc.Latitude,
 		loc.Longitude,
 		loc.IsPreferred,
 	).Scan(
-		&loc.UserId,
 		&loc.AddressId,
+		&loc.UserId,
+		&loc.Address,
 		&loc.Latitude,
 		&loc.Longitude,
 		&loc.IsPreferred,

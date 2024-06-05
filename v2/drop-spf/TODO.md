@@ -1,5 +1,12 @@
 # Todo List
 
+## API REQUESTs
+
+Getting all the laundry shop specifically to a user's current location
+
+- endpoint = /api/v1/getAllLaundry
+- endpoint = /api/v1/getAllLaundry/{userCurrentLocation}
+
 ## User Account
 
 - [x] create user account

@@ -37,6 +37,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// FIXME: by this time the use will be logged in and the token will be available
 	// so we can delete the account by and id (/api/v1/delete-account/:id) <- this is the best way to do it
 	r.Delete("/api/v1/delete-account", helper.AuthMiddleware(helper.MakeHTTPHandler(s.DeleteUserAccount)))
+	r.Post("/api/v1/create-location/{userId}", helper.MakeHTTPHandler(s.CreateUserLocation))
 
 	// Company api's
 	r.Post("/api/v1/create-company", helper.MakeHTTPHandler(s.CreateNewCompanyAccount))
@@ -168,7 +169,8 @@ func (s *Server) DeleteUserAccount(w http.ResponseWriter, r *http.Request) error
 
 func (s *Server) CreateUserLocation(w http.ResponseWriter, r *http.Request) error {
 	var userId = chi.URLParam(r, "userId")
-	var createLocationReq helper.UserLocation
+	var createLocationReq helper.UserLocationReq
+
 	if err := json.NewDecoder(r.Body).Decode(&createLocationReq); err != nil {
 		return helper.InvalidJSON()
 	}
@@ -182,8 +184,8 @@ func (s *Server) CreateUserLocation(w http.ResponseWriter, r *http.Request) erro
 		createLocationReq.Address,
 		createLocationReq.Latitude,
 		createLocationReq.Longitude,
+		userId,
 		createLocationReq.IsPreferred,
-		createLocationReq.UserId,
 	)
 	if err != nil {
 		return err

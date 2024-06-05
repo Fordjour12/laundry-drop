@@ -165,7 +165,7 @@ func (u UpdateLaundryCompanyReq) Validate() map[string]string {
 
 }
 
-func (u UserLocation) Validate() map[string]string {
+func (u UserLocationReq) Validate() map[string]string {
 	errors := make(map[string]string)
 
 	if u.Address == "" {
@@ -177,11 +177,11 @@ func (u UserLocation) Validate() map[string]string {
 	if u.Longitude == "" {
 		errors["longitude"] = "Longitude is required"
 	}
-	if u.UserId == nil {
+	// if u.IsPreferred == nil {
+	// 	errors["is_preferred"] = "IsPreferred is required"
+	// }
+	if u.UserId == "" {
 		errors["userId"] = "UserId is required"
-	}
-	if u.IsPreferred {
-		errors["isPreferred"] = "IsPreferred is required"
 	}
 
 	return errors
