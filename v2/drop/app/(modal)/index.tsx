@@ -14,12 +14,8 @@ export default function Index() {
 					title="Continue"
 					onPress={() => router.push("/(modal)/register")}
 				/>
-				<View style={{ marginVertical: 8 }} />
-				<Button
-					title="testing verify code"
-					onPress={() => router.push("/(modal)/verify-code")}
-				/>
-				<View style={{ marginVertical: 8 }} />
+
+				<View style={{ marginVertical: 16 }} />
 
 				<ButtonOutline
 					title="Login to your account"
