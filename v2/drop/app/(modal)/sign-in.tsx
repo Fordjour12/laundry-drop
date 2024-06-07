@@ -22,14 +22,16 @@ export default function SignIn() {
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const API_URI = process.env.EXPO_PUBLIC_API_URL as string;
-	console.log(API_URI)
+	console.log(API_URI);
 
-	const handleInputChange =
-		(setter: React.Dispatch<React.SetStateAction<string>>) =>
-		(text: string) => {
+	//TODO: Test this logic
+	const handleInputChange = (
+		setter: React.Dispatch<React.SetStateAction<string>>,
+	) => {
+		return (text: string) => {
 			setter(text);
 		};
-
+	};
 	const signInUserAccount = async ({ email, password }: SignInProps) => {
 		setIsLoading(true);
 		await login({
