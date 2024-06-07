@@ -1,13 +1,23 @@
-// biome-ignore lint/style/useImportType: <explanation>
+import { BottomSheetHeader } from "@/components/BottomSheetHeader";
 import CustomBackdrop from "@/components/ui/BottomSheetBackDrop";
-import TextInputWithLabel from "@/components/ui/TextInput";
-import Separator from "@/components/ui/separator";
+import MultilineTextInput from "@/components/ui/MultiLineTextInput";
+import TextInput2 from "@/components/ui/TextInput2";
 import {
 	BottomSheetModal,
 	BottomSheetModalProvider,
-	BottomSheetView,
+	BottomSheetScrollView,
+	type BottomSheetHandleProps,
 } from "@gorhom/bottom-sheet";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import axios from "axios";
+import type React from "react";
+import {
+	useCallback,
+	useMemo,
+	useRef,
+	useState,
+	type Dispatch,
+	type SetStateAction,
+} from "react";
 
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -34,7 +44,7 @@ export default function Address() {
 	]);
 
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
-	const snapPoints = useMemo(() => ["25%", "55%"], []);
+	const snapPoints = useMemo(() => ["25%", "59%"], []);
 
 	const handleSheetChanges = useCallback((index: number) => {
 		console.log("handleSheetChanges", index);
@@ -44,9 +54,66 @@ export default function Address() {
 		bottomSheetRef.current?.present();
 	}, []);
 
-	const handleClosePress = useCallback(() => {
-		bottomSheetRef.current?.dismiss();
-	}, []);
+	const Header = () => (
+		<View>
+			<Text style={{ fontFamily: "PoppinsBold", fontSize: 30 }}>
+				Address Details
+			</Text>
+			<Text>Complete address would assist better us in serving you</Text>
+		</View>
+	);
+
+	const renderBottomSheetHeader = useCallback(
+		(
+			props: React.JSX.IntrinsicAttributes & {
+				children?: React.ReactNode | React.ReactNode[];
+			} & BottomSheetHandleProps,
+		) => (
+			<BottomSheetHeader {...props}>
+				<Header />
+			</BottomSheetHeader>
+		),
+		[],
+	);
+
+	// type LabelType = "Home" | "Work" | "Parents" | "Others";
+
+	type AddAddressRequestProp = {
+		// label: LabelType;
+		address: string;
+		isDefault: boolean;
+		userId: number;
+		recipient: string;
+	};
+
+	const API = process.env.EXPO_PUBLIC_API_URL as string;
+
+	const AddAddressRequest = async ({
+		recipient,
+		// label,
+		address,
+		isDefault,
+		userId,
+	}: AddAddressRequestProp) => {
+		const request = await axios.post<AddAddressRequestProp>(
+			`${API}create-location/${userId}`,
+			{
+				// label: label,
+				address: address,
+				isDefault: isDefault,
+				recipients: recipient,
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			},
+		);
+		if (request.status === 201) {
+			console.log("Address added successfully");
+			bottomSheetRef.current?.dismiss();
+		}
+	};
 
 	const renderItem = ({ item }) => (
 		<View style={styles.itemContainer}>
@@ -64,6 +131,16 @@ export default function Address() {
 			</View>
 		</View>
 	);
+
+	const [newAddress, setNewAddresses] = useState<string>("");
+	const [recipient, setRecipient] = useState<string>("");
+
+	const handleTextChange = (setter: Dispatch<SetStateAction<string>>) => {
+		return (value: string) => {
+			setter(value);
+		};
+	};
+
 	return (
 		<BottomSheetModalProvider>
 			<View style={styles.container}>
@@ -82,35 +159,49 @@ export default function Address() {
 				ref={bottomSheetRef}
 				snapPoints={snapPoints}
 				index={1}
+				animateOnMount={true}
 				onChange={handleSheetChanges}
 				backdropComponent={CustomBackdrop}
+				handleComponent={renderBottomSheetHeader}
 			>
-				<BottomSheetView>
+				<BottomSheetScrollView
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={styles.contentContainer}
+				>
 					<View>
-						<Text>Address details</Text>
-						<Text>Complete address would assist better us in serving you</Text>
-					</View>
-					<Separator height={2} />
-					<View style={{ marginHorizontal: 16 }}>
-						<TextInputWithLabel />
-						<TextInputWithLabel />
-						<TextInputWithLabel />
-						{/* <Button title="Save Address" onPress={handleClosePress} /> */}
+						<TextInput2
+							label="Recipient Name"
+							value={recipient}
+							placeholder="Type recipient name"
+							onChangeText={handleTextChange(setRecipient)}
+						/>
+						<MultilineTextInput
+							label="Your Address"
+							placeholder="Type your address here..."
+							value={newAddress}
+							onChangeText={handleTextChange(setNewAddresses)}
+						/>
 					</View>
 					<Pressable
 						style={[styles.addButton, { marginHorizontal: 16 }]}
-						onPress={handleClosePress}
+						onPress={() => {
+							AddAddressRequest({
+								recipient,
+								address: newAddress,
+								isDefault: false,
+								userId: 1,
+							});
+						}}
 					>
 						<Text style={styles.addButtonText}>Save Address</Text>
 					</Pressable>
-				</BottomSheetView>
+				</BottomSheetScrollView>
 			</BottomSheetModal>
 		</BottomSheetModalProvider>
 	);
 }
 const styles = StyleSheet.create({
 	container: {
-		// flex: 1,
 		padding: 20,
 		backgroundColor: "#f5f5f5",
 	},
@@ -170,5 +261,22 @@ const styles = StyleSheet.create({
 	defaultLabel: {
 		color: "green",
 		fontWeight: "bold",
+	},
+	input: {
+		width: "100%",
+		paddingVertical: 12,
+		paddingHorizontal: 15,
+		backgroundColor: "#fff",
+		fontSize: 16,
+		shadowColor: "#000",
+		shadowOpacity: 0.1,
+		borderWidth: 1,
+		borderColor: "#ddd",
+		marginHorizontal: 16,
+		marginBottom: 10,
+	},
+	contentContainer: {
+		backgroundColor: "#f5f5f5",
+		paddingBottom: 20,
 	},
 });
