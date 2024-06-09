@@ -22,26 +22,33 @@ import {
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Address() {
-	const [addresses, setAddresses] = useState([
-		{
-			id: "1",
-			title: "Home",
-			description: "123 Main St, City, Country",
-			default: true,
-		},
-		{
-			id: "2",
-			title: "Work",
-			description: "456 Office Rd, City, Country",
-			default: false,
-		},
-		{
-			id: "3",
-			title: "Parents",
-			description: "789 Family Ln, City, Country",
-			default: false,
-		},
-	]);
+	type AddressType = {
+		id: string;
+		title: string;
+		description: string;
+		default: boolean;
+	};
+
+	const addresses: AddressType[] = [
+		// {
+		// 	id: "1",
+		// 	title: "Home",
+		// 	description: "123 Main St, City, Country",
+		// 	default: true,
+		// },
+		// {
+		// 	id: "2",
+		// 	title: "Work",
+		// 	description: "456 Office Rd, City, Country",
+		// 	default: false,
+		// },
+		// {
+		// 	id: "3",
+		// 	title: "Parents",
+		// 	description: "789 Family Ln, City, Country",
+		// 	default: false,
+		// },
+	];
 
 	const bottomSheetRef = useRef<BottomSheetModal>(null);
 	const snapPoints = useMemo(() => ["25%", "59%"], []);
@@ -81,7 +88,7 @@ export default function Address() {
 	type AddAddressRequestProp = {
 		// label: LabelType;
 		address: string;
-		isDefault: boolean;
+		defaultAddress: boolean;
 		userId: number;
 		recipient: string;
 	};
@@ -92,7 +99,7 @@ export default function Address() {
 		recipient,
 		// label,
 		address,
-		isDefault,
+		defaultAddress,
 		userId,
 	}: AddAddressRequestProp) => {
 		const request = await axios.post<AddAddressRequestProp>(
@@ -100,7 +107,7 @@ export default function Address() {
 			{
 				// label: label,
 				address: address,
-				isDefault: isDefault,
+				defaultAddress: defaultAddress,
 				recipients: recipient,
 			},
 			{
@@ -115,7 +122,7 @@ export default function Address() {
 		}
 	};
 
-	const renderItem = ({ item }) => (
+	const renderItem = ({ item }: { item: AddressType }) => (
 		<View style={styles.itemContainer}>
 			<Text style={styles.itemTitle}>{item.title}</Text>
 			<Text style={styles.itemDescription}>{item.description}</Text>
@@ -188,7 +195,7 @@ export default function Address() {
 							AddAddressRequest({
 								recipient,
 								address: newAddress,
-								isDefault: false,
+								defaultAddress: false,
 								userId: 1,
 							});
 						}}
