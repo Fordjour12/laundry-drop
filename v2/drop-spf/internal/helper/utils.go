@@ -171,20 +171,13 @@ func (u UserLocationReq) Validate() map[string]string {
 	if u.Address == "" {
 		errors["address"] = "Address is required"
 	}
-	if u.Latitude == "" {
-		errors["latitude"] = "Latitude is required"
-	}
-	if u.Longitude == "" {
-		errors["longitude"] = "Longitude is required"
-	}
-	// if u.IsPreferred == nil {
-	// 	errors["is_preferred"] = "IsPreferred is required"
-	// }
-	if u.UserId == "" {
-		errors["userId"] = "UserId is required"
+
+	if u.Default == nil {
+		errors["Default"] = "Default Address must be a boolean"
 	}
 
 	return errors
+
 }
 
 func CreateJWTToken(ac *UserAccount) (string, error) {

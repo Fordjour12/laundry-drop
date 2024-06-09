@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 create table if not exists laundryMart (
-  id serial primary key,
+  _id serial primary key,
   name varchar(255) not null,
   email varchar(255) unique not null,
   password varchar(500) not null,

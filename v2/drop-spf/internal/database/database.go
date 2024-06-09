@@ -23,6 +23,7 @@ type Service interface {
 	GetUserAccountByEmail(email string) (*helper.UserAccount, error)
 	DeleteUserAccount(email string) error
 	AddUserLocation(userId string, loc *helper.UserLocation) (*helper.UserLocation, error)
+	GetUserLocations(userId string) (*helper.UserLocation, error)
 
 	// company account
 	CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error)
@@ -86,9 +87,9 @@ func (s *service) GetAccountByEmail(table, email string) (AccountType, error) {
 }
 
 func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount, error) {
-	query := `insert into user_account (username, email, password) 
+	query := `insert into customer (username, email, password) 
 				values ($1, $2, $3) 
-				returning id, username, email, password, created_at, updated_at
+				returning _id, username, email, password, created_at, updated_at
 				`
 
 	err := s.db.QueryRow(query,
@@ -134,24 +135,20 @@ func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, erro
 
 // FIXME: refactor the logic
 func (s *service) AddUserLocation(userId string, loc *helper.UserLocation) (*helper.UserLocation, error) {
-	query := `insert into customerAddress (customerID,address,latitude,longitude,isPreferred) 
-				values ($1, $2, $3, $4,$5) 
-				returning addressId,customerID,address,latitude,longitude,isPreferred
+	query := `insert into customerAddress (customerId,address,defaultAddress) 
+				values ($1, $2, $3) 
+				returning _id,customerId,address,defaultAddress
 				`
 
 	err := s.db.QueryRow(query,
 		userId,
 		loc.Address,
-		loc.Latitude,
-		loc.Longitude,
-		loc.IsPreferred,
+		loc.Default,
 	).Scan(
 		&loc.AddressId,
 		&loc.UserId,
 		&loc.Address,
-		&loc.Latitude,
-		&loc.Longitude,
-		&loc.IsPreferred,
+		&loc.Default,
 	)
 
 	if err != nil {
@@ -162,6 +159,21 @@ func (s *service) AddUserLocation(userId string, loc *helper.UserLocation) (*hel
 	}
 
 	return loc, nil
+}
+
+func (s *service) GetUserLocations(userId string) (*helper.UserLocation, error) {
+	query := `select * from customerAddress where customerId = $1`
+
+	var loc helper.UserLocation
+	if err := s.db.QueryRow(query, userId).Scan(
+		&loc.AddressId,
+		&loc.UserId,
+		&loc.Address,
+		&loc.Default,
+	); err != nil {
+		return nil, err
+	}
+	return &loc, nil
 }
 
 func (s *service) DeleteUserAccount(email string) error {

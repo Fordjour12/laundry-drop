@@ -1,3 +1,4 @@
+-- Active: 1715460192016@@127.0.0.1@5432@postgres
 -- Creating the Customer table
 CREATE TABLE Customer (
     CustomerID SERIAL PRIMARY KEY,
@@ -110,7 +111,7 @@ CREATE TABLE LaundryService (
     LaundryID INT NOT NULL,
     ServiceID INT NOT NULL,
     FOREIGN KEY (LaundryID) REFERENCES Laundry(LaundryID) ON DELETE CASCADE,
-    FOREIGN KEY (ServiceID) REFERENCES Service(ServiceID) ON DELETE CASCADE
+    FOREIGN KEY (ServiceID) REFERENCES "Service"(ServiceID) ON DELETE CASCADE
 );
 
 -- Creating the OrderService table
@@ -121,7 +122,7 @@ CREATE TABLE OrderService (
     Quantity INT NOT NULL,
     Subtotal DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (OrderID) REFERENCES "Order"(OrderID) ON DELETE CASCADE,
-    FOREIGN KEY (ServiceID) REFERENCES Service(ServiceID) ON DELETE CASCADE
+    FOREIGN KEY (ServiceID) REFERENCES "Service"(ServiceID) ON DELETE CASCADE
 );
 
 -- Creating the Review table

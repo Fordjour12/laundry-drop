@@ -37,7 +37,10 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// FIXME: by this time the use will be logged in and the token will be available
 	// so we can delete the account by and id (/api/v1/delete-account/:id) <- this is the best way to do it
 	r.Delete("/api/v1/delete-account", helper.AuthMiddleware(helper.MakeHTTPHandler(s.DeleteUserAccount)))
+
+	// User location api's
 	r.Post("/api/v1/create-location/{userId}", helper.MakeHTTPHandler(s.CreateUserLocation))
+	r.Get("/api/v1/get-location-add/{userId}", helper.MakeHTTPHandler(s.GetUserLocations))
 
 	// Company api's
 	r.Post("/api/v1/create-company", helper.MakeHTTPHandler(s.CreateNewCompanyAccount))
@@ -182,10 +185,8 @@ func (s *Server) CreateUserLocation(w http.ResponseWriter, r *http.Request) erro
 
 	location, err := helper.NewUserLocationRequest(
 		createLocationReq.Address,
-		createLocationReq.Latitude,
-		createLocationReq.Longitude,
 		userId,
-		createLocationReq.IsPreferred,
+		createLocationReq.Default,
 	)
 	if err != nil {
 		return err
@@ -197,6 +198,17 @@ func (s *Server) CreateUserLocation(w http.ResponseWriter, r *http.Request) erro
 	}
 
 	return helper.WriteJSON(w, http.StatusCreated, locationData)
+}
+
+func (s *Server) GetUserLocations(w http.ResponseWriter, r *http.Request) error {
+	userId := chi.URLParam(r, "userId")
+
+	locations, err := s.db.GetUserLocations(userId)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusOK, locations)
 }
 
 /*
