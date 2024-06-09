@@ -63,6 +63,9 @@ migrate:
 	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" GOOSE_MIGRATION_DIR='sql/migrations' goose up
 status:
 	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" GOOSE_MIGRATION_DIR='sql/migrations' goose status
-
+reset:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" GOOSE_MIGRATION_DIR='sql/migrations' goose reset
+down:
+	@GOOSE_DRIVER=postgres GOOSE_DBSTRING="postgres://postgres:password1234@localhost:5432/basic" GOOSE_MIGRATION_DIR='sql/migrations' goose down
 
 .PHONY: all build run test clean 
