@@ -196,9 +196,9 @@ func (u LaundryService) Validate() map[string]string {
 		errors["image"] = "Image is required"
 	}
 
-	// if u.LaundryId == "" {
-	// 	errors["laundryId"] = "LaundryId is required"
-	// }
+	if u.LaundryId == "" {
+		errors["laundry_Id"] = "LaundryId id required"
+	}
 
 	if u.Price.LessThanOrEqual(decimal.New(0, 0)) {
 		errors["price"] = "Price must be greater than 0"

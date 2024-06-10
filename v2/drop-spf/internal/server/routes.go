@@ -50,7 +50,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Delete("/api/v1/delete-company/{email}", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	// r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetAllCompany))
-	r.Post("/api/v1/create-new-service", helper.MakeHTTPHandler(s.CreateNewService))
+	r.Post("/api/v1/create-new-service/{_id}", helper.MakeHTTPHandler(s.CreateNewService))
 
 	return r
 
@@ -325,10 +325,8 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 	return helper.WriteJSON(w, http.StatusOK, companies)
 }
 
-
-// FIXME: This function is not acting as expected
 func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
-	// companyId := chi.URLParam(r, "companyId")
+	id := chi.URLParam(r, "_id")
 	var createServiceReq helper.LaundryService
 	if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
 		return helper.InvalidJSON()
@@ -343,7 +341,7 @@ func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error 
 		createServiceReq.Name,
 		createServiceReq.Description,
 		createServiceReq.Image,
-		createServiceReq.LaundryId,
+		id,
 		createServiceReq.Price,
 	)
 	if err != nil {
