@@ -180,6 +180,29 @@ func (u UserLocationReq) Validate() map[string]string {
 
 }
 
+func (u LaundryService) Validate() map[string]string {
+	errors := make(map[string]string)
+
+	if u.Name == "" {
+		errors["name"] = "Name is required"
+	}
+
+	if u.Price == 0 {
+		errors["price"] = "Price is required"
+	}
+
+	if u.Description == "" {
+		errors["description"] = "Description is required"
+	}
+
+	if u.Image == "" {
+		errors["image"] = "Image is required"
+	}
+
+	return errors
+
+}
+
 func CreateJWTToken(ac *UserAccount) (string, error) {
 
 	claims := &jwt.MapClaims{

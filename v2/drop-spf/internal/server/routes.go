@@ -50,6 +50,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Delete("/api/v1/delete-company/{email}", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	// r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetAllCompany))
+	r.Post("/api/v1/create-new-service", helper.MakeHTTPHandler(s.CreateNewService))
 
 	return r
 
@@ -322,6 +323,38 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	return helper.WriteJSON(w, http.StatusOK, companies)
+}
+
+func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
+	companyId := chi.URLParam(r, "companyId")
+	var createServiceReq helper.LaundryService
+	if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
+		return helper.InvalidJSON()
+	}
+	defer r.Body.Close()
+
+	if errors := createServiceReq.Validate(); len(errors) > 0 {
+		return helper.InvalidRequestData(errors)
+	}
+
+	service, err := helper.NewLaundryServiceRequest(
+		createServiceReq.Name,
+		createServiceReq.Description,
+		createServiceReq.Image,
+		companyId,
+		createServiceReq.Price,
+	)
+	if err != nil {
+		return err
+	}
+
+	serviceData, err := s.db.CreateLaundryService(service)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusCreated, serviceData)
+
 }
 
 // it can be refactored to use the helper function

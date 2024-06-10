@@ -79,6 +79,14 @@ type UpdateLaundryCompanyReq struct {
 	Email string `json:"email"`
 }
 
+type LaundryService struct {
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	Image       string  `json:"image"`
+	LaundryId   string  `json:"laundry_id"`
+}
+
 type Employee struct {
 	Id         int       `json:"id"`
 	Name       string    `json:"name"`
@@ -161,5 +169,15 @@ func UpdateLaundryCompanyRequest(email, name string) (*LaundryCompany, error) {
 func DeleteLaundryCompanyRequest(email string) (*LaundryCompany, error) {
 	return &LaundryCompany{
 		Email: email,
+	}, nil
+}
+
+func NewLaundryServiceRequest(name, description, image, laundryId string, price float64) (*LaundryService, error) {
+	return &LaundryService{
+		Name:        name,
+		Description: description,
+		Image:       image,
+		LaundryId:   laundryId,
+		Price:       price,
 	}, nil
 }
