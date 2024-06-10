@@ -298,9 +298,9 @@ func (s *service) GetAllCompany() (*[]helper.LaundryCompany, error) {
 }
 
 func (s *service) CreateLaundryService(ls *helper.LaundryService) (*helper.LaundryService, error) {
-	query := ` insert into services (name,description,image,serviceId,price)
+	query := ` insert into services (name,description,image,laundryId,price)
 							values ($1,$2,$3,$4,$5)
-							returning _id,name,description,image,serviceId,price,created_at,updated_at
+							returning _id,name,description,image,laundryId,price,created_at,updated_at
 					`
 	err := s.db.QueryRow(
 		query,
