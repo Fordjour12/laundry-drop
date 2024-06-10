@@ -31,6 +31,7 @@ type Service interface {
 	UpdateCompanyAccount(email, name string) (*helper.LaundryCompany, error)
 	DeleteCompanyAccount(email string) error
 	GetAllCompany() (*[]helper.LaundryCompany, error)
+	CreateLaundryService(ls *helper.LaundryService) (*helper.LaundryService, error)
 }
 
 type service struct {
@@ -116,7 +117,7 @@ func (s *service) CreateUserAccount(ca *helper.UserAccount) (*helper.UserAccount
 }
 
 func (s *service) GetUserAccountByEmail(email string) (*helper.UserAccount, error) {
-	query := `select * from user_account where email = $1 and deleted_at is null`
+	query := `select * from customer where email = $1 and deleted_at is null`
 
 	var ua helper.UserAccount
 	if err := s.db.QueryRow(query, email).Scan(
@@ -178,7 +179,7 @@ func (s *service) GetUserLocations(userId string) (*helper.UserLocation, error) 
 
 func (s *service) DeleteUserAccount(email string) error {
 	// query := `delete from user_account where email = $1`
-	query := `update user_account set deleted_at = now() where email = $1`
+	query := `update customer set deleted_at = now() where email = $1`
 	_, err := s.db.Exec(query, email)
 	if err != nil {
 		return err
@@ -188,9 +189,10 @@ func (s *service) DeleteUserAccount(email string) error {
 }
 
 func (s *service) CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.LaundryCompany, error) {
-	query := `insert into lndy_comp (name, email, password) 
+	query := `insert into laundryMart (name, email, password) 
 	values ($1, $2, $3) 
-	returning id, name,email,password, created_at,updated_at`
+	returning _id, name, email, password, created_at, updated_at
+	`
 
 	err := s.db.QueryRow(
 		query,
@@ -216,7 +218,7 @@ func (s *service) CreateCompanyAccount(lnc *helper.LaundryCompany) (*helper.Laun
 }
 
 func (s *service) GetCompanyAccountByEmail(email string) (*helper.LaundryCompany, error) {
-	query := `select * from lndy_comp where email = $1 and deleted_at is null`
+	query := `select * from laundryMart where email = $1 and deleted_at is null`
 
 	var lnc helper.LaundryCompany
 
@@ -293,4 +295,30 @@ func (s *service) GetAllCompany() (*[]helper.LaundryCompany, error) {
 		companies = append(companies, company)
 	}
 	return &companies, nil
+}
+
+func (s *service) CreateLaundryService(ls *helper.LaundryService) (*helper.LaundryService, error) {
+	query := ` insert into services (name,description,image,serviceId,price)
+							values ($1,$2,$3,$4,$5)
+							returning _id,name,description,image,serviceId,price,created_at,updated_at
+					`
+	err := s.db.QueryRow(
+		query,
+		ls.Name,
+		ls.Description,
+		ls.Image,
+		ls.LaundryId,
+		ls.Price,
+	).Scan(
+		&ls.Name,
+		&ls.Description,
+		&ls.Image,
+		&ls.LaundryId,
+		&ls.Price,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return ls, nil
 }
