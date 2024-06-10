@@ -243,7 +243,7 @@ func (s *service) GetCompanyAccountByEmail(email string) (*helper.LaundryCompany
 }
 
 func (s *service) UpdateCompanyAccount(email, name string) (*helper.LaundryCompany, error) {
-	query := `update lndy_comp set name = $1 where email = $2 returning id, name, email, password, created_at, updated_at`
+	query := `update laundryMart set name = $1 where email = $2 returning _id, name, email, password, created_at, updated_at`
 	var lnc helper.LaundryCompany
 	err := s.db.QueryRow(query, name, email).Scan(
 		&lnc.Id,
@@ -261,7 +261,7 @@ func (s *service) UpdateCompanyAccount(email, name string) (*helper.LaundryCompa
 }
 
 func (s *service) DeleteCompanyAccount(email string) error {
-	query := `update lndy_comp set deleted_at = now() where email = $1`
+	query := `update laundryMart set deleted_at = now() where email = $1`
 	_, err := s.db.Exec(query, email)
 	if err != nil {
 		return err
@@ -270,7 +270,7 @@ func (s *service) DeleteCompanyAccount(email string) error {
 }
 
 func (s *service) GetAllCompany() (*[]helper.LaundryCompany, error) {
-	query := `select * from lndy_comp where deleted_at is null`
+	query := `select * from laundryMart where deleted_at is null`
 	rows, err := s.db.Query(query)
 	if err != nil {
 		return nil, err
@@ -310,11 +310,14 @@ func (s *service) CreateLaundryService(ls *helper.LaundryService) (*helper.Laund
 		ls.LaundryId,
 		ls.Price,
 	).Scan(
+		&ls.Id,
 		&ls.Name,
 		&ls.Description,
 		&ls.Image,
 		&ls.LaundryId,
 		&ls.Price,
+		&ls.Created_at,
+		&ls.Updated_at,
 	)
 	if err != nil {
 		return nil, err

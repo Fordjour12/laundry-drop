@@ -81,11 +81,14 @@ type UpdateLaundryCompanyReq struct {
 }
 
 type LaundryService struct {
+	Id          int             `json:"id"`
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	Price       decimal.Decimal `json:"price"`
-	Image       string          `json:"image"`
 	LaundryId   string          `json:"laundry_id"`
+	Image       string          `json:"image"`
+	Created_at  time.Time       `json:"created_at"`
+	Updated_at  time.Time       `json:"updated_at"`
 }
 
 type Employee struct {
