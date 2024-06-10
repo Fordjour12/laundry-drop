@@ -9,6 +9,7 @@ import (
 	"time"
 
 	jwt "github.com/golang-jwt/jwt/v5"
+	"github.com/shopspring/decimal"
 )
 
 type APIError struct {
@@ -187,16 +188,20 @@ func (u LaundryService) Validate() map[string]string {
 		errors["name"] = "Name is required"
 	}
 
-	if u.Price == 0 {
-		errors["price"] = "Price is required"
-	}
-
 	if u.Description == "" {
 		errors["description"] = "Description is required"
 	}
 
 	if u.Image == "" {
 		errors["image"] = "Image is required"
+	}
+
+	// if u.LaundryId == "" {
+	// 	errors["laundryId"] = "LaundryId is required"
+	// }
+
+	if u.Price.LessThanOrEqual(decimal.New(0, 0)) {
+		errors["price"] = "Price must be greater than 0"
 	}
 
 	return errors

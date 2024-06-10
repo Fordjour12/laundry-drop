@@ -3,6 +3,7 @@ package helper
 import (
 	"time"
 
+	"github.com/shopspring/decimal"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -80,11 +81,11 @@ type UpdateLaundryCompanyReq struct {
 }
 
 type LaundryService struct {
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-	Image       string  `json:"image"`
-	LaundryId   string  `json:"laundry_id"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	Price       decimal.Decimal `json:"price"`
+	Image       string          `json:"image"`
+	LaundryId   string          `json:"laundry_id"`
 }
 
 type Employee struct {
@@ -172,7 +173,7 @@ func DeleteLaundryCompanyRequest(email string) (*LaundryCompany, error) {
 	}, nil
 }
 
-func NewLaundryServiceRequest(name, description, image, laundryId string, price float64) (*LaundryService, error) {
+func NewLaundryServiceRequest(name, description, image, laundryId string, price decimal.Decimal) (*LaundryService, error) {
 	return &LaundryService{
 		Name:        name,
 		Description: description,

@@ -325,8 +325,10 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 	return helper.WriteJSON(w, http.StatusOK, companies)
 }
 
+
+// FIXME: This function is not acting as expected
 func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
-	companyId := chi.URLParam(r, "companyId")
+	// companyId := chi.URLParam(r, "companyId")
 	var createServiceReq helper.LaundryService
 	if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
 		return helper.InvalidJSON()
@@ -341,7 +343,7 @@ func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error 
 		createServiceReq.Name,
 		createServiceReq.Description,
 		createServiceReq.Image,
-		companyId,
+		createServiceReq.LaundryId,
 		createServiceReq.Price,
 	)
 	if err != nil {
@@ -356,20 +358,3 @@ func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error 
 	return helper.WriteJSON(w, http.StatusCreated, serviceData)
 
 }
-
-// it can be refactored to use the helper function
-// func (s *Server) DeleteCompanyAccount(w http.ResponseWriter, r *http.Request) error {
-//  var deleteCompanyReq helper.DeleteLaundryCompanyReq
-// 	if err := json.NewDecoder(r.Body).Decode(&deleteCompanyReq); err != nil {
-// 		return helper.InvalidJSON()
-// 	}
-// 	defer r.Body.Close()
-
-// 	if errors := deleteCompanyReq.Validate(); len(errors) > -1 {
-// 		return helper.InvalidRequestData(errors)
-// 	}
-
-// 	company, err := helper.DeleteLaundryCompanyRequest(deleteCompanyReq.Email)
-// 	if err != nil {
-// 		return helper.NewAPIError(http.StatusBadRequest, err)
-// 	}
