@@ -3,7 +3,7 @@
 	import { Input } from '@/components/ui/input/index';
 	import { Label } from '@/components/ui/label/index';
 	import { Textarea } from '@/components/ui/textarea/index';
-	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
+	import { fileProxy, superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { serviceFormSchema, type ServiceFormSchema } from './schema';
 
@@ -14,9 +14,10 @@
 	});
 
 	const { form: formData, enhance } = form;
+	const file = fileProxy(form, 'image');
 </script>
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance enctype="multipart/form-data">
 	<Form.Field {form} name="name">
 		<Form.Control let:attrs>
 			<Label for="name" class="text-right">Name</Label>
@@ -46,12 +47,14 @@
 	<Form.Field {form} name="image">
 		<Form.Control let:attrs>
 			<Label for="image" class="text-right">Image</Label>
-			<Input
+			<input
 				{...attrs}
 				type="file"
+				name="image"
+				bind:files={$file}
 				accept="image/**"
-				bind:value={$formData.image}
 				autocomplete="off"
+				class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
 			/>
 		</Form.Control>
 		<Form.Description>This displays the image of the service.</Form.Description>
@@ -67,7 +70,7 @@
 				autocomplete="off"
 				type="number"
 				min="0"
-				class="appearance-none"
+				class=" appearance-none "
 			/>
 		</Form.Control>
 		<Form.Description>This displays the price of the service.</Form.Description>
@@ -75,15 +78,3 @@
 	</Form.Field>
 	<Form.Button class="w-full font-bold">Create Service</Form.Button>
 </form>
-
-<style globalThis>
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-	input[type='number'] {
-		-moz-appearance: textfield;
-		appearance: none;
-	}
-</style>

@@ -1,5 +1,5 @@
 import type { Actions } from "@sveltejs/kit";
-import { fail, superValidate } from "sveltekit-superforms";
+import { fail, superValidate, withFiles } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types";
 import { serviceFormSchema } from "./schema";
@@ -11,18 +11,15 @@ export const load: PageServerLoad = async (event) => {
 }
 
 export const actions: Actions = {
-    default: async (request) => {
+    default: async ({ request }) => {
         const form = await superValidate(request, zod(serviceFormSchema));
         if (!form.valid) {
-            return fail(400, {
-                form
-            })
+            return fail(400, withFiles({ form }))
         }
 
-        return {
-            form: await superValidate(zod(serviceFormSchema))
-        }
+        console.log(form.data.image)
 
+        return withFiles({ form })
     }
 
 };
