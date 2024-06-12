@@ -2,6 +2,7 @@ package server
 
 import (
 	"drop-spf/internal/helper"
+	"io"
 
 	"encoding/json"
 	"log"
@@ -327,32 +328,41 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 
 func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
 	id := chi.URLParam(r, "_id")
-	var createServiceReq helper.LaundryService
-	if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
-		return helper.InvalidJSON()
-	}
-	defer r.Body.Close()
 
-	if errors := createServiceReq.Validate(); len(errors) > 0 {
-		return helper.InvalidRequestData(errors)
-	}
-
-	service, err := helper.NewLaundryServiceRequest(
-		createServiceReq.Name,
-		createServiceReq.Description,
-		createServiceReq.Image,
-		id,
-		createServiceReq.Price,
-	)
+	readRequestBody, err := io.ReadAll(r.Body)
 	if err != nil {
-		return err
+		log.Fatalf("error reading request body. Err: %v", err)
 	}
+	data := string(readRequestBody)
+	log.Printf("data here %v,%s", data, id)
 
-	serviceData, err := s.db.CreateLaundryService(service)
-	if err != nil {
-		return helper.NewAPIError(http.StatusBadRequest, err)
-	}
+	return nil
+	// var createServiceReq helper.LaundryService
+	// if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
+	// 	return helper.InvalidJSON()
+	// }
+	// defer r.Body.Close()
 
-	return helper.WriteJSON(w, http.StatusCreated, serviceData)
+	// if errors := createServiceReq.Validate(); len(errors) > 0 {
+	// 	return helper.InvalidRequestData(errors)
+	// }
+
+	// service, err := helper.NewLaundryServiceRequest(
+	// 	createServiceReq.Name,
+	// 	createServiceReq.Description,
+	// 	createServiceReq.Image,
+	// 	id,
+	// 	createServiceReq.Price,
+	// )
+	// if err != nil {
+	// 	return err
+	// }
+
+	// serviceData, err := s.db.CreateLaundryService(service)
+	// if err != nil {
+	// 	return helper.NewAPIError(http.StatusBadRequest, err)
+	// }
+
+	// return helper.WriteJSON(w, http.StatusCreated, serviceData)
 
 }
