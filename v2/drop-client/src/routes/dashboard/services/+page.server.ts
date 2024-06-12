@@ -4,8 +4,22 @@ import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types";
 import { serviceFormSchema } from "./schema";
 
+type ServiceResponse = {
+    id: number,
+    name: string,
+    description: string,
+    price: number,
+    image: string
+
+}
+
 export const load: PageServerLoad = async (event) => {
+    const _id = 1
+    const response = await event.fetch(`http://localhost:8080/api/v1/get-services/${_id}`)
+    const services = await response.json()
+
     return {
+        services,
         form: await superValidate(zod(serviceFormSchema))
     };
 }

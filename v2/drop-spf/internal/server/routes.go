@@ -53,6 +53,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	// r.Delete("/api/v1/delete-company", helper.MakeHTTPHandler(s.DeleteCompanyAccount))
 	r.Get("/api/v1/get-company", helper.MakeHTTPHandler(s.GetAllCompany))
 	r.Post("/api/v1/create-new-service/{_id}", helper.MakeHTTPHandler(s.CreateNewService))
+	r.Get("/api/v1/get-services/{_id}", helper.MakeHTTPHandler(s.GetLaundryServices))
 
 	return r
 
@@ -327,6 +328,11 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 	return helper.WriteJSON(w, http.StatusOK, companies)
 }
 
+// FIXME: the file/image should be stored as a base64 string
+// FIXME: use a cloud storage service to store the images
+
+//TODO: Add a validation library to validate the request body
+// TODO:
 func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
 
 	id := chi.URLParam(r, "_id")
@@ -367,33 +373,15 @@ func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error 
 	}
 
 	return helper.WriteJSON(w, http.StatusCreated, service)
+}
 
-	// var createServiceReq helper.LaundryService
-	// if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
-	// 	return helper.InvalidJSON()
-	// }
-	// defer r.Body.Close()
+func (s *Server) GetLaundryServices(w http.ResponseWriter, r *http.Request) error {
+	laundryId := chi.URLParam(r, "_id")
 
-	// if errors := createServiceReq.Validate(); len(errors) > 0 {
-	// 	return helper.InvalidRequestData(errors)
-	// }
+	services, err := s.db.GetLaundryServiceByLaundryId(laundryId)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
 
-	// service, err := helper.NewLaundryServiceRequest(
-	// 	createServiceReq.Name,
-	// 	createServiceReq.Description,
-	// 	createServiceReq.Image,
-	// 	id,
-	// 	createServiceReq.Price,
-	// )
-	// if err != nil {
-	// 	return err
-	// }
-
-	// serviceData, err := s.db.CreateLaundryService(service)
-	// if err != nil {
-	// 	return helper.NewAPIError(http.StatusBadRequest, err)
-	// }
-
-	// return helper.WriteJSON(w, http.StatusCreated, serviceData)
-
+	return helper.WriteJSON(w, http.StatusOK, services)
 }

@@ -87,7 +87,7 @@ type LaundryService struct {
 	Description string          `json:"description"`
 	Price       decimal.Decimal `json:"price"`
 	LaundryId   string          `json:"laundry_id"`
-	Image       []byte          `json:"-"`
+	Image       []byte          `json:"image"`
 	Created_at  time.Time       `json:"created_at"`
 	Updated_at  time.Time       `json:"updated_at"`
 }

@@ -32,6 +32,7 @@ type Service interface {
 	DeleteCompanyAccount(email string) error
 	GetAllCompany() (*[]helper.LaundryCompany, error)
 	CreateLaundryService(ls *helper.LaundryService) (*helper.LaundryService, error)
+	GetLaundryServiceByLaundryId(laundryId string) (*[]helper.LaundryService, error)
 }
 
 type service struct {
@@ -324,4 +325,35 @@ func (s *service) CreateLaundryService(ls *helper.LaundryService) (*helper.Laund
 	}
 
 	return ls, nil
+}
+
+func (s *service) GetLaundryServiceByLaundryId(laundryId string) (*[]helper.LaundryService, error) {
+	query := `select * from services where laundryId = $1`
+	rows, err := s.db.Query(query, laundryId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var services []helper.LaundryService
+	for rows.Next() {
+		var service helper.LaundryService
+
+		if err := rows.Scan(
+			&service.Id,
+			&service.Name,
+			&service.Description,
+			&service.Price,
+			&service.Image,
+			&service.LaundryId,
+			&service.Created_at,
+			&service.Updated_at,
+		); err != nil {
+			return nil, err
+		}
+
+		services = append(services, service)
+	}
+
+	return &services, nil
 }

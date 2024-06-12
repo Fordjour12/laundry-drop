@@ -11,51 +11,53 @@
 
 	export let data: PageData;
 
-	const services = [
-		{
-			id: 1,
-			name: 'Dry Cleaning',
-			description: 'Professional dry cleaning for all types of fabrics.',
-			price: '$10 per item',
-			image: '/images/dry-cleaning.jpg'
-		},
-		{
-			id: 2,
-			name: 'Laundry Service',
-			description: 'Wash, dry, and fold services.',
-			price: '$15 per load',
-			image: '/images/laundry-service.jpg'
-		},
-		{
-			id: 3,
-			name: 'Dry Cleaning',
-			description: 'Professional dry cleaning for all types of fabrics.',
-			price: '$10 per item',
-			image: '/images/dry-cleaning.jpg'
-		},
-		{
-			id: 4,
-			name: 'Laundry Service',
-			description: 'Wash, dry, and fold services.',
-			price: '$15 per load',
-			image: '/images/laundry-service.jpg'
-		},
-		{
-			id: 5,
-			name: 'Dry Cleaning',
-			description: 'Professional dry cleaning for all types of fabrics.',
-			price: '$10 per item',
-			image: '/images/dry-cleaning.jpg'
-		},
-		{
-			id: 6,
-			name: 'Laundry Service',
-			description: 'Wash, dry, and fold services.',
-			price: '$15 per load',
-			image: '/images/laundry-service.jpg'
-		}
-		// Add more services here
-	];
+	let { form, services }: PageData = $props();
+
+	// const services = [
+	// 	{
+	// 		id: 1,
+	// 		name: 'Dry Cleaning',
+	// 		description: 'Professional dry cleaning for all types of fabrics.',
+	// 		price: '$10 per item',
+	// 		image: '/images/dry-cleaning.jpg'
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		name: 'Laundry Service',
+	// 		description: 'Wash, dry, and fold services.',
+	// 		price: '$15 per load',
+	// 		image: '/images/laundry-service.jpg'
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		name: 'Dry Cleaning',
+	// 		description: 'Professional dry cleaning for all types of fabrics.',
+	// 		price: '$10 per item',
+	// 		image: '/images/dry-cleaning.jpg'
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		name: 'Laundry Service',
+	// 		description: 'Wash, dry, and fold services.',
+	// 		price: '$15 per load',
+	// 		image: '/images/laundry-service.jpg'
+	// 	},
+	// 	{
+	// 		id: 5,
+	// 		name: 'Dry Cleaning',
+	// 		description: 'Professional dry cleaning for all types of fabrics.',
+	// 		price: '$10 per item',
+	// 		image: '/images/dry-cleaning.jpg'
+	// 	},
+	// 	{
+	// 		id: 6,
+	// 		name: 'Laundry Service',
+	// 		description: 'Wash, dry, and fold services.',
+	// 		price: '$15 per load',
+	// 		image: '/images/laundry-service.jpg'
+	// 	}
+	// 	// Add more services here
+	// ];
 </script>
 
 <div class="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -137,7 +139,7 @@
 									</Sheet.Description>
 								</Sheet.Header>
 
-								<ServiceForm data={data.form} />
+								<ServiceForm data={data!.form} />
 
 								<!-- <Sheet.Footer>
 									<Sheet.Close asChild let:builder>
@@ -151,7 +153,7 @@
 			</div>
 
 			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
-				{#each services as service}
+				{#each Services as service}
 					<Card.Root class="sm:col-span-1">
 						<Card.Header class="pb-3">
 							<img
