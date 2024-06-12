@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/shopspring/decimal"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -327,16 +328,46 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
+
 	id := chi.URLParam(r, "_id")
-
-	readRequestBody, err := io.ReadAll(r.Body)
+	err := r.ParseMultipartForm(5 << 20)
 	if err != nil {
-		log.Fatalf("error reading request body. Err: %v", err)
+		return helper.NewAPIError(http.StatusBadRequest, err)
 	}
-	data := string(readRequestBody)
-	log.Printf("data here %v,%s", data, id)
 
-	return nil
+	name := r.FormValue("name")
+	description := r.FormValue("description")
+	priceStr := r.FormValue("price")
+
+	price, err := decimal.NewFromString(priceStr)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	file, _, err := r.FormFile("image")
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	defer file.Close()
+
+	image, err := io.ReadAll(file)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	laundryService, err := helper.NewLaundryServiceRequest(name, description, id, image, price)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	service, err := s.db.CreateLaundryService(laundryService)
+	if err != nil {
+		return helper.NewAPIError(http.StatusBadRequest, err)
+	}
+
+	return helper.WriteJSON(w, http.StatusCreated, service)
+
 	// var createServiceReq helper.LaundryService
 	// if err := json.NewDecoder(r.Body).Decode(&createServiceReq); err != nil {
 	// 	return helper.InvalidJSON()

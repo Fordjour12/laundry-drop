@@ -80,13 +80,14 @@ type UpdateLaundryCompanyReq struct {
 	Email string `json:"email"`
 }
 
+// FIXME: use a cloud storage service to store the images
 type LaundryService struct {
 	Id          int             `json:"id"`
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	Price       decimal.Decimal `json:"price"`
 	LaundryId   string          `json:"laundry_id"`
-	Image       string          `json:"image"`
+	Image       []byte          `json:"-"`
 	Created_at  time.Time       `json:"created_at"`
 	Updated_at  time.Time       `json:"updated_at"`
 }
@@ -176,7 +177,7 @@ func DeleteLaundryCompanyRequest(email string) (*LaundryCompany, error) {
 	}, nil
 }
 
-func NewLaundryServiceRequest(name, description, image, laundryId string, price decimal.Decimal) (*LaundryService, error) {
+func NewLaundryServiceRequest(name, description, laundryId string, image []byte, price decimal.Decimal) (*LaundryService, error) {
 	return &LaundryService{
 		Name:        name,
 		Description: description,

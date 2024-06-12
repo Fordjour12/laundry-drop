@@ -192,9 +192,9 @@ func (u LaundryService) Validate() map[string]string {
 		errors["description"] = "Description is required"
 	}
 
-	if u.Image == "" {
-		errors["image"] = "Image is required"
-	}
+	// if u.Image == "" {
+	// 	errors["image"] = "Image is required"
+	// }
 
 	if u.LaundryId == "" {
 		errors["laundry_Id"] = "LaundryId id required"
