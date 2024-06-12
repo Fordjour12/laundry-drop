@@ -328,11 +328,8 @@ func (s *Server) GetAllCompany(w http.ResponseWriter, r *http.Request) error {
 	return helper.WriteJSON(w, http.StatusOK, companies)
 }
 
-// FIXME: the file/image should be stored as a base64 string
 // FIXME: use a cloud storage service to store the images
-
-//TODO: Add a validation library to validate the request body
-// TODO:
+// TODO: Add a validation library to validate the request body
 func (s *Server) CreateNewService(w http.ResponseWriter, r *http.Request) error {
 
 	id := chi.URLParam(r, "_id")
