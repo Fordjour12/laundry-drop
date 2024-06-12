@@ -19,6 +19,11 @@
 
 	const { form: formData, enhance } = form;
 	const file = fileProxy(form, 'image');
+
+
+
+
+
 </script>
 
 <form method="POST" use:enhance enctype="multipart/form-data">

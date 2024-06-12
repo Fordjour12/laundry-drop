@@ -18,6 +18,7 @@ export const load: PageServerLoad = async (event) => {
     const response = await event.fetch(`http://localhost:8080/api/v1/get-services/${_id}`)
     const services = await response.json()
 
+
     return {
         services,
         form: await superValidate(zod(serviceFormSchema))

@@ -10,54 +10,6 @@
 	import ServiceForm from './service-form.svelte';
 
 	export let data: PageData;
-
-	let { form, services }: PageData = $props();
-
-	// const services = [
-	// 	{
-	// 		id: 1,
-	// 		name: 'Dry Cleaning',
-	// 		description: 'Professional dry cleaning for all types of fabrics.',
-	// 		price: '$10 per item',
-	// 		image: '/images/dry-cleaning.jpg'
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		name: 'Laundry Service',
-	// 		description: 'Wash, dry, and fold services.',
-	// 		price: '$15 per load',
-	// 		image: '/images/laundry-service.jpg'
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		name: 'Dry Cleaning',
-	// 		description: 'Professional dry cleaning for all types of fabrics.',
-	// 		price: '$10 per item',
-	// 		image: '/images/dry-cleaning.jpg'
-	// 	},
-	// 	{
-	// 		id: 4,
-	// 		name: 'Laundry Service',
-	// 		description: 'Wash, dry, and fold services.',
-	// 		price: '$15 per load',
-	// 		image: '/images/laundry-service.jpg'
-	// 	},
-	// 	{
-	// 		id: 5,
-	// 		name: 'Dry Cleaning',
-	// 		description: 'Professional dry cleaning for all types of fabrics.',
-	// 		price: '$10 per item',
-	// 		image: '/images/dry-cleaning.jpg'
-	// 	},
-	// 	{
-	// 		id: 6,
-	// 		name: 'Laundry Service',
-	// 		description: 'Wash, dry, and fold services.',
-	// 		price: '$15 per load',
-	// 		image: '/images/laundry-service.jpg'
-	// 	}
-	// 	// Add more services here
-	// ];
 </script>
 
 <div class="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -138,14 +90,7 @@
 										Make changes to your profile here. Click save when you're done.
 									</Sheet.Description>
 								</Sheet.Header>
-
-								<ServiceForm data={data!.form} />
-
-								<!-- <Sheet.Footer>
-									<Sheet.Close asChild let:builder>
-										<Button builders={[builder]} type="submit">Save changes</Button>
-									</Sheet.Close>
-								</Sheet.Footer> -->
+								<ServiceForm data={data.form} />
 							</Sheet.Content>
 						</Sheet.Root>
 					</Card.Footer>
@@ -153,18 +98,17 @@
 			</div>
 
 			<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
-				{#each Services as service}
+				{#each data.services as service}
 					<Card.Root class="sm:col-span-1">
 						<Card.Header class="pb-3">
 							<img
-								src={service.image}
+								src={`data:image/png;base64,${service.image}`}
 								alt={service.name}
 								class="mb-4 h-48 w-full rounded-md object-cover"
 							/>
-
 							<Card.Title>{service.name}</Card.Title>
 							<Card.Description class="max-w-lg text-balance leading-relaxed">
-								<span class="flex">{service.price}</span>
+								<span class="flex">{service.price} ghs</span>
 								{service.description}
 							</Card.Description>
 						</Card.Header>
