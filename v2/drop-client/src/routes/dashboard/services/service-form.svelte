@@ -3,6 +3,7 @@
 	import { Input } from '@/components/ui/input/index';
 	import { Label } from '@/components/ui/label/index';
 	import { Textarea } from '@/components/ui/textarea/index';
+	import { toast } from 'svelte-sonner';
 	import { fileProxy, superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { serviceFormSchema, type ServiceFormSchema } from './schema';
@@ -10,7 +11,10 @@
 	export let data: SuperValidated<Infer<ServiceFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(serviceFormSchema)
+		validators: zodClient(serviceFormSchema),
+		onError({ result }) {
+			toast.error(result.error.message);
+		}
 	});
 
 	const { form: formData, enhance } = form;
@@ -70,6 +74,7 @@
 				autocomplete="off"
 				type="number"
 				min="0"
+				step="0.01"
 				class=" appearance-none "
 			/>
 		</Form.Control>
