@@ -16,5 +16,5 @@ create table if not exists laundryAddress (
 
 -- +goose Down
 -- +goose StatementBegin
-drop table if exits laundryAddress;
+drop table if exists laundryAddress;
 -- +goose StatementEnd

@@ -5,7 +5,7 @@ create table if not exists services (
   name varchar(255) not null,
   description text not null,
   price numeric(10,2) not null,
-  image varchar(500) not null,
+  image bytea not null,
   laundryId integer not null,
   created_at timestamp not null default current_timestamp,
   updated_at timestamp not null default current_timestamp,

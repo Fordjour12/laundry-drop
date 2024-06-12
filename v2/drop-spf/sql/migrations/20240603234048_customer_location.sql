@@ -18,5 +18,5 @@ create table if not exists customerAddress (
 
 -- +goose Down
 -- +goose StatementBegin
-drop if exists customerAddress;
+drop table if exists customerAddress;
 -- +goose StatementEnd
