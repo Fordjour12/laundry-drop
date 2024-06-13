@@ -1,5 +1,6 @@
+import { useSession } from "@/hooks/context/authenticationContext";
 import FeatherIcon from "@expo/vector-icons/Feather";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import React, { useState } from "react";
 import {
 	Image,
@@ -18,6 +19,12 @@ export default function Example() {
 		emailNotifications: true,
 		pushNotifications: false,
 	});
+
+	const { logout, session } = useSession();
+
+	if (!session) {
+		return <Redirect href={"/(modal)/"} />;
+	}
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
@@ -244,10 +251,10 @@ export default function Example() {
 								]}
 							>
 								<TouchableOpacity
-									onPress={() => {
-										// handle onPress
-									}}
 									style={styles.row}
+									onPress={() => {
+										logout();
+									}}
 								>
 									<Text style={[styles.rowLabel, styles.rowLabelLogout]}>
 										Log Out
