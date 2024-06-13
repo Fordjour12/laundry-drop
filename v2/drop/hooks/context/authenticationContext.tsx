@@ -48,6 +48,34 @@ export const AuthenticationProvider = (props: PropsWithChildren) => {
 
 	const API_URI = process.env.EXPO_PUBLIC_API_URL as string;
 
+	const registerUserAccount = async ({
+		username,
+		email,
+		password,
+	}: RegisterProp): Promise<void> => {
+		try {
+			const res = await axios.post(
+				`${API_URI}create-account`,
+				{
+					username: username,
+					email: email,
+					password: password,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				},
+			);
+
+			if (res.status === 201) {
+				setSession(res.data.token);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const signInUserAccount = async ({
 		email,
 		password,
@@ -75,13 +103,15 @@ export const AuthenticationProvider = (props: PropsWithChildren) => {
 		}
 	};
 
+	const logoutUserAccount = async (): Promise<void> => {
+		setSession(null);
+	};
+
 	const value = {
 		session,
 		login: signInUserAccount,
-		register: (): void => {},
-		logout: () => {
-			setSession(null);
-		},
+		register: registerUserAccount,
+		logout: logoutUserAccount,
 		loading,
 	};
 	return (
