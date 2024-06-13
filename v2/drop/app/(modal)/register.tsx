@@ -3,7 +3,8 @@ import TextInputWithLabel from "@/components/ui/TextInput";
 import Separator from "@/components/ui/separator";
 import Spinner from "@/components/ui/spinner";
 import { AppColor } from "@/constants/Colors";
-import axios from "axios";
+import { useSession } from "@/hooks/context/authenticationContext";
+import { Redirect } from "expo-router";
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
 
@@ -16,6 +17,8 @@ type RegisterProps = {
 export default function Register() {
 	const backgroundImage = require("../../assets/images/laundry.jpg");
 
+	const { register, session } = useSession();
+
 	const [username, setUsername] = React.useState("");
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
@@ -27,36 +30,52 @@ export default function Register() {
 		(setter: React.Dispatch<React.SetStateAction<string>>) =>
 		(text: string) => {
 			setter(text);
-			// console.log(text);
 		};
 
-	const registerUserAccount = async ({
+	const registerAccount = async ({
 		username,
 		email,
 		password,
 	}: RegisterProps) => {
 		setIsLoading(true);
-		try {
-			const res = await axios.post(
-				`${API_URI}create-account`,
-				{
-					username: username,
-					email: email,
-					password: password,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-					},
-				},
-			);
-			console.log(res.data);
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setIsLoading(false);
-		}
+		register({
+			username: username,
+			email: email,
+			password: password,
+		});
+		setIsLoading(false);
 	};
+
+	if (session) {
+		return <Redirect href={"/(tabs)/"} />;
+	}
+	// const registerUserAccount = async ({
+	// 	username,
+	// 	email,
+	// 	password,
+	// }: RegisterProps) => {
+	// 	setIsLoading(true);
+	// 	try {
+	// 		const res = await axios.post(
+	// 			`${API_URI}create-account`,
+	// 			{
+	// 				username: username,
+	// 				email: email,
+	// 				password: password,
+	// 			},
+	// 			{
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 				},
+	// 			},
+	// 		);
+	// 		console.log(res.data);
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	} finally {
+	// 		setIsLoading(false);
+	// 	}
+	// };
 
 	return (
 		<ImageBackground
@@ -93,7 +112,7 @@ export default function Register() {
 					) : (
 						<Button
 							title="Sign Up"
-							onPress={() => registerUserAccount({ username, email, password })}
+							onPress={() => registerAccount({ username, email, password })}
 						/>
 					)}
 
@@ -102,8 +121,6 @@ export default function Register() {
 						<Text style={styles.text}>or</Text>
 						<Separator height={3} color={AppColor[100]} />
 					</View>
-
-					<Spinner />
 
 					<View style={{ marginTop: 20, marginBottom: 10 }}>
 						<ButtonWithIcon title="Continue with Google" iconName="google" />

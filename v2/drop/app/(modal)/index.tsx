@@ -4,7 +4,6 @@ import { ImageBackground, StyleSheet, View } from "react-native";
 
 export default function Index() {
 	const backgroundImage = require("../../assets/images/laundry.jpg");
-	// ref
 
 	return (
 		<ImageBackground source={backgroundImage} style={styles.container}>
