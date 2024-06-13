@@ -1,7 +1,8 @@
 import Card from "@/components/ui/Card";
 import SearchBar from "@/components/ui/SearchBar";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -11,6 +12,11 @@ export default function Discovery() {
 		title: string;
 		description: string;
 	};
+
+	type LaundryProvider = {
+		name: string;
+
+	}
 
 	const cardData: CardData[] = [
 		{
@@ -101,6 +107,20 @@ export default function Discovery() {
 	const district = "Ga East Municipal";
 	const city = " Accra";
 	const [searchQuery, setSearchQuery] = useState("");
+	const [laundryProvider, setLaundryProvider] = useState([]);
+
+	const API_URL = process.env.EXPO_PUBLIC_API_URL as string;
+
+	useEffect(() => {
+		const response = axios
+			.get(`${API_URL}get-company`)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}, [API_URL]);
 
 	return (
 		<SafeAreaView>
